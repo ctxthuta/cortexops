@@ -11,6 +11,7 @@ from src.agents.personas import (
 )
 from src.tools.code_tools import view_file, create_file, list_directory
 from src.tools.test_runner import run_command
+from src.tools.cortex_tools import search_cortex, read_cortex_note, ingest_concept_to_cortex
 
 LEAD_PM_DIRECTOR_INSTRUCTIONS = """You are the Lead Technical Product Manager & Director of Engineering at Thea Solutions.
 You orchestrate an elite, senior-level autonomous engineering organization.
@@ -62,7 +63,15 @@ def create_thea_engineering_team(model: str = "gemini-2.0-flash") -> LocalAgentC
     return LocalAgentConfig(
         model=model,
         subagents=subagents,
-        tools=[view_file, create_file, list_directory, run_command],
+        tools=[
+            view_file,
+            create_file,
+            list_directory,
+            run_command,
+            search_cortex,
+            read_cortex_note,
+            ingest_concept_to_cortex,
+        ],
         capabilities=types.CapabilitiesConfig(
             enable_subagents=True,
             max_subagent_depth=2,

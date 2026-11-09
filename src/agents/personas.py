@@ -9,6 +9,7 @@ from src.tools.arxiv_search import search_arxiv, read_arxiv_paper_pdf
 from src.tools.web_research import search_web, read_web_page
 from src.tools.test_runner import run_command
 from src.tools.code_tools import view_file, create_file, edit_file, list_directory
+from src.tools.cortex_tools import search_cortex, read_cortex_note, ingest_concept_to_cortex
 
 # ==============================================================================
 # 1. Staff R&D Research Engineer
@@ -49,6 +50,9 @@ rnd_researcher = types.SubagentConfig(
         read_web_page,
         create_file,
         view_file,
+        search_cortex,
+        read_cortex_note,
+        ingest_concept_to_cortex,
     ],
     capabilities=types.SubagentCapabilities(
         agent_behavior=types.AgentBehavior.AUTONOMOUS,
@@ -95,6 +99,9 @@ system_architect = types.SubagentConfig(
         create_file,
         edit_file,
         list_directory,
+        search_cortex,
+        read_cortex_note,
+        ingest_concept_to_cortex,
     ],
     capabilities=types.SubagentCapabilities(
         agent_behavior=types.AgentBehavior.AUTONOMOUS,
@@ -183,6 +190,8 @@ software_engineer = types.SubagentConfig(
         edit_file,
         list_directory,
         run_command,
+        search_cortex,
+        read_cortex_note,
     ],
     capabilities=types.SubagentCapabilities(
         agent_behavior=types.AgentBehavior.AUTONOMOUS,

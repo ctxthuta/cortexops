@@ -70,3 +70,12 @@ All agents operate with a **Senior, Staff, or Principal Engineer** mindset:
   * Architectural Compliance: Confirms that the implementation strictly adheres to `ARCHITECTURE.md`, domain boundaries, and `AGENTS.md` rules.
   * Formal Verdict: Issues formal review verdict: `APPROVED` or `REQUEST_CHANGES` with file paths, line numbers, security severities (Critical / High / Medium / Low), and concrete replacement code.
 * **Deliverable:** Formal code review report with line-specific findings.
+
+---
+
+## 3. Second Brain & Institutional Memory Integration (ThutaCortex)
+
+* **Institutional Memory First:** Before initiating redundant external web searches or greenfield schema design, agents query the ThutaCortex second brain (`/home/lenovo/Documents/ThutaCortex`) via `search_cortex` and `read_cortex_note` to retrieve established domain models, past architectural decisions, and product conventions.
+* **Knowledge Ingestion Gate:** When research uncovers novel algorithmic mechanisms, architectural patterns, or literature references, agents distill findings into atomic Zettelkasten notes (`Resources/Concepts/`) or reference notes (`Resources/References/`) using `ingest_concept_to_cortex`.
+* **Zero-Emoji & Frontmatter Integrity:** Notes saved to ThutaCortex must strictly conform to YAML frontmatter standards, valid wikilinks (`[[Note Name]]`), and the zero-emoji invariant enforced by `lint_vault.py`.
+
