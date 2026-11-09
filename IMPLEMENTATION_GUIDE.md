@@ -99,6 +99,7 @@ The framework includes a cross-platform dashboard that reads Antigravity session
 | **Live Continuous Monitoring** | `./thea watch` | `.\thea.ps1 watch` |
 | **Verify Agents & Plugins** | `./thea verify` | `.\thea.ps1 verify` |
 | **Re-Run Installer** | `./thea install` | `.\thea.ps1 install` |
+| **Clean Uninstall** | `./thea uninstall` | `.\thea.ps1 uninstall` |
 | **Dispatch Multi-Agent Goal** | `./thea run "<prompt>"` | `.\thea.ps1 run "<prompt>"` |
 
 ### Dashboard Output Example
@@ -191,7 +192,43 @@ python3 ~/.gemini/config/skills/thutacortex/scripts/lint_vault.py
 
 ---
 
-## 7. Troubleshooting & Verification
+## 7. Clean Uninstallation (Linux, macOS, and Windows)
+
+If you ever wish to unregister the subagents and remove installed artifacts, the framework provides a clean, automated uninstaller:
+
+### On Linux & macOS
+```bash
+# Standard clean uninstall (unlinks Antigravity plugin, removes .venv and caches)
+./thea uninstall
+
+# Non-interactive mode
+./thea uninstall -y
+
+# Full purge (uninstalls and deletes the local repository folder)
+./thea uninstall -y --purge
+```
+
+### On Windows (PowerShell)
+```powershell
+# Standard clean uninstall
+.\thea.ps1 uninstall
+
+# Non-interactive mode
+.\thea.ps1 uninstall -Force
+
+# Full purge
+.\thea.ps1 uninstall -Force -Purge
+```
+
+### What Uninstallation Cleans Up:
+1. **Unlinks Antigravity Plugin:** Deletes the global symlink or NTFS directory junction (`~/.gemini/config/plugins/thea-engineering-team`), immediately unregistering all 11 subagents.
+2. **Removes Python Virtual Environment:** Purges `.venv/` to reclaim storage.
+3. **Deletes Caches and Artifacts:** Cleans up `__pycache__/`, `*.pyc`, and scratch workspace files.
+4. **Preserves Second Brain Notes:** Notes in `~/Documents/ThutaCortex` remain untouched and safe.
+
+---
+
+## 8. Troubleshooting & Verification
 
 1. **Subagents Not Visible in Antigravity:**  
    Check the plugin symlink:

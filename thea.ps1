@@ -33,6 +33,9 @@ switch ($Command.ToLower()) {
     "install" {
         & (Join-Path $ScriptDir "install.ps1")
     }
+    "uninstall" {
+        & (Join-Path $ScriptDir "uninstall.ps1") $RemainingArgs
+    }
     "run" {
         if ($RemainingArgs.Count -eq 0) {
             Write-Error "Goal argument required. Usage: .\thea.ps1 run `"<prompt>`""
@@ -50,6 +53,7 @@ switch ($Command.ToLower()) {
         Write-Host "  watch               Continuously monitor the dashboard (auto-refresh)"
         Write-Host "  verify              Verify all 11 subagent definitions and plugin link"
         Write-Host "  install             Run the 1-click Windows installer and plugin junction"
+        Write-Host "  uninstall           Unlink Antigravity plugin and remove virtual environment"
         Write-Host "  run `"<prompt>`"     Dispatch a multi-agent engineering task via Python SDK"
     }
 }

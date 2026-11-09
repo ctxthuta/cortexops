@@ -24,6 +24,9 @@ case "$COMMAND" in
     install)
         "$SCRIPT_DIR/install.sh"
         ;;
+    uninstall)
+        "$SCRIPT_DIR/uninstall.sh" "${@:2}"
+        ;;
     run)
         if [ $# -lt 2 ]; then
             echo "Error: Goal argument required. Usage: ./thea run \"<prompt>\""
@@ -41,6 +44,7 @@ case "$COMMAND" in
         echo "  watch               Continuously monitor the dashboard (auto-refresh)"
         echo "  verify              Verify all 11 subagent definitions and plugin link"
         echo "  install             Run the 1-click installer and Antigravity plugin link"
+        echo "  uninstall           Unlink Antigravity plugin and remove virtual environment"
         echo "  run \"<prompt>\"     Dispatch a multi-agent engineering task via Python SDK"
         ;;
     *)

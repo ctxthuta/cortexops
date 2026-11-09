@@ -6,7 +6,7 @@ Write-Host "============================================================"
 Write-Host "Installing Thea Engineering Team Framework on Windows"
 Write-Host "============================================================"
 
-# 1. Virtual Environment Setup
+# Virtual environment setup
 $VenvDir = Join-Path $ScriptDir ".venv"
 $PythonExec = "python"
 if (-not (Get-Command "python" -ErrorAction SilentlyContinue)) {
@@ -18,10 +18,10 @@ if (-not (Get-Command "python" -ErrorAction SilentlyContinue)) {
 }
 
 if (-not (Test-Path $VenvDir)) {
-    Write-Host "[1/3] Creating Python virtual environment..."
+    Write-Host "Creating Python virtual environment..."
     & $PythonExec -m venv $VenvDir
 } else {
-    Write-Host "[1/3] Virtual environment already exists."
+    Write-Host "Virtual environment already exists."
 }
 
 $VenvPython = Join-Path $VenvDir "Scripts\python.exe"
@@ -31,8 +31,8 @@ Write-Host "Installing dependencies..."
 & $VenvPip install --quiet --upgrade pip
 & $VenvPip install --quiet -r (Join-Path $ScriptDir "requirements.txt")
 
-# 2. Link Antigravity Global Plugin
-Write-Host "[2/3] Linking Antigravity global plugin..."
+# Antigravity global plugin registration
+Write-Host "Linking Antigravity global plugin..."
 $PluginSource = Join-Path $ScriptDir "plugin"
 $PluginsRoot = Join-Path $env:USERPROFILE ".gemini\config\plugins"
 $PluginTarget = Join-Path $PluginsRoot "thea-engineering-team"
@@ -48,12 +48,12 @@ if (Test-Path $PluginTarget) {
     }
 }
 
-# Create Directory Junction (works without administrator privileges on Windows)
+# Directory junction creation without administrator privileges
 cmd /c "mklink /J `"$PluginTarget`" `"$PluginSource`"" | Out-Null
 Write-Host "Linked: $PluginSource -> $PluginTarget"
 
-# 3. Verify Subagents
-Write-Host "[3/3] Verifying agent definitions..."
+# Agent definition verification
+Write-Host "Verifying agent definitions..."
 & $VenvPython (Join-Path $ScriptDir "verify_agents.py")
 
 Write-Host "============================================================"
