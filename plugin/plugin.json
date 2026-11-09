@@ -1,0 +1,21 @@
+{
+  "name": "thea-engineering-team",
+  "displayName": "Thea Senior Engineering Team",
+  "version": "1.0.0",
+  "description": "Autonomous multi-agent engineering team (Staff R&D, System Architect, AI/ML Engineer, Software Engineer, QA, Code Reviewer) for Thea Solutions.",
+  "author": {
+    "name": "Thea Solutions",
+    "url": "https://theasolutions.co"
+  },
+  "keywords": [
+    "multi-agent",
+    "engineering",
+    "thea-solutions",
+    "subagents",
+    "rnd",
+    "architecture",
+    "qa",
+    "code-review"
+  ],
+  "license": "Proprietary"
+}
