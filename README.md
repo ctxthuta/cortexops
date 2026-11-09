@@ -11,12 +11,16 @@ The framework models a complete senior-level product and engineering organizatio
 ```text
 [Lead Technical Product Manager & Engineering Director] (Root Agent)
   │
-  ├── [Staff R&D Research Engineer]      ── Academic search (arXiv), PDF analysis, web blogs
-  ├── [Principal Systems Architect]      ── DB DDL schemas, API contracts, boundary design
-  ├── [Staff AI / ML Engineer]           ── Prompt schemas, RAG parameters, eval test suites
-  ├── [Senior Software Engineer]         ── Clean code, production implementation, unit tests
-  ├── [Senior QA & Evaluation Engineer]  ── Test runners, compiler checks, failure reproduction
-  └── [Staff Security & Code Reviewer]   ── OWASP audit, concurrency checks, AGENTS.md rules
+  ├── [Principal Academic Researcher]         ── Literature synthesis, experiment design, story-arc manuscripts
+  ├── [Staff R&D Research Engineer]           ── Academic search (arXiv), PDF analysis, web blogs
+  ├── [Principal Systems Architect]           ── Microservices, DDD, PostgreSQL DDL, API contracts
+  ├── [Senior UI/UX Engineer & Technologist]  ── Wireframes, design tokens, Figma maps, WCAG AA
+  ├── [Senior Frontend Engineer]              ── Next.js, Material UI, TanStack, shadcn, SEO/GEO
+  ├── [Senior Backend Engineer]               ── Go Gin, Bun Express, Fastify, NestJS, Python AI
+  ├── [Staff AI / ML Engineer]                ── Prompt schemas, RAG parameters, eval test suites
+  ├── [Senior DevOps & SRE]                   ── Multi-stage Docker, Compose, Nginx, CI/CD, probes
+  ├── [Senior QA & Evaluation Engineer]       ── Compilers, linters, exit-code-0 test runners
+  └── [Staff Security & Code Reviewer]        ── OWASP Top 10, concurrency hazards, clean code
 ```
 
 ---
@@ -25,31 +29,23 @@ The framework models a complete senior-level product and engineering organizatio
 
 ```text
 thea-engineering-team/
-├── .agents/                   # Project-level workspace agent definitions (auto-discovered by Antigravity)
-│   └── agents/
-│       ├── rnd_researcher/
-│       ├── system_architect/
-│       ├── ai_ml_engineer/
-│       ├── software_engineer/
-│       ├── qa_engineer/
-│       └── code_reviewer/
+├── .agents/                   # Workspace agent definitions (auto-discovered by Antigravity)
 ├── plugin/                    # Antigravity global plugin package
 │   ├── plugin.json            # Plugin manifest
 │   ├── agents/                # Standalone subagent definitions (.md with YAML frontmatter)
-│   └── rules/
-│       └── AGENTS.md          # Global engineering guidelines
+│   └── rules/AGENTS.md        # Global engineering guidelines & manuscript authoring rules
 ├── src/                       # Standalone Python framework
+│   ├── dashboard.py           # Cross-platform live status & token telemetry dashboard
 │   ├── main.py                # CLI runner and interactive driver
 │   ├── team.py                # LocalAgentConfig assembler & orchestration policies
-│   ├── agents/
-│   │   └── personas.py        # SubagentConfig definitions for all 6 specialized roles
-│   └── tools/
-│       ├── arxiv_search.py    # arXiv API search and PDF text extractor (PyPDF)
-│       ├── web_research.py    # Technical search and BeautifulSoup scraper
-│       ├── test_runner.py     # Subprocess test runner with stdout/stderr capture
-│       └── code_tools.py      # File reading, writing, exact target replacement
-├── install.sh                 # 1-click cross-laptop setup script
+│   ├── agents/personas.py     # SubagentConfig definitions for all 11 specialized roles
+│   └── tools/                 # Custom tool definitions (arXiv, web, cortex, code, runner)
+├── thea                       # Linux / macOS CLI wrapper script
+├── thea.ps1                   # Windows PowerShell CLI wrapper script
+├── install.sh                 # Linux / macOS 1-click automated installer
+├── install.ps1                # Windows PowerShell 1-click automated installer
 ├── verify_agents.py           # Verification script for agents, tools, and links
+├── IMPLEMENTATION_GUIDE.md    # Complete cross-platform installation and operation guide
 ├── requirements.txt           # Python dependency manifest
 ├── AGENTS.md                  # Senior engineering standards (zero emojis, deterministic gates)
 └── README.md                  # System documentation

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON_EXEC="$SCRIPT_DIR/.venv/bin/python3"
+
+# Fallback to system python3 if venv is not yet active
+if [ ! -f "$PYTHON_EXEC" ]; then
+    PYTHON_EXEC="python3"
+fi
+
+COMMAND="${1:-status}"
+
+case "$COMMAND" in
+    dashboard|status)
+        "$PYTHON_EXEC" "$SCRIPT_DIR/src/dashboard.py" "${@:2}"
+        ;;
+    watch)
+        "$PYTHON_EXEC" "$SCRIPT_DIR/src/dashboard.py" --watch "${@:2}"
+        ;;
+    verify)
+        "$PYTHON_EXEC" "$SCRIPT_DIR/verify_agents.py"
+        ;;
+    install)
+        "$SCRIPT_DIR/install.sh"
+        ;;
+    run)
+        if [ $# -lt 2 ]; then
+            echo "Error: Goal argument required. Usage: ./thea run \"<prompt>\""
+            exit 1
+        fi
+        "$PYTHON_EXEC" "$SCRIPT_DIR/src/main.py" "${@:2}"
+        ;;
+    help|--help|-h)
+        echo "Thea Senior Engineering Team CLI"
+        echo ""
+        echo "Usage: ./thea [command]"
+        echo ""
+        echo "Commands:"
+        echo "  dashboard, status   Display the live operational & token telemetry dashboard"
+        echo "  watch               Continuously monitor the dashboard (auto-refresh)"
+        echo "  verify              Verify all 11 subagent definitions and plugin link"
+        echo "  install             Run the 1-click installer and Antigravity plugin link"
+        echo "  run \"<prompt>\"     Dispatch a multi-agent engineering task via Python SDK"
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Run './thea help' for available commands."
+        exit 1
+        ;;
+esac
