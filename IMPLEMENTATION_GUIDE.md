@@ -35,7 +35,7 @@ The framework operates across three tightly integrated layers:
                  │
 +-----------------------------------------------------------------------------------+
 |                       CROSS-PLATFORM OPERATIONAL CLI & DASHBOARD                  |
-|        Linux / macOS: ./thea dashboard    |    Windows: .\thea.ps1 dashboard      |
+|        Linux / macOS: ./cx dashboard      |    Windows: .\cx.ps1 dashboard        |
 |   - Real-Time Token Telemetry (Input, Output, Cached Reads, Total Processed)      |
 |   - Tool Execution Frequency & Subagent Dispatch Counters                         |
 |   - Second Brain Vault Ingestion Stats & Git VCS Synchronization                  |
@@ -50,7 +50,7 @@ The framework operates across three tightly integrated layers:
 Open your terminal and run:
 
 ```bash
-git clone https://github.com/ctxthuta/thea-engineering-team.git && cd thea-engineering-team && ./install.sh
+git clone https://github.com/ctxthuta/cortexops.git && cd cortexops && ./install.sh
 ```
 
 ### What `install.sh` Does Under the Hood:
@@ -58,7 +58,7 @@ git clone https://github.com/ctxthuta/thea-engineering-team.git && cd thea-engin
 2. Installs required production dependencies (`google-antigravity`, `pydantic`, `httpx`, `beautifulsoup4`, `pypdf`).
 3. Links the global Antigravity plugin:
    ```bash
-   ln -sfn "$PWD/plugin" "$HOME/.gemini/config/plugins/thea-engineering-team"
+   ln -sfn "$PWD/plugin" "$HOME/.gemini/config/plugins/cortexops"
    ```
 4. Verifies all 11 subagents and tests connectivity to ThutaCortex at `~/Documents/ThutaCortex`.
 
@@ -70,7 +70,7 @@ git clone https://github.com/ctxthuta/thea-engineering-team.git && cd thea-engin
 Open PowerShell and run:
 
 ```powershell
-git clone https://github.com/ctxthuta/thea-engineering-team.git; cd thea-engineering-team; .\install.ps1
+git clone https://github.com/ctxthuta/cortexops.git; cd cortexops; .\install.ps1
 ```
 
 *(If PowerShell script execution is restricted, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first).*
@@ -80,7 +80,7 @@ git clone https://github.com/ctxthuta/thea-engineering-team.git; cd thea-enginee
 2. Upgrades `pip` and installs `requirements.txt`.
 3. Creates a native NTFS Directory Junction linking the plugin to Antigravity without requiring administrator rights:
    ```powershell
-   cmd /c "mklink /J `"$env:USERPROFILE\.gemini\config\plugins\thea-engineering-team`" `"$PWD\plugin`""
+   cmd /c "mklink /J `"$env:USERPROFILE\.gemini\config\plugins\cortexops`" `"$PWD\plugin`""
    ```
 4. Detects ThutaCortex at `$env:USERPROFILE\Documents\ThutaCortex`.
 5. Executes `verify_agents.py` to confirm all 11 subagents are live.
@@ -95,12 +95,12 @@ The framework includes a cross-platform dashboard that reads Antigravity session
 
 | Action | Linux / macOS | Windows PowerShell |
 | :--- | :--- | :--- |
-| **View Dashboard Snapshot** | `./thea dashboard` or `./thea status` | `.\thea.ps1 dashboard` |
-| **Live Continuous Monitoring** | `./thea watch` | `.\thea.ps1 watch` |
-| **Verify Agents & Plugins** | `./thea verify` | `.\thea.ps1 verify` |
-| **Re-Run Installer** | `./thea install` | `.\thea.ps1 install` |
-| **Clean Uninstall** | `./thea uninstall` | `.\thea.ps1 uninstall` |
-| **Dispatch Multi-Agent Goal** | `./thea run "<prompt>"` | `.\thea.ps1 run "<prompt>"` |
+| **View Dashboard Snapshot** | `./cx dashboard` or `./cx status` | `.\cx.ps1 dashboard` |
+| **Live Continuous Monitoring** | `./cx watch` | `.\cx.ps1 watch` |
+| **Verify Agents & Plugins** | `./cx verify` | `.\cx.ps1 verify` |
+| **Re-Run Installer** | `./cx install` | `.\cx.ps1 install` |
+| **Clean Uninstall** | `./cx uninstall` | `.\cx.ps1 uninstall` |
+| **Dispatch Multi-Agent Goal** | `./cx run "<prompt>"` | `.\cx.ps1 run "<prompt>"` |
 
 ### Dashboard Output Example
 
@@ -199,29 +199,29 @@ If you ever wish to unregister the subagents and remove installed artifacts, the
 ### On Linux & macOS
 ```bash
 # Standard clean uninstall (unlinks Antigravity plugin, removes .venv and caches)
-./thea uninstall
+./cx uninstall
 
 # Non-interactive mode
-./thea uninstall -y
+./cx uninstall -y
 
 # Full purge (uninstalls and deletes the local repository folder)
-./thea uninstall -y --purge
+./cx uninstall -y --purge
 ```
 
 ### On Windows (PowerShell)
 ```powershell
 # Standard clean uninstall
-.\thea.ps1 uninstall
+.\cx.ps1 uninstall
 
 # Non-interactive mode
-.\thea.ps1 uninstall -Force
+.\cx.ps1 uninstall -Force
 
 # Full purge
-.\thea.ps1 uninstall -Force -Purge
+.\cx.ps1 uninstall -Force -Purge
 ```
 
 ### What Uninstallation Cleans Up:
-1. **Unlinks Antigravity Plugin:** Deletes the global symlink or NTFS directory junction (`~/.gemini/config/plugins/thea-engineering-team`), immediately unregistering all 11 subagents.
+1. **Unlinks Antigravity Plugin:** Deletes the global symlink or NTFS directory junction (`~/.gemini/config/plugins/cortexops`), immediately unregistering all 11 subagents.
 2. **Removes Python Virtual Environment:** Purges `.venv/` to reclaim storage.
 3. **Deletes Caches and Artifacts:** Cleans up `__pycache__/`, `*.pyc`, and scratch workspace files.
 4. **Preserves Second Brain Notes:** Notes in `~/Documents/ThutaCortex` remain untouched and safe.
@@ -232,9 +232,9 @@ If you ever wish to unregister the subagents and remove installed artifacts, the
 
 1. **Subagents Not Visible in Antigravity:**  
    Check the plugin symlink:
-   - Linux: `ls -la ~/.gemini/config/plugins/thea-engineering-team`
-   - Windows: `dir "$env:USERPROFILE\.gemini\config\plugins\thea-engineering-team"`
-   If missing, run `./install.sh` (Linux) or `.\install.ps1` (Windows).
+   - Linux: `ls -la ~/.gemini/config/plugins/cortexops`
+   - Windows: `dir "$env:USERPROFILE\.gemini\config\plugins\cortexops"`
+   If missing, run `./cx install` (Linux) or `.\cx.ps1 install` (Windows).
 2. **Missing Token Telemetry in Dashboard:**  
    The dashboard automatically parses the most recent transcript in `~/.gemini/antigravity-cli/brain/`. If running on a new machine with no conversations yet, it displays 0 turns until the first turn occurs.
 3. **Strict Zero-Emoji Rule:**  

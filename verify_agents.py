@@ -6,13 +6,14 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
 PLUGIN_AGENTS_DIR = BASE_DIR / "plugin" / "agents"
-GLOBAL_PLUGIN_DIR = Path.home() / ".gemini" / "config" / "plugins" / "thea-engineering-team"
+GLOBAL_PLUGIN_DIR = Path.home() / ".gemini" / "config" / "plugins" / "cortexops"
+LEGACY_PLUGIN_DIR = Path.home() / ".gemini" / "config" / "plugins" / "thea-engineering-team"
 
 print("=" * 80)
-print("THEA SENIOR ENGINEERING TEAM - PORTABLE AGENT VERIFICATION")
+print("CORTEXOPS MULTI-AGENT FRAMEWORK - PORTABLE AGENT VERIFICATION")
 print("=" * 80)
 
-# 1. Verify Declarative Plugin Agents
+# Verify Declarative Plugin Agents
 print("[1] Declarative Plugin Definitions:")
 if not PLUGIN_AGENTS_DIR.exists():
     print(f"    Missing plugin directory: {PLUGIN_AGENTS_DIR}")
@@ -21,7 +22,6 @@ else:
     print(f"    Found {len(agent_files)} agent definitions in repository:")
     for f in agent_files:
         name = f.stem
-        # Extract description from frontmatter
         desc = "No description"
         try:
             with open(f, "r", encoding="utf-8") as af:
@@ -34,14 +34,15 @@ else:
             pass
         print(f"    - {name:20s} -> {desc[:65]}...")
 
-# 2. Verify Global Antigravity Plugin Link
+# Verify Global Antigravity Plugin Link
 print("\n[2] Antigravity Global Plugin Link:")
-if GLOBAL_PLUGIN_DIR.exists():
-    print(f"    Active link at: {GLOBAL_PLUGIN_DIR}")
+active_link = GLOBAL_PLUGIN_DIR if GLOBAL_PLUGIN_DIR.exists() else (LEGACY_PLUGIN_DIR if LEGACY_PLUGIN_DIR.exists() else None)
+if active_link:
+    print(f"    Active link at: {active_link}")
     print(f"    Status: ENABLED (Available to Antigravity sessions globally)")
 else:
     print(f"    Link not found at: {GLOBAL_PLUGIN_DIR}")
-    print(f"    Run ./install.sh to link the plugin globally.")
+    print(f"    Run ./cx install to link the plugin globally.")
 
 # 3. Verify Python Standalone Framework Tools
 print("\n[3] Python Agent Framework Modules:")

@@ -1,6 +1,6 @@
-# Thea Senior Engineering Team Operating Standards
+# CortexOps Multi-Agent Operating Standards
 
-This document establishes the senior, staff, and principal engineering standards enforced across the autonomous Thea Engineering Team.
+This document establishes the senior, staff, and principal engineering standards enforced across the autonomous CortexOps Multi-Agent Framework.
 
 ---
 

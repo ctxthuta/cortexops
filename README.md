@@ -1,8 +1,8 @@
-# Thea Senior Engineering Team
+# CortexOps Multi-Agent Framework
 
-An autonomous, multi-agent AI software development organization built for **Thea Solutions**, operating both as **Native Google Antigravity Subagents** and as a **Standalone Python Multi-Agent Framework** (`google-antigravity` SDK).
+An autonomous, multi-agent engineering and scientific research operating system built for high-throughput software delivery and academic research, operating both as **Native Google Antigravity Subagents** and as a **Standalone Python Multi-Agent Framework** (`google-antigravity` SDK).
 
-The framework models a complete senior-level product and engineering organization operating with strict deterministic verification, isolated sandboxing, and zero emojis.
+Integrated with the [ThutaCortex](file:///home/lenovo/Documents/ThutaCortex) second brain for institutional memory, architectural pattern retrieval, and automated knowledge ingestion.
 
 ---
 
@@ -28,7 +28,7 @@ The framework models a complete senior-level product and engineering organizatio
 ## 2. Directory Structure & Architecture
 
 ```text
-thea-engineering-team/
+cortexops/
 ├── .agents/                   # Workspace agent definitions (auto-discovered by Antigravity)
 ├── plugin/                    # Antigravity global plugin package
 │   ├── plugin.json            # Plugin manifest
@@ -40,10 +40,12 @@ thea-engineering-team/
 │   ├── team.py                # LocalAgentConfig assembler & orchestration policies
 │   ├── agents/personas.py     # SubagentConfig definitions for all 11 specialized roles
 │   └── tools/                 # Custom tool definitions (arXiv, web, cortex, code, runner)
-├── thea                       # Linux / macOS CLI wrapper script
-├── thea.ps1                   # Windows PowerShell CLI wrapper script
+├── cx                         # Linux / macOS CLI executable wrapper script
+├── cx.ps1                     # Windows PowerShell CLI wrapper script
 ├── install.sh                 # Linux / macOS 1-click automated installer
 ├── install.ps1                # Windows PowerShell 1-click automated installer
+├── uninstall.sh               # Linux / macOS clean uninstaller
+├── uninstall.ps1              # Windows PowerShell clean uninstaller
 ├── verify_agents.py           # Verification script for agents, tools, and links
 ├── IMPLEMENTATION_GUIDE.md    # Complete cross-platform installation and operation guide
 ├── requirements.txt           # Python dependency manifest
@@ -55,64 +57,73 @@ thea-engineering-team/
 
 ## 3. Two Modes of Execution
 
-### Mode A: Native Antigravity Subagents (No API Key Required)
+### Mode A: Native Antigravity Subagents (No External API Key Required)
 When working inside Google Antigravity (IDE or CLI):
-- All 6 agents are loaded globally via the linked plugin (`~/.gemini/config/plugins/thea-engineering-team`) and locally in `.agents/`.
-- No separate `GEMINI_API_KEY` is required because the subagents execute directly through Antigravity's authenticated session.
-- You can delegate tasks directly to `@rnd_researcher`, `@system_architect`, `@software_engineer`, etc.
+- All 11 agents are loaded globally via the linked plugin (`~/.gemini/config/plugins/cortexops`) and locally in `.agents/`.
+- Subagents execute directly through Antigravity's authenticated session.
+- Delegate tasks directly using `@academic_researcher`, `@system_architect`, `@frontend_engineer`, `@backend_engineer`, etc.
 
 ### Mode B: Standalone Python Framework (Terminal / CI / Headless)
 When running outside Antigravity as an automated background process:
-- Set your Google AI Studio API key:
+- Configure your Gemini API key:
   ```bash
   export GEMINI_API_KEY="your-gemini-api-key"
   ```
 - Run tasks via the Python driver:
   ```bash
-  .venv/bin/python src/main.py "Research streaming anomaly detection on arXiv, produce an architecture design, and implement an in-memory streaming detector in Python with passing unit tests."
+  ./cx run "Research streaming anomaly detection on arXiv, produce an architecture design, and implement an in-memory streaming detector in Python with passing unit tests."
   ```
 
 ---
 
 ## 4. Cross-Laptop Setup & GitHub Synchronization
 
-To replicate this entire team on another laptop:
+To replicate CortexOps on any workstation:
 
-### On the First Laptop (Initial Push):
-1. Initialize git and commit:
-   ```bash
-   cd /home/lenovo/thea-engineering-team
-   git init
-   git add .
-   git commit -m "feat: initial commit for thea-engineering-team framework"
-   ```
-2. Create a repository on GitHub (e.g. `thea-engineering-team`).
-3. Push to your GitHub remote:
-   ```bash
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/thea-engineering-team.git
-   git push -u origin main
-   ```
+### On the Primary Workstation (Git Remote):
+```bash
+cd /home/lenovo/cortexops
+git remote set-url origin https://github.com/ctxthuta/cortexops.git
+git push -u origin main
+```
 
 ### On Any New Laptop (1-Click Restoration):
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/<your-username>/thea-engineering-team.git
-   cd thea-engineering-team
-   ```
-2. Run the automated installer:
-   ```bash
-   ./install.sh
-   ```
-   This automatically:
-   - Creates the Python `.venv` and installs all dependencies.
-   - Links the Antigravity plugin into `~/.gemini/config/plugins/thea-engineering-team`.
-   - Runs `verify_agents.py` to confirm all 6 agents are active.
+
+#### Linux / macOS:
+```bash
+git clone https://github.com/ctxthuta/cortexops.git
+cd cortexops
+./install.sh
+```
+
+#### Windows (PowerShell):
+```powershell
+git clone https://github.com/ctxthuta/cortexops.git
+cd cortexops
+.\install.ps1
+```
+
+The installer automatically bootstraps the virtual environment, installs dependencies, and creates the global Antigravity plugin link.
 
 ---
 
-## 5. Engineering Standards & Guardrails
+## 5. CLI Command Reference
 
-* **Zero Emojis:** Strictly enforced across all generated code, markdown, reviews, and logs.
-* **Deterministic Verification:** No deliverable is accepted based on agent conversational agreement. Code must pass actual compiler checks and test suites.
-* **Sandboxed Execution:** Terminal commands run under isolated execution boundaries with timeouts.
+Execute commands via `./cx [command]` (Linux/macOS) or `.\cx.ps1 [command]` (Windows):
+
+```bash
+# View live operational & token telemetry dashboard with ANSI colors
+./cx status
+
+# Continuously monitor session telemetry (auto-refresh)
+./cx watch
+
+# Verify all 11 declarative subagents and plugin junction
+./cx verify
+
+# Re-run installation and link global plugin
+./cx install
+
+# Cleanly unregister subagents and remove local environment
+./cx uninstall
+```

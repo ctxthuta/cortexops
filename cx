@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON_EXEC="$SCRIPT_DIR/.venv/bin/python3"
+
+# Fallback to system python3 if venv is not yet active
+if [ ! -f "$PYTHON_EXEC" ]; then
+    PYTHON_EXEC="python3"
+fi
+
+COMMAND="${1:-status}"
+
+case "$COMMAND" in
+    dashboard|status)
+        "$PYTHON_EXEC" "$SCRIPT_DIR/src/dashboard.py" "${@:2}"
+        ;;
+    watch)
+        "$PYTHON_EXEC" "$SCRIPT_DIR/src/dashboard.py" --watch "${@:2}"
+        ;;
+    verify)
+        "$PYTHON_EXEC" "$SCRIPT_DIR/verify_agents.py"
+        ;;
+    install)
+        "$SCRIPT_DIR/install.sh"
+        ;;
+    uninstall)
+        "$SCRIPT_DIR/uninstall.sh" "${@:2}"
+        ;;
+    run)
+        if [ $# -lt 2 ]; then
+            echo "Error: Goal argument required. Usage: ./cx run \"<prompt>\""
+            exit 1
+        fi
+        "$PYTHON_EXEC" "$SCRIPT_DIR/src/main.py" "${@:2}"
+        ;;
+    help|--help|-h)
+        echo "CortexOps Multi-Agent Framework CLI"
+        echo ""
+        echo "Usage: ./cx [command]"
+        echo ""
+        echo "Commands:"
+        echo "  dashboard, status   Display the live operational & token telemetry dashboard"
+        echo "  watch               Continuously monitor the dashboard (auto-refresh)"
+        echo "  verify              Verify all 11 subagent definitions and plugin link"
+        echo "  install             Run the 1-click installer and Antigravity plugin link"
+        echo "  uninstall           Unlink Antigravity plugin and remove virtual environment"
+        echo "  run \"<prompt>\"     Dispatch a multi-agent engineering task via Python SDK"
+        ;;
+    *)
+        echo "Unknown command: $COMMAND"
+        echo "Run './cx help' for available commands."
+        exit 1
+        ;;
+esac

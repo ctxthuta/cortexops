@@ -1,9 +1,9 @@
-# Cross-Platform Windows PowerShell Installer for Thea Senior Engineering Team
+# Cross-Platform Windows PowerShell Installer for CortexOps Multi-Agent Framework
 $ErrorActionPreference = "Stop"
 
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Write-Host "============================================================"
-Write-Host "Installing Thea Engineering Team Framework on Windows"
+Write-Host "Installing CortexOps Multi-Agent Framework on Windows"
 Write-Host "============================================================"
 
 # Virtual environment setup
@@ -35,22 +35,23 @@ Write-Host "Installing dependencies..."
 Write-Host "Linking Antigravity global plugin..."
 $PluginSource = Join-Path $ScriptDir "plugin"
 $PluginsRoot = Join-Path $env:USERPROFILE ".gemini\config\plugins"
-$PluginTarget = Join-Path $PluginsRoot "thea-engineering-team"
+$PluginTarget = Join-Path $PluginsRoot "cortexops"
+$LegacyTarget = Join-Path $PluginsRoot "thea-engineering-team"
 
 if (-not (Test-Path $PluginsRoot)) {
     New-Item -ItemType Directory -Path $PluginsRoot -Force | Out-Null
 }
 
-if (Test-Path $PluginTarget) {
-    cmd /c "rmdir `"$PluginTarget`"" 2>$null
-    if (Test-Path $PluginTarget) {
-        Remove-Item -Path $PluginTarget -Recurse -Force
+foreach ($target in @($PluginTarget, $LegacyTarget)) {
+    if (Test-Path $target) {
+        cmd /c "rmdir `"$target`"" 2>$null
+        if (Test-Path $target) {
+            Remove-Item -Path $target -Recurse -Force
+        }
     }
+    cmd /c "mklink /J `"$target`" `"$PluginSource`"" | Out-Null
+    Write-Host "Linked: $PluginSource -> $target"
 }
-
-# Directory junction creation without administrator privileges
-cmd /c "mklink /J `"$PluginTarget`" `"$PluginSource`"" | Out-Null
-Write-Host "Linked: $PluginSource -> $PluginTarget"
 
 # Agent definition verification
 Write-Host "Verifying agent definitions..."

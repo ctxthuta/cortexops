@@ -1,18 +1,18 @@
-"""CLI Entrypoint for Thea Senior Engineering Team."""
+"""CLI Entrypoint for CortexOps Multi-Agent Framework."""
 
 import asyncio
 import sys
 import os
 from google.antigravity import Agent
-from src.team import create_thea_engineering_team
+from src.team import create_cortexops_team
 
 async def run_task(prompt: str, model: str = "gemini-2.0-flash"):
-    """Runs a complete software engineering lifecycle task with the Thea team."""
-    config = create_thea_engineering_team(model=model)
+    """Runs a complete software engineering or research lifecycle task with the CortexOps team."""
+    config = create_cortexops_team(model=model)
     
     print("=" * 70)
-    print("THEA SENIOR ENGINEERING TEAM — ACTIVE")
-    print("Roles: Lead PM | Staff R&D | Principal Architect | Staff ML | Senior Dev | Senior QA | Staff Reviewer")
+    print("CORTEXOPS MULTI-AGENT FRAMEWORK - ACTIVE")
+    print("Roles: TPM Director | Staff R&D | Principal Architect | UI/UX | Frontend | Backend | DevOps | ML | QA | Reviewer | Academic Researcher")
     print(f"Model: {model}")
     print(f"Goal: {prompt}")
     print("=" * 70 + "\n")

@@ -1,4 +1,4 @@
-# Cross-Platform Windows PowerShell Uninstaller for Thea Senior Engineering Team
+# Cross-Platform Windows PowerShell Uninstaller for CortexOps Multi-Agent Framework
 param (
     [switch]$Force,
     [switch]$Purge
@@ -8,7 +8,7 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 Write-Host "============================================================"
-Write-Host "Uninstalling Thea Senior Engineering Team Framework (Windows)"
+Write-Host "Uninstalling CortexOps Multi-Agent Framework (Windows)"
 Write-Host "============================================================"
 
 if (-not $Force) {
@@ -20,16 +20,17 @@ if (-not $Force) {
 }
 
 # Plugin junction removal
-$PluginTarget = Join-Path $env:USERPROFILE ".gemini\config\plugins\thea-engineering-team"
-if (Test-Path $PluginTarget) {
-    Write-Host "Removing Antigravity global plugin junction..."
-    cmd /c "rmdir `"$PluginTarget`"" 2>$null
-    if (Test-Path $PluginTarget) {
-        Remove-Item -Path $PluginTarget -Recurse -Force -ErrorAction SilentlyContinue
+$PluginsRoot = Join-Path $env:USERPROFILE ".gemini\config\plugins"
+foreach ($name in @("cortexops", "thea-engineering-team")) {
+    $target = Join-Path $PluginsRoot $name
+    if (Test-Path $target) {
+        Write-Host "Removing Antigravity global plugin junction ($name)..."
+        cmd /c "rmdir `"$target`"" 2>$null
+        if (Test-Path $target) {
+            Remove-Item -Path $target -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        Write-Host "Removed junction: $target"
     }
-    Write-Host "Removed junction: $PluginTarget"
-} else {
-    Write-Host "No active plugin junction found at $PluginTarget."
 }
 
 # Virtual environment cleanup

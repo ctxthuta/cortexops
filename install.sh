@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "============================================================"
-echo "Installing Thea Engineering Team Framework & Antigravity Plugin"
+echo "Installing CortexOps Multi-Agent Framework & Antigravity Plugin"
 echo "============================================================"
 
 # Virtual environment bootstrap
@@ -20,9 +20,11 @@ echo "Installing dependencies..."
 
 # Antigravity global plugin registration
 echo "Linking Antigravity global plugin..."
-PLUGIN_TARGET="$HOME/.gemini/config/plugins/thea-engineering-team"
 mkdir -p "$HOME/.gemini/config/plugins"
+PLUGIN_TARGET="$HOME/.gemini/config/plugins/cortexops"
+LEGACY_TARGET="$HOME/.gemini/config/plugins/thea-engineering-team"
 ln -sfn "$SCRIPT_DIR/plugin" "$PLUGIN_TARGET"
+ln -sfn "$SCRIPT_DIR/plugin" "$LEGACY_TARGET"
 echo "Linked: $SCRIPT_DIR/plugin -> $PLUGIN_TARGET"
 
 # Agent definition verification

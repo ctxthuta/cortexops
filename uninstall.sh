@@ -17,7 +17,7 @@ for arg in "$@"; do
 done
 
 echo "============================================================"
-echo "Uninstalling Thea Senior Engineering Team Framework"
+echo "Uninstalling CortexOps Multi-Agent Framework"
 echo "============================================================"
 
 if [ "$FORCE" = false ]; then
@@ -29,14 +29,14 @@ if [ "$FORCE" = false ]; then
 fi
 
 # Plugin removal
-PLUGIN_PATH="$HOME/.gemini/config/plugins/thea-engineering-team"
-if [ -L "$PLUGIN_PATH" ] || [ -d "$PLUGIN_PATH" ]; then
-    echo "Removing Antigravity global plugin link..."
-    rm -rf "$PLUGIN_PATH"
-    echo "Removed: $PLUGIN_PATH"
-else
-    echo "No active plugin link found at $PLUGIN_PATH."
-fi
+for p in "cortexops" "thea-engineering-team"; do
+    PLUGIN_PATH="$HOME/.gemini/config/plugins/$p"
+    if [ -L "$PLUGIN_PATH" ] || [ -d "$PLUGIN_PATH" ]; then
+        echo "Removing Antigravity global plugin link ($p)..."
+        rm -rf "$PLUGIN_PATH"
+        echo "Removed: $PLUGIN_PATH"
+    fi
+done
 
 # Virtual environment cleanup
 VENV_PATH="$SCRIPT_DIR/.venv"

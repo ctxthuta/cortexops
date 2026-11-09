@@ -1,21 +1,23 @@
 {
-  "name": "thea-engineering-team",
-  "displayName": "Thea Senior Engineering Team",
+  "name": "cortexops",
+  "displayName": "CortexOps Multi-Agent Framework",
   "version": "1.0.0",
-  "description": "Autonomous multi-agent engineering team (Staff R&D, System Architect, AI/ML Engineer, Software Engineer, QA, Code Reviewer) for Thea Solutions.",
+  "description": "Autonomous multi-agent engineering and scientific research operating system orchestrated with ThutaCortex second brain integration.",
   "author": {
-    "name": "Thea Solutions",
-    "url": "https://theasolutions.co"
+    "name": "Thuta Tun",
+    "url": "https://github.com/ctxthuta"
   },
   "keywords": [
     "multi-agent",
-    "engineering",
-    "thea-solutions",
+    "cortexops",
+    "software-engineering",
+    "academic-research",
+    "aiops",
+    "thutacortex",
     "subagents",
-    "rnd",
     "architecture",
     "qa",
-    "code-review"
+    "devops"
   ],
-  "license": "Proprietary"
+  "license": "MIT"
 }

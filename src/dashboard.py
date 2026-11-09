@@ -274,8 +274,9 @@ def render_dashboard(c: Colors) -> str:
     roster = get_agent_roster()
     git_meta = get_git_status()
 
-    global_plugin_dir = Path.home() / ".gemini" / "config" / "plugins" / "thea-engineering-team"
-    plugin_connected = global_plugin_dir.exists()
+    global_plugin_dir = Path.home() / ".gemini" / "config" / "plugins" / "cortexops"
+    legacy_plugin_dir = Path.home() / ".gemini" / "config" / "plugins" / "thea-engineering-team"
+    plugin_connected = global_plugin_dir.exists() or legacy_plugin_dir.exists()
 
     W = 86
     lines = []
@@ -285,7 +286,7 @@ def render_dashboard(c: Colors) -> str:
     divider = f"{c.DIM}{'-' * (W - 4)}{c.RESET}"
 
     lines.append(border)
-    lines.append(f"{c.BOLD}{c.BRIGHT_CYAN} THEA SENIOR ENGINEERING TEAM - OPERATIONAL STATUS & TELEMETRY DASHBOARD{c.RESET}")
+    lines.append(f"{c.BOLD}{c.BRIGHT_CYAN} CORTEXOPS - OPERATIONAL STATUS & TELEMETRY DASHBOARD{c.RESET}")
     lines.append(f"{c.DIM} OS: {platform.system()} {platform.release()} ({platform.machine()}) | Python: {platform.python_version()} | Antigravity: {c.RESET}{c.BOLD}{c.BRIGHT_GREEN}Connected{c.RESET}")
     lines.append(border)
 
