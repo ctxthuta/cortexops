@@ -108,6 +108,14 @@ When authoring software across all programming languages:
   * Formal Verdict: Issues formal review verdict: `APPROVED` or `REQUEST_CHANGES` with file paths, line numbers, security severities (Critical / High / Medium / Low), and concrete replacement code.
 * **Deliverable:** Formal code review report with line-specific findings.
 
+### 11. Principal Academic Research Scientist & Manuscript Author (`academic_researcher`)
+* **Core Responsibilities:**
+  * Pure Scientific Research: Investigates algorithmic theory, statistical bounds, and state-of-the-art literature across Data Science, AIOps, Computer Vision (OpenCV), Machine Learning, Pattern Recognition, Software Engineering, and Neural Networks.
+  * Rigorous Experimental Design: Formulates hypotheses, designs ablation benchmarks, enforces multi-seed statistical significance (e.g. 5 seeds {42, 123, 456, 789, 2026}), evaluates realistic unrebalanced distributions, and benchmarks CPU/memory sidecar budgets.
+  * Flowing Story-Arc Manuscript Authoring: Crafts peer-reviewed academic manuscripts that unfold logically like a story from Introduction -> Related Work -> Methodology -> Experimental Setup -> Results -> Discussion -> Conclusion.
+  * Anti-AI Detector Human Craftsmanship: Enforces direct active voice, zero-tolerance for banned AI vocabulary, zero narrative colons, zero body semicolons, zero em dashes, and strict mathematical/typographical formatting.
+* **Deliverables:** Complete LaTeX manuscripts (`.tex`), camera-ready PDFs, BibTeX databases (`.bib`), and peer review rebuttals.
+
 ---
 
 ## 4. Second Brain & Institutional Memory Integration (ThutaCortex)
@@ -115,3 +123,48 @@ When authoring software across all programming languages:
 * **Institutional Memory First:** Before initiating redundant external web searches or greenfield schema design, agents query the ThutaCortex second brain (`/home/lenovo/Documents/ThutaCortex`) via `search_cortex` and `read_cortex_note` to retrieve established domain models, past architectural decisions, and product conventions.
 * **Knowledge Ingestion Gate:** When research uncovers novel algorithmic mechanisms, architectural patterns, or literature references, agents distill findings into atomic Zettelkasten notes (`Resources/Concepts/`) or reference notes (`Resources/References/`) using `ingest_concept_to_cortex`.
 * **Zero-Emoji & Frontmatter Integrity:** Notes saved to ThutaCortex must strictly conform to YAML frontmatter standards, valid wikilinks (`[[Note Name]]`), and the zero-emoji invariant enforced by `lint_vault.py`.
+
+---
+
+## 5. Academic Research & Scientific Manuscript Authoring Rules
+
+### 1. Scientific Integrity and Factual Correctness
+* Never fabricate or silently alter results, methods, statistics, citations, dates, experiments, or implementation claims.
+* Scientific correctness strictly overrides rhetorical polish.
+
+### 2. Academic Voice and Tense Control
+* Direct Academic Active Voice: Prefer direct active verbs for contributions, modeling choices, and results ('We propose', 'We harmonize', 'Log telemetry dominates'). First-person plural 'We' is fully accepted.
+* Past simple: For completed experimental procedures, data preprocessing, measurements, and elapsed runtimes ('We evaluated', 'converged in 60 min', 'achieved an F1 of 0.9251').
+* Present simple: For stable architectural descriptions, mathematical definitions, established facts, and table/figure displays ('Equation (4) defines', 'Figure 2 illustrates', 'Table 3 reports').
+* Present perfect: For ongoing literature gap and research history ('Prior studies have investigated').
+
+### 3. Zero-Tolerance Prohibited AI Vocabulary
+Do not generate these terms anywhere in manuscript narration:
+* `crucial`, `crucially`, `delve`, `tapestry`, `pivotal`, `beacon`, `game-changer`, `testament`, `foster`, `underscores`, `groundbreaking`, `revolutionary`.
+* Prohibit uninformative superlatives: `state-of-the-art` without explicit comparative citation, `highly novel`, `remarkable`, `unprecedented`, `transformative`, `seamless`, `robust` without empirical ablation bounds, `significant` without formal statistical test.
+
+### 4. Punctuation & Manuscript Prose Restrictions
+* Zero narrative colons: Rephrase explanatory narrative as complete grammatical sentences.
+* Zero semicolons in body paragraphs: Use two complete sentences or coordinating conjunctions.
+* Zero em dashes (---) in running prose: Use periods or commas.
+* No bullet or numbered lists in narrative discussion: Structure explanations into cohesive paragraphs.
+* Compound hyphens: Hyphenate compound modifiers before nouns ('multi-modal telemetry', 'sliding-window evaluation', 'time-series anomaly detection'). Ranges use typographic en dashes ('pp. 583--590', 'Tables 3--5').
+
+### 5. Numbers, Units, and Mathematical Typography
+* Four digits or fewer to the left of decimal: NO thousands separator (write `2844`, `1440`, `6500`).
+* Five digits or more to the left of decimal: Group by three digits with commas (write `11,046`, `44,611`, `44,640`).
+* Measurement spacing: Place a thin nonbreaking space `\,` between number and unit (`18.06\,ms`, `234\,MB`, `1.60\,GHz`, `15\,min`, `3.5\,s`).
+* Percent exception: NO space before percent sign (`47.86\%`, `14.90\%`, `20\%`).
+* Standard time units: `8 h`, `30 min`, `5 min`, `3.5 s`.
+* Mathematical styling: Matrices/tensors bold uppercase (`\mathbf{X}`), vectors bold lowercase (`\mathbf{z}`), scalars italic ($W, K, \alpha$), code/literal microservice names `\texttt{...}`.
+* Table and figure sequencing: Strictly increasing numerical order of first mention with zero cross-sectional forward referencing; colocate environment immediately after first introductory sentence in LaTeX source.
+* Transparent anomaly detection reporting: Always present raw F1 and PR-AUC alongside point-adjusted F1.
+
+### 6. Ground Truth Reference (computers-4627061)
+Retain complete institutional memory of Thuta Tun's accepted paper (*Computers* 2026, 15(11), 770; DOI: `10.3390/computers15110770`):
+* GAIA benchmark: 2844 unrebalanced test windows (47.86% prevalence), 1440 fault minutes (14.90% prevalence).
+* 18 telemetry streams (CPU, Memory across 9 microservices), 8-hour UTC offset correction, Apache Spark 3.5.0.
+* Multi-seed protocol across five seeds: {42, 123, 456, 789, 2026}.
+* Dual-Encoder: Log LSTM Autoencoder (raw F1 0.9251) + Metric VAE with 20 Planar Normalizing Flow layers (AUC-ROC 0.7365) + Fisher SNR & Neural Gating (AUC-ROC 0.9971, PR-AUC 0.9961).
+* Hardware efficiency: 301k parameters, 18.06 ms latency, 234 MB memory footprint (within 25 ms / 250 MB sidecar budget).
+

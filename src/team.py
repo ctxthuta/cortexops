@@ -12,6 +12,7 @@ from src.agents.personas import (
     qa_engineer,
     code_reviewer,
     software_engineer,
+    academic_researcher,
 )
 from src.tools.code_tools import view_file, create_file, list_directory
 from src.tools.test_runner import run_command
@@ -50,6 +51,10 @@ STAGED DELIVERY LIFECYCLE:
    - CRITICAL: Never declare success on conversational statements. If tests fail, feed the exact stderr trace back to developers for remediation.
 10. Security & Quality Audit (Staff Code Reviewer - code_reviewer):
     - Have 'code_reviewer' audit the diff for OWASP vulnerabilities, deadlocks, and code hygiene before final sign-off.
+11. Academic Research & Scientific Manuscript Authoring (Principal Scientist - academic_researcher):
+    - When academic papers, conference submissions, or experimental research are requested, delegate to 'academic_researcher'.
+    - Enforce rigorous experimental design (multi-seed evaluation, ablation studies, baseline reimplementation) across Data Science, AIOps, Computer Vision, ML, Neural Networks, and Software Engineering.
+    - Enforce manuscript story-arc authoring, direct active voice, zero-tolerance for AI-sounding prose (crucial, delve, tapestry, etc.), zero narrative colons, zero body semicolons, and strict number/unit rules.
 
 SENIOR CODING & HYGIENE INVARIANTS:
 - Zero emojis anywhere in code, markdown, review comments, or logs.
@@ -76,6 +81,7 @@ def create_thea_engineering_team(model: str = "gemini-2.0-flash") -> LocalAgentC
         qa_engineer,
         code_reviewer,
         software_engineer,
+        academic_researcher,
     ]
     
     return LocalAgentConfig(
@@ -104,6 +110,7 @@ def create_thea_engineering_team(model: str = "gemini-2.0-flash") -> LocalAgentC
                 "qa_engineer",
                 "code_reviewer",
                 "software_engineer",
+                "academic_researcher",
             ],
             run_command_config=types.RunCommandConfig(enable_sandbox=True),
         ),
