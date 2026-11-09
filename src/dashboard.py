@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Cross-Platform Operational Dashboard for Thea Senior Engineering Team.
+"""Cross-Platform Colored Operational Dashboard for Thea Senior Engineering Team.
 
 Displays agent registry health, Antigravity token telemetry, ThutaCortex second brain
-metrics, and git version control status on Linux, macOS, and Windows.
+metrics, and git version control status on Linux, macOS, and Windows with ANSI color styling.
 """
 
 import argparse
@@ -15,6 +15,80 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 PLUGIN_AGENTS_DIR = BASE_DIR / "plugin" / "agents"
+
+
+class Colors:
+    """ANSI color codes with automatic terminal detection."""
+    def __init__(self, enabled: bool = True):
+        self.enabled = enabled
+
+    @property
+    def RESET(self) -> str:
+        return "\033[0m" if self.enabled else ""
+
+    @property
+    def BOLD(self) -> str:
+        return "\033[1m" if self.enabled else ""
+
+    @property
+    def DIM(self) -> str:
+        return "\033[2m" if self.enabled else ""
+
+    @property
+    def UNDERLINE(self) -> str:
+        return "\033[4m" if self.enabled else ""
+
+    @property
+    def RED(self) -> str:
+        return "\033[31m" if self.enabled else ""
+
+    @property
+    def GREEN(self) -> str:
+        return "\033[32m" if self.enabled else ""
+
+    @property
+    def YELLOW(self) -> str:
+        return "\033[33m" if self.enabled else ""
+
+    @property
+    def BLUE(self) -> str:
+        return "\033[34m" if self.enabled else ""
+
+    @property
+    def MAGENTA(self) -> str:
+        return "\033[35m" if self.enabled else ""
+
+    @property
+    def CYAN(self) -> str:
+        return "\033[36m" if self.enabled else ""
+
+    @property
+    def WHITE(self) -> str:
+        return "\033[37m" if self.enabled else ""
+
+    @property
+    def BRIGHT_GREEN(self) -> str:
+        return "\033[92m" if self.enabled else ""
+
+    @property
+    def BRIGHT_YELLOW(self) -> str:
+        return "\033[93m" if self.enabled else ""
+
+    @property
+    def BRIGHT_BLUE(self) -> str:
+        return "\033[94m" if self.enabled else ""
+
+    @property
+    def BRIGHT_MAGENTA(self) -> str:
+        return "\033[95m" if self.enabled else ""
+
+    @property
+    def BRIGHT_CYAN(self) -> str:
+        return "\033[96m" if self.enabled else ""
+
+    @property
+    def BRIGHT_WHITE(self) -> str:
+        return "\033[97m" if self.enabled else ""
 
 
 def _get_antigravity_brain_dir() -> Path | None:
@@ -75,7 +149,6 @@ def parse_antigravity_telemetry(transcript_file: Path | None) -> dict:
         "cache_read_tokens": 0,
         "total_tokens": 0,
         "tool_calls": {},
-        "model_name": "Gemini 2.0 / 3.8",
         "last_activity": "None",
     }
     if not transcript_file or not transcript_file.exists():
@@ -87,8 +160,7 @@ def parse_antigravity_telemetry(transcript_file: Path | None) -> dict:
                 if not line.strip():
                     continue
                 data = json.loads(line)
-                step_type = data.get("type")
-                if step_type == "PLANNER_RESPONSE":
+                if data.get("type") == "PLANNER_RESPONSE":
                     metrics["turns"] += 1
                     in_tok = data.get("input_tokens", 0)
                     out_tok = data.get("output_tokens", 0)
@@ -164,7 +236,7 @@ def get_agent_roster() -> list[dict]:
         roster.append({
             "name": name,
             "description": desc,
-            "status": "ONLINE (Registered)",
+            "status": "ONLINE",
         })
     return roster
 
@@ -177,7 +249,6 @@ def get_git_status() -> dict:
         if not git_dir.exists():
             return status
 
-        # Read branch
         head_file = git_dir / "HEAD"
         if head_file.exists():
             ref = head_file.read_text().strip()
@@ -193,8 +264,8 @@ def get_git_status() -> dict:
     return status
 
 
-def render_dashboard() -> str:
-    """Constructs the full ASCII dashboard."""
+def render_dashboard(c: Colors) -> str:
+    """Constructs the full stylized ANSI colored dashboard."""
     brain_dir = _get_antigravity_brain_dir()
     transcript_file, session_id = _get_latest_session_transcript(brain_dir)
     telemetry = parse_antigravity_telemetry(transcript_file)
@@ -203,77 +274,101 @@ def render_dashboard() -> str:
     roster = get_agent_roster()
     git_meta = get_git_status()
 
-    # Global plugin verification
     global_plugin_dir = Path.home() / ".gemini" / "config" / "plugins" / "thea-engineering-team"
-    plugin_status = "ENABLED (Symlinked)" if global_plugin_dir.exists() else "LOCAL ONLY"
+    plugin_connected = global_plugin_dir.exists()
 
     W = 86
     lines = []
-    lines.append("=" * W)
-    lines.append(f" THEA SENIOR ENGINEERING TEAM - OPERATIONAL STATUS & TELEMETRY DASHBOARD")
-    lines.append(f" OS: {platform.system()} {platform.release()} ({platform.machine()}) | Python: {platform.python_version()} | Antigravity: Connected")
-    lines.append("=" * W)
+
+    # Border
+    border = f"{c.CYAN}{'=' * W}{c.RESET}"
+    divider = f"{c.DIM}{'-' * (W - 4)}{c.RESET}"
+
+    lines.append(border)
+    lines.append(f"{c.BOLD}{c.BRIGHT_CYAN} THEA SENIOR ENGINEERING TEAM - OPERATIONAL STATUS & TELEMETRY DASHBOARD{c.RESET}")
+    lines.append(f"{c.DIM} OS: {platform.system()} {platform.release()} ({platform.machine()}) | Python: {platform.python_version()} | Antigravity: {c.RESET}{c.BOLD}{c.BRIGHT_GREEN}Connected{c.RESET}")
+    lines.append(border)
 
     # 1. System Infrastructure & Connections
-    lines.append("\n[1] SYSTEM CONNECTIONS & VCS")
-    lines.append(f"  * Git Branch: {git_meta['branch']} (Commit: {git_meta['commit']})")
-    lines.append(f"  * Antigravity Global Plugin: {plugin_status}")
-    lines.append(f"  * Antigravity Active Session: {session_id}")
-    lines.append(f"  * ThutaCortex Second Brain: {'CONNECTED' if cortex_metrics['available'] else 'DISCONNECTED'}")
-    lines.append(f"    - Vault Root: {cortex_metrics['path']}")
-    lines.append(f"    - Total Notes: {cortex_metrics['total_notes']} (Concepts: {cortex_metrics['concepts']}, Projects: {cortex_metrics['projects']}, Areas: {cortex_metrics['areas']})")
+    lines.append(f"\n{c.BOLD}{c.BRIGHT_BLUE}[1] SYSTEM CONNECTIONS & INFRASTRUCTURE{c.RESET}")
+    lines.append(f"  * Git Branch: {c.BOLD}{c.BRIGHT_WHITE}{git_meta['branch']}{c.RESET} {c.DIM}(Commit: {git_meta['commit']}){c.RESET}")
+    
+    plug_text = f"{c.BOLD}{c.BRIGHT_GREEN}ENABLED (Symlinked){c.RESET}" if plugin_connected else f"{c.YELLOW}LOCAL ONLY{c.RESET}"
+    lines.append(f"  * Antigravity Global Plugin: {plug_text}")
+    lines.append(f"  * Antigravity Active Session: {c.CYAN}{session_id}{c.RESET}")
+    
+    cortex_text = f"{c.BOLD}{c.BRIGHT_GREEN}CONNECTED{c.RESET}" if cortex_metrics['available'] else f"{c.RED}DISCONNECTED{c.RESET}"
+    lines.append(f"  * ThutaCortex Second Brain: {cortex_text}")
+    lines.append(f"    - Vault Root: {c.DIM}{cortex_metrics['path']}{c.RESET}")
+    lines.append(f"    - Inventory: {c.BOLD}{c.BRIGHT_WHITE}{cortex_metrics['total_notes']}{c.RESET} total notes {c.DIM}(Concepts: {cortex_metrics['concepts']}, Projects: {cortex_metrics['projects']}, Areas: {cortex_metrics['areas']}){c.RESET}")
 
     # 2. Antigravity Token & Session Telemetry
-    lines.append("\n[2] ANTIGRAVITY TOKEN CONSUMPTION & TELEMETRY")
-    lines.append(f"  * Interaction Turns:       {telemetry['turns']:,}")
-    lines.append(f"  * Prompt Input Tokens:     {telemetry['input_tokens']:,}")
-    lines.append(f"  * Candidate Output Tokens: {telemetry['output_tokens']:,}")
-    lines.append(f"  * Cached Read Tokens:      {telemetry['cache_read_tokens']:,}")
-    lines.append(f"  * Total Processed Tokens:  {telemetry['total_tokens']:,}")
-    lines.append(f"  * Last Turn Activity:      {telemetry['last_activity']}")
+    lines.append(f"\n{c.BOLD}{c.BRIGHT_BLUE}[2] ANTIGRAVITY TOKEN CONSUMPTION & TELEMETRY{c.RESET}")
+    lines.append(f"  * Interaction Turns:       {c.BOLD}{c.BRIGHT_WHITE}{telemetry['turns']:,}{c.RESET}")
+    lines.append(f"  * Prompt Input Tokens:     {c.BRIGHT_YELLOW}{telemetry['input_tokens']:,}{c.RESET}")
+    lines.append(f"  * Candidate Output Tokens: {c.BRIGHT_GREEN}{telemetry['output_tokens']:,}{c.RESET}")
+    lines.append(f"  * Cached Read Tokens:      {c.CYAN}{telemetry['cache_read_tokens']:,}{c.RESET}")
+    lines.append(f"  * Total Processed Tokens:  {c.BOLD}{c.BRIGHT_CYAN}{telemetry['total_tokens']:,}{c.RESET}")
+    lines.append(f"  * Last Turn Activity:      {c.DIM}{telemetry['last_activity']}{c.RESET}")
 
     # Tool invocation breakdown
-    lines.append("\n  Tool Invocations Breakdown:")
+    lines.append(f"\n  {c.UNDERLINE}Tool Invocations Breakdown:{c.RESET}")
     if telemetry["tool_calls"]:
         for tool, count in sorted(telemetry["tool_calls"].items(), key=lambda x: -x[1]):
-            bar = "#" * min(30, max(1, int(count / 10)))
-            lines.append(f"    - {tool:22s} : {count:4d} calls | {bar}")
+            bar_len = min(30, max(1, int(count / 10)))
+            bar_color = c.BRIGHT_GREEN if "file" in tool else c.BRIGHT_CYAN if "command" in tool else c.BRIGHT_MAGENTA
+            bar = f"{bar_color}{'#' * bar_len}{c.RESET}"
+            lines.append(f"    - {c.BOLD}{tool:22s}{c.RESET} : {c.BRIGHT_WHITE}{count:4d}{c.RESET} calls | {bar}")
     else:
-        lines.append("    - No tool invocations recorded in active session.")
+        lines.append(f"    {c.DIM}- No tool invocations recorded in active session.{c.RESET}")
 
     # 3. Autonomous Subagent Roster
-    lines.append(f"\n[3] AUTONOMOUS SUBAGENT ROSTER ({len(roster)} Verified Senior Roles)")
-    lines.append(f"  {'ROLE / SUBAGENT':24s} | {'STATUS':20s} | {'PRIMARY DOMAIN & RESPONSIBILITY'}")
-    lines.append("  " + "-" * (W - 4))
+    lines.append(f"\n{c.BOLD}{c.BRIGHT_BLUE}[3] AUTONOMOUS SUBAGENT ROSTER ({len(roster)} Verified Senior Roles){c.RESET}")
+    lines.append(f"  {c.BOLD}{c.CYAN}{'ROLE / SUBAGENT':24s} | {'STATUS':16s} | {'PRIMARY DOMAIN & RESPONSIBILITY'}{c.RESET}")
+    lines.append("  " + divider)
     for agent in roster:
         name = agent["name"]
-        status = agent["status"]
+        name_pad = max(0, 24 - len(name))
+        col_name = f"{c.BOLD}{c.BRIGHT_WHITE}{name}{c.RESET}{' ' * name_pad}"
+        
+        status_text = "[ONLINE]"
+        status_pad = max(0, 16 - len(status_text))
+        col_status = f"{c.BOLD}{c.BRIGHT_GREEN}{status_text}{c.RESET}{' ' * status_pad}"
+        
         desc = agent["description"][:38] + "..." if len(agent["description"]) > 38 else agent["description"]
-        lines.append(f"  {name:24s} | {status:20s} | {desc}")
+        lines.append(f"  {col_name} | {col_status} | {c.DIM}{desc}{c.RESET}")
 
-    lines.append("\n" + "=" * W)
-    lines.append(f" Dashboard updated at: {time.strftime('%Y-%m-%d %H:%M:%S')}. Clean code standard enforced.")
-    lines.append("=" * W)
+    lines.append("\n" + border)
+    lines.append(f"{c.DIM} Dashboard updated at: {time.strftime('%Y-%m-%d %H:%M:%S')}. Clean code standard enforced.{c.RESET}")
+    lines.append(border)
     return "\n".join(lines)
 
 
 def main():
+    # Enable ANSI escape sequences on Windows PowerShell/CMD
+    if os.name == "nt":
+        os.system("")
+
     parser = argparse.ArgumentParser(description="Thea Engineering Team Operational Dashboard")
     parser.add_argument("--watch", "-w", action="store_true", help="Continuously poll and refresh the dashboard")
     parser.add_argument("--interval", "-i", type=int, default=3, help="Refresh interval in seconds (default: 3s)")
+    parser.add_argument("--no-color", action="store_true", help="Disable ANSI color codes")
+    parser.add_argument("--color", action="store_true", default=True, help="Force ANSI color codes (default: enabled)")
     args = parser.parse_args()
+
+    color_enabled = not args.no_color
+    c = Colors(enabled=color_enabled)
 
     if args.watch:
         try:
             while True:
-                # Clear terminal screen portably
                 os.system("cls" if os.name == "nt" else "clear")
-                print(render_dashboard())
+                print(render_dashboard(c))
                 time.sleep(args.interval)
         except KeyboardInterrupt:
-            print("\nDashboard monitoring terminated.")
+            print(f"\n{c.DIM}Dashboard monitoring terminated.{c.RESET}")
     else:
-        print(render_dashboard())
+        print(render_dashboard(c))
 
 
 if __name__ == "__main__":
