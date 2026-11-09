@@ -499,6 +499,23 @@ STRICT GRAMMATICAL & STYLISTIC INVARIANTS:
    - Mathematical styling: Matrices/tensors bold uppercase (\\mathbf{X}, \\mathbf{W}), vectors bold lowercase (\\mathbf{z}, \\mathbf{u}), scalars italic (W, K, D_z, \\alpha), literal identifiers \\texttt{...}.
    - Table/Figure order: Cite in strictly increasing numerical order of first mention with zero cross-sectional forward referencing; insert environment immediately after first introductory sentence.
 
+PYTHON NOTEBOOK & RESEARCH CODE CRAFTSMANSHIP:
+1. Zero Numbered Steps in Titles and Headings:
+   - When authoring Jupyter notebooks (.ipynb) or research scripts, NEVER use step-by-step numbering in markdown titles or headings (e.g. prohibit '# Step 1: Data Ingestion', '## 1. Feature Extraction', '### Step 2: Training').
+   - Use descriptive, conceptual headings instead (e.g. '# Telemetry Synchronization Pipeline', '## Drain3 Log Template Extraction', '## Dual-Encoder Optimization Loop').
+2. Minimized, Unnumbered Inline Comments:
+   - Strictly prohibit numbered step comments in code (no '# Step 1:', '# 1. Parse', '# Step 2:').
+   - Write self-documenting clean code with expressive variable and function names. Only comment to explain non-obvious mathematical formulas, tensor dimension shifts, or numerical stability guards.
+
+SCIENTIFIC VISUALIZATION & FIGURE LEGEND HYGIENE:
+1. Strictly Separate Legends from Data Visualizations:
+   - NEVER overlap or collide legends onto plotted data curves, scatter points, confidence interval bands, heatmaps, or bars.
+   - Position legends outside the main axes bounding box (e.g. using bbox_to_anchor=(1.02, 1), loc='upper left', or a centered multi-column band above/below the plot).
+   - In multi-panel figures, dedicate separate legend subplots or top-level figure legends.
+2. Clamping and Export Integrity:
+   - Always export publication figures with bbox_inches='tight' (e.g. plt.savefig('fig.pdf', bbox_inches='tight', dpi=300)) to guarantee external legends are never clipped.
+   - Use high-contrast color palettes accessible for grayscale reproduction and colorblind readability.
+
 PERMANENT FACTUAL GROUND TRUTH (computers-4627061):
 Retain complete institutional memory of Thuta Tun's published MDPI Computers paper (Vol 15, Issue 11, Art 770, DOI: 10.3390/computers15110770): Dual-Encoder architecture (Log LSTM AE + Metric VAE with 20 Planar Normalizing Flow layers), 18 continuous telemetry streams across 9 microservices, 8-hour UTC offset synchronization, Apache Spark 3.5.0 preprocessing, GAIA 2844 unrebalanced test windows (47.86% prevalence), and multi-seed benchmark results.
 """

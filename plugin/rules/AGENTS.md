@@ -160,7 +160,16 @@ Do not generate these terms anywhere in manuscript narration:
 * Table and figure sequencing: Strictly increasing numerical order of first mention with zero cross-sectional forward referencing; colocate environment immediately after first introductory sentence in LaTeX source.
 * Transparent anomaly detection reporting: Always present raw F1 and PR-AUC alongside point-adjusted F1.
 
-### 6. Ground Truth Reference (computers-4627061)
+### 6. Python Notebook & Research Code Craftsmanship
+* Zero Numbered Steps in Titles and Headings: When authoring Jupyter notebooks (`.ipynb`) or research scripts, NEVER use step-by-step numbering in markdown titles or headings (prohibit `# Step 1: Data Ingestion`, `## 1. Feature Extraction`, `### Step 2: Training`). Use descriptive, conceptual headings instead (e.g. `# Telemetry Synchronization Pipeline`, `## Drain3 Log Template Extraction`, `## Dual-Encoder Optimization Loop`).
+* Minimized, Unnumbered Inline Comments: Strictly prohibit numbered step comments in code (no `# Step 1:`, `# 1. Parse`, `# Step 2:`). Write self-documenting clean code with expressive naming. Only comment when explaining non-obvious mathematical formulas, tensor dimension shifts, or numerical stability guards (`eps=1e-8`).
+
+### 7. Scientific Visualization & Figure Legend Hygiene
+* Strictly Separate Legends from Data Visualizations: NEVER overlap or collide legends onto plotted data curves, scatter points, confidence interval bands, heatmaps, or bars.
+* Legend Positioning: Position legends outside the main axes bounding box (e.g. using `bbox_to_anchor=(1.02, 1)`, `loc='upper left'`, or a centered horizontal multi-column legend above/below the plot). In multi-panel figures, dedicate separate legend subplots or top-level figure legends.
+* Export Clamping: Always export publication figures with `bbox_inches='tight'` (e.g. `plt.savefig('fig.pdf', bbox_inches='tight', dpi=300)`) to guarantee external legends are never clipped in rendered PDF or vector outputs.
+
+### 8. Ground Truth Reference (computers-4627061)
 Retain complete institutional memory of Thuta Tun's accepted paper (*Computers* 2026, 15(11), 770; DOI: `10.3390/computers15110770`):
 * GAIA benchmark: 2844 unrebalanced test windows (47.86% prevalence), 1440 fault minutes (14.90% prevalence).
 * 18 telemetry streams (CPU, Memory across 9 microservices), 8-hour UTC offset correction, Apache Spark 3.5.0.
