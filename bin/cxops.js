@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const https = require('https');
 const { spawn, spawnSync } = require('child_process');
 const readline = require('readline/promises');
 
@@ -399,6 +400,82 @@ function runDoctor() {
     console.log('='.repeat(70));
 }
 
+function getPackageVersion() {
+    try {
+        const pkgPath = path.join(ROOT_DIR, 'package.json');
+        if (fs.existsSync(pkgPath)) {
+            const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
+            return pkg.version || '1.0.3';
+        }
+    } catch (_) {}
+    return '1.0.3';
+}
+
+function fetchLatestNpmVersion() {
+    return new Promise((resolve) => {
+        const req = https.get('https://registry.npmjs.org/@ctxthuta%2Fcxops/latest', {
+            headers: { 'User-Agent': 'cxops-cli' },
+            timeout: 2500,
+        }, (res) => {
+            if (res.statusCode !== 200) {
+                resolve(null);
+                return;
+            }
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => {
+                try {
+                    const parsed = JSON.parse(data);
+                    resolve(parsed.version || null);
+                } catch (_) {
+                    resolve(null);
+                }
+            });
+        });
+        req.on('error', () => resolve(null));
+        req.on('timeout', () => {
+            req.destroy();
+            resolve(null);
+        });
+    });
+}
+
+async function runVersion(detailed = false) {
+    const currentVer = getPackageVersion();
+    if (!detailed) {
+        console.log(`@ctxthuta/cxops v${currentVer}`);
+        return;
+    }
+
+    console.log('='.repeat(70));
+    console.log(`CORTEXOPS FRAMEWORK VERSION: v${currentVer}`);
+    console.log('='.repeat(70));
+    console.log(`Package Name:    @ctxthuta/cxops`);
+    console.log(`Current Version: v${currentVer}`);
+    console.log(`Node.js Runtime: ${process.version}`);
+    console.log(`Platform:        ${process.platform} (${process.arch})`);
+
+    const py = getVenvPython();
+    if (py) {
+        const pyVer = spawnSync(py, ['--version'], { encoding: 'utf-8' }).stdout.trim();
+        console.log(`Python Runtime:  ${pyVer}`);
+    }
+
+    process.stdout.write('Checking npm registry for updates... ');
+    const latest = await fetchLatestNpmVersion();
+    if (latest) {
+        if (latest === currentVer) {
+            console.log(`[UP TO DATE] (v${latest} is latest)`);
+        } else {
+            console.log(`[UPDATE AVAILABLE] (Latest: v${latest})`);
+            console.log(`Run "npm install -g @ctxthuta/cxops@latest" to upgrade.`);
+        }
+    } else {
+        console.log('[SKIPPED] (Offline or registry unreachable)');
+    }
+    console.log('='.repeat(70));
+}
+
 function printHelp() {
     console.log(`CortexOps Multi-Agent Framework CLI
 
@@ -412,6 +489,7 @@ Commands:
   watch               Continuously monitor the dashboard (auto-refresh)
   verify              Verify all 12 declarative subagent definitions
   run "<prompt>"      Dispatch an autonomous multi-agent task via Python SDK
+  version, -v, --version  Display framework version and check for updates
   link                Link Antigravity global plugin symlink/junction
   unlink              Remove Antigravity global plugin symlink/junction
   help, --help, -h    Display this command reference
@@ -445,6 +523,13 @@ async function main() {
             break;
         case 'verify':
             executePythonScript(VERIFY_SCRIPT, args.slice(1));
+            break;
+        case 'version':
+        case '--version':
+        case '-v':
+        case '-version':
+            const isDetailed = command === 'version' || args.includes('--check') || args.includes('-c');
+            await runVersion(isDetailed);
             break;
         case 'run':
             if (args.length < 2) {
