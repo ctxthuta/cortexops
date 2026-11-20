@@ -265,6 +265,8 @@ async function runSetup() {
             console.log('    Warning: Python 3.10+ is required for subagents and telemetry.');
         }
 
+        /*
+        // Standalone execution engine and authentication setup (temporarily inactive)
         console.log('\n[2] Execution Engine & Platform Selection:');
         const defaultEngine = (process.env.CORTEXOPS_ENGINE || 'antigravity').toLowerCase();
         console.log('  Available Execution Harnesses:');
@@ -326,14 +328,15 @@ async function runSetup() {
                 }
             }
         }
+        */
 
-        console.log('\n[4] Antigravity Global Plugin Registration:');
+        console.log('\n[2] Antigravity Global Plugin Registration:');
         const linkChoice = await rl.question('  Register CortexOps global plugin for Antigravity sessions? (y/n) [y]: ');
         if (linkChoice.trim().toLowerCase() !== 'n') {
             linkPlugin();
         }
 
-        console.log('\n[5] Second Brain Integration (ThutaCortex):');
+        console.log('\n[3] Second Brain Integration (ThutaCortex):');
         const defaultVault = path.join(os.homedir(), 'Documents', 'ThutaCortex');
         const vaultChoice = await rl.question(`  ThutaCortex vault path [${defaultVault}]: `);
         const resolvedVault = vaultChoice.trim() || defaultVault;
@@ -345,7 +348,7 @@ async function runSetup() {
             console.log('    The framework will operate in local-only mode until the vault is initialized.');
         }
 
-        console.log('\n[6] Python Virtual Environment & Dependencies:');
+        console.log('\n[4] Python Virtual Environment & Dependencies:');
         const venvDir = path.join(ROOT_DIR, '.venv');
         if (fs.existsSync(venvDir)) {
             console.log('  * Virtual environment already exists at .venv/');
@@ -372,20 +375,26 @@ async function runSetup() {
             }
         }
 
-        console.log('\n[7] Subagent Definition Verification:');
+        console.log('\n[5] Subagent Definition Verification:');
         const py = getVenvPython();
         if (py && fs.existsSync(VERIFY_SCRIPT)) {
             spawnSync(py, [VERIFY_SCRIPT], { stdio: 'inherit', env: { ...process.env, PYTHONPATH: ROOT_DIR } });
         }
 
         console.log('\n' + '='.repeat(70));
-        console.log('Setup complete. You can now use:');
-        console.log('  cxops status      Display operational & token telemetry dashboard');
-        console.log('  cxops watch       Continuously monitor the live dashboard');
-        console.log('  cxops verify      Verify all 12 subagent definitions');
+        console.log('Setup complete. CortexOps subagents are active in Antigravity.');
+        console.log('You can now:');
+        console.log('  - Type @<agent> or @cxagents in Antigravity chat');
+        console.log('  - cxops status      Display operational & token telemetry dashboard');
+        console.log('  - cxops watch       Continuously monitor the live dashboard');
+        console.log('  - cxops verify      Verify all 12 subagent definitions');
+        console.log('  - cxops doctor      Run diagnostic health check');
+        /*
+        // Standalone task runner commands (temporarily inactive)
         console.log('  cxops run "<goal>" Dispatch autonomous tasks (Default: antigravity)');
         console.log('  cxops run -e claude "<goal>" Dispatch tasks using Claude');
         console.log('  cxops run -e codex "<goal>"  Dispatch tasks using Codex');
+        */
         console.log('='.repeat(70));
     } finally {
         rl.close();
@@ -420,12 +429,12 @@ function runDoctor() {
         console.log('[WARN] Virtual Environment: .venv not found. Run "cxops setup" to create.');
     }
 
-    // Execution engine configuration
+    /*
+    // Standalone execution engine and API key diagnostics (temporarily inactive)
     const activeEngine = (process.env.CORTEXOPS_ENGINE || 'antigravity').toLowerCase();
     const isDefaultEngine = !process.env.CORTEXOPS_ENGINE || activeEngine === 'antigravity';
     console.log(`[PASS] Execution Engine: ${activeEngine} ${isDefaultEngine ? '(Default)' : ''}`);
 
-    // Engine-specific authentication diagnostics
     const geminiKey = process.env.GEMINI_API_KEY;
     const anthropicKey = process.env.ANTHROPIC_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
@@ -457,6 +466,7 @@ function runDoctor() {
     if (secondaryKeys.length > 0) {
         console.log(`[PASS] Additional Keys Configured: ${secondaryKeys.join(', ')}`);
     }
+    */
 
     // Antigravity global plugin link status
     const { targets } = getPluginTargets();
@@ -548,15 +558,19 @@ async function runVersion(detailed = false) {
         return;
     }
 
+    /*
     const activeEngine = (process.env.CORTEXOPS_ENGINE || 'antigravity').toLowerCase();
     const isDefaultEngine = !process.env.CORTEXOPS_ENGINE || activeEngine === 'antigravity';
+    */
 
     console.log('='.repeat(70));
     console.log(`CORTEXOPS FRAMEWORK VERSION: v${currentVer}`);
     console.log('='.repeat(70));
     console.log(`Package Name:    @ctxthuta/cxops`);
     console.log(`Current Version: v${currentVer}`);
+    /*
     console.log(`Active Engine:   ${activeEngine} ${isDefaultEngine ? '(Default)' : ''}`);
+    */
     console.log(`Node.js Runtime: ${process.version}`);
     console.log(`Platform:        ${process.platform} (${process.arch})`);
 
@@ -593,21 +607,16 @@ Commands:
   status, dashboard         Display operational & token telemetry dashboard
   watch                     Continuously monitor the dashboard (auto-refresh)
   verify                    Verify all 12 declarative subagent definitions
-  run [options] "<prompt>"  Dispatch an autonomous multi-agent task via Python SDK
   version, -v, --version    Display framework version and check for updates
   link                      Link Antigravity global plugin symlink/junction
   unlink                    Remove Antigravity global plugin symlink/junction
   help, --help, -h          Display this command reference
-
-Run Options:
-  -e, --engine <engine>     Select execution harness: antigravity (default), claude, codex
-  -m, --model <model>       Override model identifier for the selected engine
-
-Supported Engines:
-  antigravity               Google Antigravity SDK with Gemini 3.8 models (Default)
-  claude                    Anthropic Claude models (Claude 3.7 / 3.5 Sonnet)
-  codex                     OpenAI Codex / GPT-4o / o3-mini models
-`);
+` + /*
+`  run [options] "<prompt>"  Dispatch an autonomous multi-agent task via Python SDK
+    Options:
+      -e, --engine <engine> Select execution harness: antigravity (default), claude, codex
+      -m, --model <model>   Override model identifier for the selected engine
+` + */ '');
 }
 
 async function main() {
@@ -645,6 +654,7 @@ async function main() {
             const isDetailed = command === 'version' || args.includes('--check') || args.includes('-c');
             await runVersion(isDetailed);
             break;
+        /*
         case 'run':
             if (args.length < 2) {
                 console.error('[ERROR] Task prompt required.');
@@ -653,6 +663,7 @@ async function main() {
             }
             executePythonScript(MAIN_SCRIPT, args.slice(1));
             break;
+        */
         case 'help':
         case '--help':
         case '-h':

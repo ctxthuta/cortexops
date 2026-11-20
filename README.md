@@ -1,6 +1,6 @@
 # CortexOps Multi-Agent Framework
 
-An autonomous, multi-agent engineering and scientific research operating system built for high-throughput software delivery and academic research, operating both as **Native Google Antigravity Subagents** and as a **Standalone Python Multi-Agent Framework** (`google-antigravity` SDK).
+An autonomous, multi-agent engineering and scientific research operating system built for high-throughput software delivery and academic research, operating as **Native Google Antigravity Subagents**.
 
 Integrated with the [ThutaCortex](file:///home/lenovo/Documents/ThutaCortex) second brain for institutional memory, architectural pattern retrieval, and automated knowledge ingestion.
 
@@ -82,10 +82,10 @@ When working inside Google Antigravity (IDE or CLI):
 - Subagents execute directly through Antigravity's authenticated session.
 - Mention individual specialists directly (`@backend_engineer`, `@system_architect`, `@code_reviewer`), or mention `@cxagents` to mobilize the entire relevant team concurrently.
 
+<!--
 ### Mode B: Standalone Multi-Engine Framework (Terminal / CI / Headless)
 When running outside Antigravity as an automated background process:
-- Configure your preferred engine (default: `antigravity`):
-  ```bash
+- Configure your preferred engine (default: antigravity):
   # Antigravity (Google DeepMind SDK, default)
   export GEMINI_API_KEY="your-gemini-api-key"
 
@@ -94,9 +94,8 @@ When running outside Antigravity as an automated background process:
 
   # Codex (OpenAI)
   export OPENAI_API_KEY="your-openai-api-key"
-  ```
+
 - Run tasks with your preferred execution harness:
-  ```bash
   # Default Antigravity engine (Gemini 3.8 models)
   cxops run "Research streaming anomaly detection and implement an in-memory detector with unit tests."
 
@@ -105,7 +104,7 @@ When running outside Antigravity as an automated background process:
 
   # OpenAI Codex engine (GPT-4o / o3-mini)
   cxops run -e codex "Generate relational PostgreSQL DDL with composite indexes."
-  ```
+-->
 
 ---
 
