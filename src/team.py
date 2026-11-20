@@ -65,7 +65,7 @@ SENIOR CODING & HYGIENE INVARIANTS:
 - Deterministic gates over agent opinions: test exit code == 0 is required.
 """
 
-def create_cortexops_team(model: str = "gemini-2.0-flash") -> LocalAgentConfig:
+def create_cortexops_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
     """Assembles the CortexOps autonomous engineering and research team.
     
     The Root Agent acts as the Lead Technical Product Manager & Engineering Director,
@@ -120,6 +120,6 @@ def create_cortexops_team(model: str = "gemini-2.0-flash") -> LocalAgentConfig:
         system_instructions=LEAD_PM_DIRECTOR_INSTRUCTIONS,
     )
 
-def create_thea_engineering_team(model: str = "gemini-2.0-flash") -> LocalAgentConfig:
+def create_thea_engineering_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
     """Backwards compatibility alias for create_cortexops_team."""
     return create_cortexops_team(model=model)

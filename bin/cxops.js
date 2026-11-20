@@ -18,6 +18,36 @@ const VERIFY_SCRIPT = path.join(ROOT_DIR, 'verify_agents.py');
 const DASHBOARD_SCRIPT = path.join(ROOT_DIR, 'src', 'dashboard.py');
 const MAIN_SCRIPT = path.join(ROOT_DIR, 'src', 'main.py');
 
+function loadEnvFile() {
+    const candidatePaths = [
+        path.join(process.cwd(), '.env'),
+        path.join(ROOT_DIR, '.env'),
+        path.join(os.homedir(), '.cortexops', '.env'),
+    ];
+
+    for (const envPath of candidatePaths) {
+        if (fs.existsSync(envPath)) {
+            try {
+                const content = fs.readFileSync(envPath, 'utf-8');
+                for (const line of content.split(/\r?\n/)) {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith('#')) continue;
+                    const eqIdx = trimmed.indexOf('=');
+                    if (eqIdx !== -1) {
+                        const key = trimmed.substring(0, eqIdx).trim();
+                        const val = trimmed.substring(eqIdx + 1).trim();
+                        if (key && !(key in process.env)) {
+                            process.env[key] = val;
+                        }
+                    }
+                }
+            } catch (_) {}
+        }
+    }
+}
+
+loadEnvFile();
+
 function getVenvPython() {
     const isWin = process.platform === 'win32';
     const venvPython = isWin
@@ -142,6 +172,7 @@ function unlinkPlugin() {
 }
 
 function executePythonScript(scriptPath, args = []) {
+    loadEnvFile();
     const python = getVenvPython();
     if (!python) {
         console.error('[ERROR] Python 3 not detected. Please install Python 3.10+ and run: cxops setup');
@@ -196,20 +227,30 @@ async function runSetup() {
                 const keyInput = await rl.question('  Enter your GEMINI_API_KEY: ');
                 const cleanKey = keyInput.trim().replace(/[\r\n]/g, '');
                 if (cleanKey) {
-                    const envPath = path.join(ROOT_DIR, '.env');
-                    let content = '';
-                    if (fs.existsSync(envPath)) {
-                        content = fs.readFileSync(envPath, 'utf-8');
-                        if (content.includes('GEMINI_API_KEY=')) {
-                            content = content.replace(/GEMINI_API_KEY=.*(\r?\n|$)/g, `GEMINI_API_KEY=${cleanKey}\n`);
-                        } else {
-                            content += (content.endsWith('\n') ? '' : '\n') + `GEMINI_API_KEY=${cleanKey}\n`;
+                    const savePaths = [
+                        path.join(ROOT_DIR, '.env'),
+                        path.join(os.homedir(), '.cortexops', '.env'),
+                    ];
+                    for (const envPath of savePaths) {
+                        const envDir = path.dirname(envPath);
+                        if (!fs.existsSync(envDir)) {
+                            fs.mkdirSync(envDir, { recursive: true });
                         }
-                    } else {
-                        content = `GEMINI_API_KEY=${cleanKey}\n`;
+                        let content = '';
+                        if (fs.existsSync(envPath)) {
+                            content = fs.readFileSync(envPath, 'utf-8');
+                            if (content.includes('GEMINI_API_KEY=')) {
+                                content = content.replace(/GEMINI_API_KEY=.*(\r?\n|$)/g, `GEMINI_API_KEY=${cleanKey}\n`);
+                            } else {
+                                content += (content.endsWith('\n') ? '' : '\n') + `GEMINI_API_KEY=${cleanKey}\n`;
+                            }
+                        } else {
+                            content = `GEMINI_API_KEY=${cleanKey}\n`;
+                        }
+                        fs.writeFileSync(envPath, content, { mode: 0o600 });
+                        console.log(`  * Saved GEMINI_API_KEY to ${envPath} (mode 0600)`);
                     }
-                    fs.writeFileSync(envPath, content, { mode: 0o600 });
-                    console.log(`  * Saved GEMINI_API_KEY to ${envPath} (mode 0600)`);
+                    process.env.GEMINI_API_KEY = cleanKey;
                 }
             } else {
                 console.log('  * Skipping API key. Antigravity IDE sessions will use existing authenticated session.');

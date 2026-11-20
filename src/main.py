@@ -1,18 +1,43 @@
 """CLI Entrypoint for CortexOps Multi-Agent Framework."""
 
 import asyncio
-import sys
 import os
+import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
+def load_environment() -> None:
+    """Discovers and loads environment variables from candidate .env files."""
+    candidate_paths = [
+        Path.cwd() / ".env",
+        REPO_ROOT / ".env",
+        Path.home() / ".cortexops" / ".env",
+    ]
+    for env_path in candidate_paths:
+        if env_path.is_file():
+            try:
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#") and "=" in line:
+                            key, val = line.split("=", 1)
+                            key, val = key.strip(), val.strip()
+                            if key and key not in os.environ:
+                                os.environ[key] = val
+            except Exception:
+                pass
+
+load_environment()
+
 from google.antigravity import Agent
 from src.team import create_cortexops_team
 
-async def run_task(prompt: str, model: str = "gemini-2.0-flash"):
+DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+
+async def run_task(prompt: str, model: str = DEFAULT_MODEL):
     """Runs a complete software engineering or research lifecycle task with the CortexOps team."""
     config = create_cortexops_team(model=model)
     
