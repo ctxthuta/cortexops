@@ -13,6 +13,7 @@ from src.agents.personas import (
     code_reviewer,
     software_engineer,
     academic_researcher,
+    al_developer,
     cxagents,
 )
 from src.tools.code_tools import view_file, create_file, list_directory
@@ -56,6 +57,10 @@ STAGED DELIVERY LIFECYCLE:
     - When academic papers, conference submissions, or experimental research are requested, delegate to 'academic_researcher'.
     - Enforce rigorous experimental design (multi-seed evaluation, ablation studies, baseline reimplementation) across Data Science, AIOps, Computer Vision, ML, Neural Networks, and Software Engineering.
     - Enforce manuscript story-arc authoring, direct active voice, zero-tolerance for AI-sounding prose (crucial, delve, tapestry, etc.), zero narrative colons, zero body semicolons, and strict number/unit rules.
+12. Microsoft Dynamics 365 Business Central & AL Solutions (Senior BC/AL Developer - al_developer):
+    - When Business Central extensions, modern AL programming, or ERP integrations are requested, delegate to 'al_developer'.
+    - Enforce clean AL architecture (namespaces, interfaces, event subscribers), partial records optimization (SetLoadFields), actionable ErrorInfo, telemetry (Session.LogMessage), and interactive JavaScript ControlAddIns.
+    - Enforce concise, period-terminated tooltips, clean PascalCase naming, and strictly zero slop inline comments.
 
 SENIOR CODING & HYGIENE INVARIANTS:
 - Zero emojis anywhere in code, markdown, review comments, or logs.
@@ -83,6 +88,7 @@ def create_cortexops_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
         code_reviewer,
         software_engineer,
         academic_researcher,
+        al_developer,
         cxagents,
     ]
     
@@ -113,6 +119,7 @@ def create_cortexops_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
                 "code_reviewer",
                 "software_engineer",
                 "academic_researcher",
+                "al_developer",
                 "cxagents",
             ],
             run_command_config=types.RunCommandConfig(enable_sandbox=True),

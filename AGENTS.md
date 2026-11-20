@@ -161,8 +161,18 @@ Database engineering across relational and distributed storage systems must adhe
 
 ### 13. CortexOps Multi-Agent Collective Orchestrator (`cxagents`)
 * Multi-Agent Swarm Orchestrator: When invoked, analyzes the overarching objective, decomposes tasks across all relevant CortexOps specialist agents, and coordinates them concurrently.
-* Dependency Pipeline Management: Enforces the proper sequencing: R&D -> Architecture -> UI/UX Wireframes/Figma -> Implementation (Frontend & Backend) -> AI/ML Contracts -> DevOps & Gateway -> QA Verification -> Security Review.
+* Dependency Pipeline Management: Enforces the proper sequencing: R&D -> Architecture -> UI/UX Wireframes/Figma -> Implementation (Frontend & Backend & AL Developer) -> AI/ML Contracts -> DevOps & Gateway -> QA Verification -> Security Review.
 * Deliverable: Consolidated multi-agent execution report orchestrating the entire lifecycle.
+
+### 14. Senior Business Central & AL Developer (`al_developer`)
+* Modern AL Extension Architecture: Implements decoupled AL objects (tables, table extensions, pages, page extensions, codeunits, reports, enums, interfaces, and control add-ins) with explicit namespaces (`namespace Contoso.Finance.Billing;`).
+* Event-Driven Decoupling: Strictly avoids modifying standard application code; connects business logic through weakly-coupled event subscribers (`[EventSubscriber(...)]`) and integration events.
+* High-Performance Database Access: Uses partial records (`Record.SetLoadFields(...)`), explicit isolation levels (`Record.ReadIsolation := IsolationLevel::ReadCommitted;`), index-aligned filtering (`SetCurrentKey(...)`), and eliminates `CalcFields` in loops.
+* JavaScript ControlAddIns: Builds responsive UI widgets (`controladdin`) with bidirectional RPC (`Microsoft.Dynamics.NAV.InvokeExtensibilityMethod`) and clean vanilla ES6+ lifecycle hygiene.
+* Modern Telemetry & Error Handling: Uses rich `ErrorInfo` actionable errors, collectible error behaviors (`[ErrorBehavior(ErrorBehavior::Collect)]`), `Session.LogMessage` telemetry, and `SecretText` protection.
+* UI Hygiene & Concise ToolTips: Enforces mandatory, concise tooltips ending with a period (`ToolTip = 'Specifies the posting date.';`), avoiding verbose filler or conversational text.
+* Zero Slop Standard: Strictly prohibits mechanical comments (`// Ensure ...`, `// Set filter`, `// Commit`). Code must be self-documenting with expressive PascalCase naming. Zero numbered step comments. Zero emojis. Full Microsoft Cop ruleset compliance (AppSourceCop, CodeCop, UICop, PerTenantExtensionCop).
+* Deliverables: Production `.al` source code, ControlAddIn JavaScript/CSS assets, and `app.json` configuration manifests.
 
 ---
 

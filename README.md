@@ -22,6 +22,7 @@ Integrated with the [ThutaCortex](file:///home/lenovo/Documents/ThutaCortex) sec
   ├── [Senior DevOps & SRE]                   ── Multi-stage Docker, Compose, Nginx, CI/CD, probes
   ├── [Senior QA & Evaluation Engineer]       ── Compilers, linters, exit-code-0 test runners
   ├── [Senior Software Engineer]              ── Production implementation, integration layers, clean code
+  ├── [Senior Business Central & AL Developer]── Modern AL, event subscribers, ControlAddIns, telemetry
   └── [Staff Security & Code Reviewer]        ── OWASP Top 10, concurrency hazards, clean code
 ```
 
