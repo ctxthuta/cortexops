@@ -30,6 +30,11 @@ ENV/
 workspaces/
 *.tmp
 *.log
+.env
+
+# Node.js
+node_modules/
+package-lock.json
 
 # IDE & OS
 .vscode/

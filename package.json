@@ -1,0 +1,54 @@
+{
+  "name": "cxops",
+  "version": "1.0.0",
+  "description": "CortexOps Multi-Agent Framework: Autonomous engineering and research operating system for Google Antigravity and Python SDK.",
+  "main": "bin/cxops.js",
+  "bin": {
+    "cxops": "./bin/cxops.js",
+    "cortexops": "./bin/cxops.js"
+  },
+  "scripts": {
+    "setup": "node ./bin/cxops.js setup",
+    "init": "node ./bin/cxops.js setup",
+    "status": "node ./bin/cxops.js status",
+    "dashboard": "node ./bin/cxops.js dashboard",
+    "watch": "node ./bin/cxops.js watch",
+    "verify": "node ./bin/cxops.js verify",
+    "doctor": "node ./bin/cxops.js doctor"
+  },
+  "keywords": [
+    "cortexops",
+    "multi-agent",
+    "antigravity",
+    "subagents",
+    "aiops",
+    "orchestrator",
+    "autonomous-agents",
+    "gemini"
+  ],
+  "author": "Thuta Tun <thutatun533@gmail.com> (https://github.com/ctxthuta)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ctxthuta/cortexops.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ctxthuta/cortexops/issues"
+  },
+  "homepage": "https://github.com/ctxthuta/cortexops#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "bin/",
+    "src/**/*.py",
+    "src/*.py",
+    "plugin/",
+    ".agents/",
+    "requirements.txt",
+    "verify_agents.py",
+    "README.md",
+    "AGENTS.md",
+    "IMPLEMENTATION_GUIDE.md"
+  ]
+}

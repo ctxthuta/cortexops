@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+*.pyc
+.venv/
+workspaces/
+*.tmp
+*.log
+.git/
+.env
+node_modules/
