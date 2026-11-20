@@ -2,6 +2,7 @@
 
 import urllib.request
 import urllib.parse
+import ipaddress
 from bs4 import BeautifulSoup
 import re
 
@@ -65,6 +66,21 @@ def read_web_page(url: str, max_chars: int = 8000) -> str:
     Returns:
         Cleaned plain text of the article/documentation.
     """
+    parsed = urllib.parse.urlparse(url.strip())
+    if parsed.scheme not in ("http", "https"):
+        return f"ERROR: Blocked unsupported scheme '{parsed.scheme}'. Only HTTP and HTTPS are permitted."
+
+    hostname = parsed.hostname or ""
+    if hostname in ("localhost", "127.0.0.1", "::1", "169.254.169.254"):
+        return "ERROR: Access to loopback or cloud metadata services is prohibited."
+
+    try:
+        ip = ipaddress.ip_address(hostname)
+        if ip.is_private or ip.is_loopback or ip.is_link_local:
+            return f"ERROR: Access to private network destination '{hostname}' is prohibited."
+    except ValueError:
+        pass
+
     req = urllib.request.Request(
         url,
         headers={

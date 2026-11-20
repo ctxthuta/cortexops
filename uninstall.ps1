@@ -23,11 +23,13 @@ if (-not $Force) {
 $PluginsRoot = Join-Path $env:USERPROFILE ".gemini\config\plugins"
 foreach ($name in @("cortexops", "thea-engineering-team")) {
     $target = Join-Path $PluginsRoot $name
-    if (Test-Path $target) {
+    if (Test-Path -LiteralPath $target) {
         Write-Host "Removing Antigravity global plugin junction ($name)..."
-        cmd /c "rmdir `"$target`"" 2>$null
-        if (Test-Path $target) {
-            Remove-Item -Path $target -Recurse -Force -ErrorAction SilentlyContinue
+        $item = Get-Item -LiteralPath $target -Force
+        if ($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+            $item.Delete()
+        } else {
+            Remove-Item -LiteralPath $target -Recurse -Force -ErrorAction SilentlyContinue
         }
         Write-Host "Removed junction: $target"
     }
@@ -59,8 +61,12 @@ Write-Host "============================================================"
 
 # Optional Repository Purge
 if ($Purge) {
+    if ([string]::IsNullOrWhiteSpace($ScriptDir) -or $ScriptDir -eq $env:USERPROFILE -or $ScriptDir -match '^[a-zA-Z]:\\?$') {
+        Write-Error "Refusing to purge protected root directory: $ScriptDir"
+        exit 1
+    }
     Write-Host "Purging repository at $ScriptDir..."
     Set-Location $env:USERPROFILE
-    Remove-Item -Path $ScriptDir -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath $ScriptDir -Recurse -Force -ErrorAction SilentlyContinue
     Write-Host "Repository directory purged completely."
 }

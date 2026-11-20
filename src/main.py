@@ -3,6 +3,12 @@
 import asyncio
 import sys
 import os
+from pathlib import Path
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from google.antigravity import Agent
 from src.team import create_cortexops_team
 
@@ -12,7 +18,7 @@ async def run_task(prompt: str, model: str = "gemini-2.0-flash"):
     
     print("=" * 70)
     print("CORTEXOPS MULTI-AGENT FRAMEWORK - ACTIVE")
-    print("Roles: TPM Director | Staff R&D | Principal Architect | UI/UX | Frontend | Backend | DevOps | ML | QA | Reviewer | Academic Researcher")
+    print("Roles: TPM Director | Staff R&D | Principal Architect | UI/UX | Frontend | Backend | DevOps | ML | QA | Reviewer | Academic Researcher | Software Engineer | cxagents")
     print(f"Model: {model}")
     print(f"Goal: {prompt}")
     print("=" * 70 + "\n")

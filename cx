@@ -42,7 +42,7 @@ case "$COMMAND" in
         echo "Commands:"
         echo "  dashboard, status   Display the live operational & token telemetry dashboard"
         echo "  watch               Continuously monitor the dashboard (auto-refresh)"
-        echo "  verify              Verify all 11 subagent definitions and plugin link"
+        echo "  verify              Verify all 12 subagent definitions and plugin link"
         echo "  install             Run the 1-click installer and Antigravity plugin link"
         echo "  uninstall           Unlink Antigravity plugin and remove virtual environment"
         echo "  run \"<prompt>\"     Dispatch a multi-agent engineering task via Python SDK"

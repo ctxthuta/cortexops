@@ -19,13 +19,13 @@ if (-not (Test-Path $VenvPython)) {
 
 switch ($Command.ToLower()) {
     "dashboard" {
-        & $VenvPython (Join-Path $ScriptDir "src\dashboard.py") $RemainingArgs
+        & $VenvPython (Join-Path $ScriptDir "src\dashboard.py") @RemainingArgs
     }
     "status" {
-        & $VenvPython (Join-Path $ScriptDir "src\dashboard.py") $RemainingArgs
+        & $VenvPython (Join-Path $ScriptDir "src\dashboard.py") @RemainingArgs
     }
     "watch" {
-        & $VenvPython (Join-Path $ScriptDir "src\dashboard.py") "--watch" $RemainingArgs
+        & $VenvPython (Join-Path $ScriptDir "src\dashboard.py") "--watch" @RemainingArgs
     }
     "verify" {
         & $VenvPython (Join-Path $ScriptDir "verify_agents.py")
@@ -34,14 +34,14 @@ switch ($Command.ToLower()) {
         & (Join-Path $ScriptDir "install.ps1")
     }
     "uninstall" {
-        & (Join-Path $ScriptDir "uninstall.ps1") $RemainingArgs
+        & (Join-Path $ScriptDir "uninstall.ps1") @RemainingArgs
     }
     "run" {
-        if ($RemainingArgs.Count -eq 0) {
+        if (-not $RemainingArgs -or $RemainingArgs.Count -eq 0) {
             Write-Error "Goal argument required. Usage: .\cx.ps1 run `"<prompt>`""
             exit 1
         }
-        & $VenvPython (Join-Path $ScriptDir "src\main.py") $RemainingArgs
+        & $VenvPython (Join-Path $ScriptDir "src\main.py") @RemainingArgs
     }
     Default {
         Write-Host "CortexOps Multi-Agent Framework CLI"
@@ -51,7 +51,7 @@ switch ($Command.ToLower()) {
         Write-Host "Commands:"
         Write-Host "  dashboard, status   Display the live operational & token telemetry dashboard"
         Write-Host "  watch               Continuously monitor the dashboard (auto-refresh)"
-        Write-Host "  verify              Verify all 11 subagent definitions and plugin link"
+        Write-Host "  verify              Verify all 12 subagent definitions and plugin link"
         Write-Host "  install             Run the 1-click Windows installer and plugin junction"
         Write-Host "  uninstall           Unlink Antigravity plugin and remove virtual environment"
         Write-Host "  run `"<prompt>`"     Dispatch a multi-agent engineering task via Python SDK"

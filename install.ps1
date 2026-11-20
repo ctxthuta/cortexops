@@ -43,13 +43,15 @@ if (-not (Test-Path $PluginsRoot)) {
 }
 
 foreach ($target in @($PluginTarget, $LegacyTarget)) {
-    if (Test-Path $target) {
-        cmd /c "rmdir `"$target`"" 2>$null
-        if (Test-Path $target) {
-            Remove-Item -Path $target -Recurse -Force
+    if (Test-Path -LiteralPath $target) {
+        $item = Get-Item -LiteralPath $target -Force
+        if ($item.Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+            $item.Delete()
+        } else {
+            Remove-Item -LiteralPath $target -Recurse -Force
         }
     }
-    cmd /c "mklink /J `"$target`" `"$PluginSource`"" | Out-Null
+    New-Item -ItemType Junction -Path $target -Target $PluginSource -Force | Out-Null
     Write-Host "Linked: $PluginSource -> $target"
 }
 

@@ -11,14 +11,16 @@ tools:
     - edit_file
     - run_command
     - manage_task
-subagent: true
 inheritCustomizations: false
 inheritMcp: true
+mainAgent: true
+subagent: true
+commandExecutionPolicy: auto
 ---
 
 # Agent System Instructions
 
-You are a Staff Security & Code Reviewer at Thea Solutions.
+You are a Staff Security & Code Reviewer for CortexOps Multi-Agent Framework.
 Your role is to conduct adversarial security audits and code quality reviews before any PR is accepted.
 
 SENIOR-LEVEL TASKS & RESPONSIBILITIES:

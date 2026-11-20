@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Portable verification script for Thea Engineering Team subagents."""
+"""Portable verification script for CortexOps Multi-Agent Framework subagents."""
 
 import os
 from pathlib import Path
@@ -44,7 +44,7 @@ else:
     print(f"    Link not found at: {GLOBAL_PLUGIN_DIR}")
     print(f"    Run ./cx install to link the plugin globally.")
 
-# 3. Verify Python Standalone Framework Tools
+# Verify Python Standalone Framework Tools
 print("\n[3] Python Agent Framework Modules:")
 tools_dir = BASE_DIR / "src" / "tools"
 agents_dir = BASE_DIR / "src" / "agents"

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cross-Platform Colored Operational Dashboard for Thea Senior Engineering Team.
+"""Cross-Platform Colored Operational Dashboard for CortexOps Multi-Agent Framework.
 
 Displays agent registry health, Antigravity token telemetry, ThutaCortex second brain
 metrics, and git version control status on Linux, macOS, and Windows with ANSI color styling.
@@ -290,7 +290,7 @@ def render_dashboard(c: Colors) -> str:
     lines.append(f"{c.DIM} OS: {platform.system()} {platform.release()} ({platform.machine()}) | Python: {platform.python_version()} | Antigravity: {c.RESET}{c.BOLD}{c.BRIGHT_GREEN}Connected{c.RESET}")
     lines.append(border)
 
-    # 1. System Infrastructure & Connections
+    # System infrastructure and connections
     lines.append(f"\n{c.BOLD}{c.BRIGHT_BLUE}[1] SYSTEM CONNECTIONS & INFRASTRUCTURE{c.RESET}")
     lines.append(f"  * Git Branch: {c.BOLD}{c.BRIGHT_WHITE}{git_meta['branch']}{c.RESET} {c.DIM}(Commit: {git_meta['commit']}){c.RESET}")
     
@@ -303,7 +303,7 @@ def render_dashboard(c: Colors) -> str:
     lines.append(f"    - Vault Root: {c.DIM}{cortex_metrics['path']}{c.RESET}")
     lines.append(f"    - Inventory: {c.BOLD}{c.BRIGHT_WHITE}{cortex_metrics['total_notes']}{c.RESET} total notes {c.DIM}(Concepts: {cortex_metrics['concepts']}, Projects: {cortex_metrics['projects']}, Areas: {cortex_metrics['areas']}){c.RESET}")
 
-    # 2. Antigravity Token & Session Telemetry
+    # Antigravity token and session telemetry
     lines.append(f"\n{c.BOLD}{c.BRIGHT_BLUE}[2] ANTIGRAVITY TOKEN CONSUMPTION & TELEMETRY{c.RESET}")
     lines.append(f"  * Interaction Turns:       {c.BOLD}{c.BRIGHT_WHITE}{telemetry['turns']:,}{c.RESET}")
     lines.append(f"  * Prompt Input Tokens:     {c.BRIGHT_YELLOW}{telemetry['input_tokens']:,}{c.RESET}")
@@ -323,7 +323,7 @@ def render_dashboard(c: Colors) -> str:
     else:
         lines.append(f"    {c.DIM}- No tool invocations recorded in active session.{c.RESET}")
 
-    # 3. Autonomous Subagent Roster
+    # Autonomous subagent roster
     lines.append(f"\n{c.BOLD}{c.BRIGHT_BLUE}[3] AUTONOMOUS SUBAGENT ROSTER ({len(roster)} Verified Senior Roles){c.RESET}")
     lines.append(f"  {c.BOLD}{c.CYAN}{'ROLE / SUBAGENT':24s} | {'STATUS':16s} | {'PRIMARY DOMAIN & RESPONSIBILITY'}{c.RESET}")
     lines.append("  " + divider)
@@ -350,7 +350,7 @@ def main():
     if os.name == "nt":
         os.system("")
 
-    parser = argparse.ArgumentParser(description="Thea Engineering Team Operational Dashboard")
+    parser = argparse.ArgumentParser(description="CortexOps Multi-Agent Framework Operational Dashboard")
     parser.add_argument("--watch", "-w", action="store_true", help="Continuously poll and refresh the dashboard")
     parser.add_argument("--interval", "-i", type=int, default=3, help="Refresh interval in seconds (default: 3s)")
     parser.add_argument("--no-color", action="store_true", help="Disable ANSI color codes")

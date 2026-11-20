@@ -46,7 +46,11 @@ def search_cortex(query: str, subfolder: str = "") -> str:
     if not VAULT_DIR.exists():
         return f"Error: ThutaCortex vault not found at {VAULT_DIR}."
 
-    target_dir = VAULT_DIR / subfolder if subfolder else VAULT_DIR
+    vault_resolved = VAULT_DIR.resolve()
+    target_dir = (VAULT_DIR / subfolder).resolve() if subfolder else vault_resolved
+    if not str(target_dir).startswith(str(vault_resolved)):
+        return f"Error: Access denied. Path '{subfolder}' resolves outside the ThutaCortex vault boundary."
+
     if not target_dir.exists():
         return f"Error: Target directory {target_dir} does not exist."
 
@@ -94,9 +98,13 @@ def read_cortex_note(relative_path: str) -> str:
     if not VAULT_DIR.exists():
         return f"Error: ThutaCortex vault not found at {VAULT_DIR}."
 
-    note_path = VAULT_DIR / relative_path
+    vault_resolved = VAULT_DIR.resolve()
+    note_path = (VAULT_DIR / relative_path).resolve()
     if not note_path.suffix:
         note_path = note_path.with_suffix(".md")
+
+    if not str(note_path).startswith(str(vault_resolved)):
+        return f"Error: Access denied. Path '{relative_path}' resolves outside the ThutaCortex vault boundary."
 
     if not note_path.exists():
         return f"Error: Note not found at {note_path}."
@@ -141,10 +149,13 @@ def ingest_concept_to_cortex(
     rel_tags = [f"  - {domain_tag}"] if domain_tag else ["  - concept"]
     rel_links = [f'  - "[[{r}]]"' for r in (related or [])]
 
+    from datetime import date
+    created_date = date.today().isoformat()
+
     frontmatter = f"""---
 title: "{title}"
 type: concept
-created: {os.popen('date +%Y-%m-%d').read().strip()}
+created: {created_date}
 tags:
   - concept
 {chr(10).join(rel_tags)}

@@ -52,7 +52,9 @@ fi
 echo "Cleaning up Python caches and temporary files..."
 find "$SCRIPT_DIR" -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
 find "$SCRIPT_DIR" -type f -name "*.pyc" -delete 2>/dev/null || true
-rm -rf "$SCRIPT_DIR/workspaces/"* 2>/dev/null || true
+if [ -d "$SCRIPT_DIR/workspaces" ]; then
+    find "$SCRIPT_DIR/workspaces" -mindepth 1 -delete 2>/dev/null || true
+fi
 echo "Cleaned up Python caches and workspace artifacts."
 
 echo "============================================================"
@@ -61,6 +63,10 @@ echo "============================================================"
 
 # Optional Repository Purge
 if [ "$PURGE" = true ]; then
+    if [ -z "$SCRIPT_DIR" ] || [ "$SCRIPT_DIR" = "$HOME" ] || [ "$SCRIPT_DIR" = "/" ]; then
+        echo "Error: Refusing to purge protected directory '$SCRIPT_DIR'." >&2
+        exit 1
+    fi
     echo "Purging repository at $SCRIPT_DIR..."
     cd "$HOME"
     rm -rf "$SCRIPT_DIR"

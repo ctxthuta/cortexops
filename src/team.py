@@ -1,4 +1,4 @@
-"""Thea Engineering Team Assembler & Configuration."""
+"""CortexOps Multi-Agent Framework Assembler & Configuration."""
 
 from google.antigravity import LocalAgentConfig, types
 from src.agents.personas import (
@@ -13,12 +13,13 @@ from src.agents.personas import (
     code_reviewer,
     software_engineer,
     academic_researcher,
+    cxagents,
 )
 from src.tools.code_tools import view_file, create_file, list_directory
 from src.tools.test_runner import run_command
 from src.tools.cortex_tools import search_cortex, read_cortex_note, ingest_concept_to_cortex
 
-LEAD_PM_DIRECTOR_INSTRUCTIONS = """You are the Lead Technical Product Manager & Director of Engineering at Thea Solutions.
+LEAD_PM_DIRECTOR_INSTRUCTIONS = """You are the Lead Technical Product Manager & Director of Engineering for CortexOps Multi-Agent Framework.
 You orchestrate an elite, senior-level autonomous engineering organization.
 
 YOUR CORE MANDATE:
@@ -82,6 +83,7 @@ def create_cortexops_team(model: str = "gemini-2.0-flash") -> LocalAgentConfig:
         code_reviewer,
         software_engineer,
         academic_researcher,
+        cxagents,
     ]
     
     return LocalAgentConfig(
@@ -111,6 +113,7 @@ def create_cortexops_team(model: str = "gemini-2.0-flash") -> LocalAgentConfig:
                 "code_reviewer",
                 "software_engineer",
                 "academic_researcher",
+                "cxagents",
             ],
             run_command_config=types.RunCommandConfig(enable_sandbox=True),
         ),
