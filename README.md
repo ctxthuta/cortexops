@@ -11,6 +11,7 @@ Integrated with the [ThutaCortex](file:///home/lenovo/Documents/ThutaCortex) sec
 ```text
 [Lead Technical Product Manager & Engineering Director] (Root Agent)
   │
+  ├── [@cxagents]                             ── Multi-agent collective swarm orchestrator
   ├── [Principal Academic Researcher]         ── Literature synthesis, experiment design, story-arc manuscripts
   ├── [Staff R&D Research Engineer]           ── Academic search (arXiv), PDF analysis, web blogs
   ├── [Principal Systems Architect]           ── Microservices, DDD, PostgreSQL DDL, API contracts
@@ -20,6 +21,7 @@ Integrated with the [ThutaCortex](file:///home/lenovo/Documents/ThutaCortex) sec
   ├── [Staff AI / ML Engineer]                ── Prompt schemas, RAG parameters, eval test suites
   ├── [Senior DevOps & SRE]                   ── Multi-stage Docker, Compose, Nginx, CI/CD, probes
   ├── [Senior QA & Evaluation Engineer]       ── Compilers, linters, exit-code-0 test runners
+  ├── [Senior Software Engineer]              ── Production implementation, integration layers, clean code
   └── [Staff Security & Code Reviewer]        ── OWASP Top 10, concurrency hazards, clean code
 ```
 
@@ -29,6 +31,7 @@ Integrated with the [ThutaCortex](file:///home/lenovo/Documents/ThutaCortex) sec
 
 ```text
 cortexops/
+├── bin/                       # Universal cross-platform Node.js CLI executable (cxops)
 ├── .agents/                   # Workspace agent definitions (auto-discovered by Antigravity)
 ├── plugin/                    # Antigravity global plugin package
 │   ├── plugin.json            # Plugin manifest
@@ -38,8 +41,9 @@ cortexops/
 │   ├── dashboard.py           # Cross-platform live status & token telemetry dashboard
 │   ├── main.py                # CLI runner and interactive driver
 │   ├── team.py                # LocalAgentConfig assembler & orchestration policies
-│   ├── agents/personas.py     # SubagentConfig definitions for all 11 specialized roles
+│   ├── agents/personas.py     # SubagentConfig definitions for all 12 specialized roles
 │   └── tools/                 # Custom tool definitions (arXiv, web, cortex, code, runner)
+├── package.json               # npm package manifest (@ctxthuta/cxops)
 ├── cx                         # Linux / macOS CLI executable wrapper script
 ├── cx.ps1                     # Windows PowerShell CLI wrapper script
 ├── install.sh                 # Linux / macOS 1-click automated installer
@@ -55,13 +59,28 @@ cortexops/
 
 ---
 
-## 3. Two Modes of Execution
+## 3. Quick Start & Execution Modes
+
+### Universal Cross-Platform 1-Command Setup (via npm)
+```bash
+npx @ctxthuta/cxops setup
+```
+Or install globally:
+```bash
+npm install -g @ctxthuta/cxops
+cxops doctor
+cxops status
+```
+
+---
+
+## 4. Two Modes of Execution
 
 ### Mode A: Native Antigravity Subagents (No External API Key Required)
 When working inside Google Antigravity (IDE or CLI):
-- All 11 agents are loaded globally via the linked plugin (`~/.gemini/config/plugins/cortexops`) and locally in `.agents/`.
+- All 12 agents are loaded globally via the linked plugin (`~/.gemini/config/plugins/cortexops`) and locally in `.agents/`.
 - Subagents execute directly through Antigravity's authenticated session.
-- Delegate tasks directly using `@academic_researcher`, `@system_architect`, `@frontend_engineer`, `@backend_engineer`, etc.
+- Mention individual specialists directly (`@backend_engineer`, `@system_architect`, `@code_reviewer`), or mention `@cxagents` to mobilize the entire relevant team concurrently.
 
 ### Mode B: Standalone Python Framework (Terminal / CI / Headless)
 When running outside Antigravity as an automated background process:
