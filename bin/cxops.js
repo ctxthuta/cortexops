@@ -88,6 +88,28 @@ function linkPlugin() {
             console.error(`[ERROR] Failed to link plugin to ${target}: ${err.message}`);
         }
     }
+
+    const globalAgentsRoot = path.join(os.homedir(), '.gemini', 'config', 'agents');
+    const localAgentsSource = path.join(ROOT_DIR, '.agents', 'agents');
+    if (fs.existsSync(localAgentsSource)) {
+        try {
+            if (!fs.existsSync(globalAgentsRoot)) {
+                fs.mkdirSync(globalAgentsRoot, { recursive: true });
+            }
+            const agentDirs = fs.readdirSync(localAgentsSource, { withFileTypes: true });
+            for (const dirent of agentDirs) {
+                if (dirent.isDirectory()) {
+                    const srcAgent = path.join(localAgentsSource, dirent.name);
+                    const destAgent = path.join(globalAgentsRoot, dirent.name);
+                    removePluginTarget(destAgent);
+                    fs.symlinkSync(srcAgent, destAgent, symlinkType);
+                }
+            }
+            console.log(`[OK] Linked global agents for Antigravity UI: ${globalAgentsRoot}`);
+        } catch (err) {
+            console.error(`[ERROR] Failed to link global agents to ${globalAgentsRoot}: ${err.message}`);
+        }
+    }
 }
 
 function unlinkPlugin() {
@@ -98,6 +120,23 @@ function unlinkPlugin() {
             console.log(`[OK] Unlinked plugin: ${target}`);
         } catch (err) {
             console.error(`[ERROR] Failed to unlink ${target}: ${err.message}`);
+        }
+    }
+
+    const globalAgentsRoot = path.join(os.homedir(), '.gemini', 'config', 'agents');
+    const localAgentsSource = path.join(ROOT_DIR, '.agents', 'agents');
+    if (fs.existsSync(localAgentsSource) && fs.existsSync(globalAgentsRoot)) {
+        try {
+            const agentDirs = fs.readdirSync(localAgentsSource, { withFileTypes: true });
+            for (const dirent of agentDirs) {
+                if (dirent.isDirectory()) {
+                    const destAgent = path.join(globalAgentsRoot, dirent.name);
+                    removePluginTarget(destAgent);
+                }
+            }
+            console.log(`[OK] Unlinked global agents: ${globalAgentsRoot}`);
+        } catch (err) {
+            console.error(`[ERROR] Failed to unlink global agents: ${err.message}`);
         }
     }
 }
@@ -282,6 +321,15 @@ function runDoctor() {
     }
     if (!linkFound) {
         console.log(`[WARN] Antigravity Global Plugin: Unlinked. Run "cxops setup" to register.`);
+    }
+
+    // Antigravity global agents discovery
+    const globalAgentsRoot = path.join(os.homedir(), '.gemini', 'config', 'agents');
+    if (fs.existsSync(globalAgentsRoot)) {
+        const registered = fs.readdirSync(globalAgentsRoot).filter(f => !f.startsWith('.'));
+        console.log(`[PASS] Global Agent Selector: ${registered.length} agents registered at ${globalAgentsRoot}`);
+    } else {
+        console.log(`[WARN] Global Agent Selector: Unlinked. Run "cxops link" to register.`);
     }
 
     // ThutaCortex second brain connectivity
