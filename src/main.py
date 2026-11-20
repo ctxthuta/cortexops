@@ -1,13 +1,16 @@
 """CLI Entrypoint for CortexOps Multi-Agent Framework."""
 
+import argparse
 import asyncio
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+
 
 def load_environment() -> None:
     """Discovers and loads environment variables from candidate .env files."""
@@ -30,45 +33,104 @@ def load_environment() -> None:
             except Exception:
                 pass
 
+
 load_environment()
 
-from google.antigravity import Agent
-from src.team import create_cortexops_team
+from src.engines import resolve_engine, get_default_model
 
-DEFAULT_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
 
-async def run_task(prompt: str, model: str = DEFAULT_MODEL):
-    """Runs a complete software engineering or research lifecycle task with the CortexOps team."""
-    config = create_cortexops_team(model=model)
-    
+def parse_arguments():
+    """Parses command-line arguments for engine, model, and task prompt."""
+    parser = argparse.ArgumentParser(
+        description="CortexOps Multi-Agent Framework Task Runner",
+        add_help=False,
+    )
+    parser.add_argument(
+        "-e",
+        "--engine",
+        dest="engine",
+        default=os.environ.get("CORTEXOPS_ENGINE", "antigravity"),
+        help="Target execution harness: antigravity (default), claude, codex",
+    )
+    parser.add_argument(
+        "-m",
+        "--model",
+        dest="model",
+        default=None,
+        help="Model identifier override for selected execution engine",
+    )
+    parser.add_argument(
+        "-h",
+        "--help",
+        action="help",
+        help="Display this task runner help reference and exit",
+    )
+    parser.add_argument(
+        "prompt",
+        nargs="*",
+        help="Engineering task prompt or project goal",
+    )
+    return parser.parse_args()
+
+
+async def run_task(prompt: str, engine_name: str, model_override: Optional[str] = None):
+    """Executes a complete engineering or research lifecycle task via the selected engine."""
+    engine = resolve_engine(engine_name)
+    resolved_model = model_override or get_default_model(engine_name)
+    normalized_engine = "antigravity"
+    if engine_name.lower() in ("claude", "anthropic"):
+        normalized_engine = "claude"
+    elif engine_name.lower() in ("codex", "openai", "chatgpt"):
+        normalized_engine = "codex"
+
+    engine_tag = normalized_engine.upper()
+    is_default = normalized_engine == "antigravity"
+
     print("=" * 70)
-    print("CORTEXOPS MULTI-AGENT FRAMEWORK - ACTIVE")
+    print(f"CORTEXOPS MULTI-AGENT FRAMEWORK - ACTIVE [{engine_tag} ENGINE]")
     print("Roles: TPM Director | Staff R&D | Principal Architect | UI/UX | Frontend | Backend | DevOps | ML | QA | Reviewer | Academic Researcher | Software Engineer | cxagents")
-    print(f"Model: {model}")
-    print(f"Goal: {prompt}")
+    print(f"Engine: {normalized_engine} {'(Default)' if is_default else ''}")
+    print(f"Model:  {resolved_model}")
+    print(f"Goal:   {prompt}")
     print("=" * 70 + "\n")
-    
-    async with Agent(config) as team:
-        response = await team.chat(prompt)
-        print("\n" + "=" * 70)
-        print("ENGINEERING OUTCOME:")
-        print("=" * 70)
-        async for chunk in response:
-            print(chunk, end="", flush=True)
-        print("\n")
+
+    print("=" * 70)
+    print("ENGINEERING OUTCOME:")
+    print("=" * 70)
+
+    await engine.run(prompt=prompt, model=resolved_model)
+    print("\n")
+
 
 def main():
-    if len(sys.argv) > 1:
-        prompt = " ".join(sys.argv[1:])
-    else:
-        print("Enter the engineering project or feature request:")
-        prompt = input("> ").strip()
-        
+    args = parse_arguments()
+    prompt = " ".join(args.prompt).strip() if args.prompt else ""
+
     if not prompt:
-        print("No task provided. Exiting.")
+        print("Enter the engineering project or feature request:")
+        try:
+            prompt = input("> ").strip()
+        except (KeyboardInterrupt, EOFError):
+            print("\nAborted.")
+            sys.exit(0)
+
+    if not prompt:
+        print("No task prompt provided. Exiting.")
         sys.exit(1)
-        
-    asyncio.run(run_task(prompt))
+
+    try:
+        asyncio.run(run_task(
+            prompt=prompt,
+            engine_name=args.engine,
+            model_override=args.model,
+        ))
+    except (ValueError, RuntimeError) as err:
+        sys.stderr.write(f"\n[ERROR] {err}\n")
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\nOperation cancelled by user.")
+        sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

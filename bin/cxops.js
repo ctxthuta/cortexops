@@ -49,6 +49,53 @@ function loadEnvFile() {
 
 loadEnvFile();
 
+function saveEnvKey(key, value) {
+    const cleanKey = key.trim();
+    const cleanVal = (value || '').trim().replace(/[\r\n]/g, '');
+    const savePaths = [
+        path.join(ROOT_DIR, '.env'),
+        path.join(os.homedir(), '.cortexops', '.env'),
+    ];
+
+    for (const envPath of savePaths) {
+        try {
+            const envDir = path.dirname(envPath);
+            if (!fs.existsSync(envDir)) {
+                fs.mkdirSync(envDir, { recursive: true });
+            }
+            let content = '';
+            if (fs.existsSync(envPath)) {
+                content = fs.readFileSync(envPath, 'utf-8');
+                const regex = new RegExp(`^${cleanKey}=.*$`, 'm');
+                if (regex.test(content)) {
+                    content = content.replace(regex, `${cleanKey}=${cleanVal}`);
+                } else {
+                    content += (content.endsWith('\n') ? '' : '\n') + `${cleanKey}=${cleanVal}\n`;
+                }
+            } else {
+                content = `${cleanKey}=${cleanVal}\n`;
+            }
+            fs.writeFileSync(envPath, content, { mode: 0o600 });
+        } catch (_) {}
+    }
+    process.env[cleanKey] = cleanVal;
+}
+
+function normalizeEngine(input) {
+    if (!input) return null;
+    const clean = input.trim().toLowerCase();
+    if (['antigravity', 'gemini', 'ag'].includes(clean)) {
+        return 'antigravity';
+    }
+    if (['claude', 'anthropic'].includes(clean)) {
+        return 'claude';
+    }
+    if (['codex', 'openai', 'chatgpt'].includes(clean)) {
+        return 'codex';
+    }
+    return null;
+}
+
 function getVenvPython() {
     const isWin = process.platform === 'win32';
     const venvPython = isWin
@@ -218,53 +265,75 @@ async function runSetup() {
             console.log('    Warning: Python 3.10+ is required for subagents and telemetry.');
         }
 
-        console.log('\n[2] Authentication & API Keys:');
-        const existingKey = process.env.GEMINI_API_KEY;
-        if (existingKey) {
-            console.log('  * GEMINI_API_KEY is already set in your environment.');
-        } else {
-            const hasKey = await rl.question('  Do you have a Gemini API key for standalone execution? (y/n) [y]: ');
-            if (hasKey.trim().toLowerCase() !== 'n') {
-                const keyInput = await rl.question('  Enter your GEMINI_API_KEY: ');
-                const cleanKey = keyInput.trim().replace(/[\r\n]/g, '');
-                if (cleanKey) {
-                    const savePaths = [
-                        path.join(ROOT_DIR, '.env'),
-                        path.join(os.homedir(), '.cortexops', '.env'),
-                    ];
-                    for (const envPath of savePaths) {
-                        const envDir = path.dirname(envPath);
-                        if (!fs.existsSync(envDir)) {
-                            fs.mkdirSync(envDir, { recursive: true });
-                        }
-                        let content = '';
-                        if (fs.existsSync(envPath)) {
-                            content = fs.readFileSync(envPath, 'utf-8');
-                            if (content.includes('GEMINI_API_KEY=')) {
-                                content = content.replace(/GEMINI_API_KEY=.*(\r?\n|$)/g, `GEMINI_API_KEY=${cleanKey}\n`);
-                            } else {
-                                content += (content.endsWith('\n') ? '' : '\n') + `GEMINI_API_KEY=${cleanKey}\n`;
-                            }
-                        } else {
-                            content = `GEMINI_API_KEY=${cleanKey}\n`;
-                        }
-                        fs.writeFileSync(envPath, content, { mode: 0o600 });
-                        console.log(`  * Saved GEMINI_API_KEY to ${envPath} (mode 0600)`);
-                    }
-                    process.env.GEMINI_API_KEY = cleanKey;
-                }
+        console.log('\n[2] Execution Engine & Platform Selection:');
+        const defaultEngine = (process.env.CORTEXOPS_ENGINE || 'antigravity').toLowerCase();
+        console.log('  Available Execution Harnesses:');
+        console.log('    - antigravity: Google Antigravity SDK with Gemini 3.8 models (Default)');
+        console.log('    - claude:      Anthropic Claude models (Claude 3.7 / 3.5 Sonnet)');
+        console.log('    - codex:       OpenAI Codex / GPT-4o / o3-mini models');
+
+        const enginePrompt = await rl.question(`  Select default engine [antigravity | claude | codex] (default: ${defaultEngine}): `);
+        const resolvedEngine = normalizeEngine(enginePrompt) || defaultEngine || 'antigravity';
+        saveEnvKey('CORTEXOPS_ENGINE', resolvedEngine);
+        console.log(`  * Configured execution engine: ${resolvedEngine}`);
+
+        console.log('\n[3] Authentication & API Keys:');
+        if (resolvedEngine === 'antigravity') {
+            const existingKey = process.env.GEMINI_API_KEY;
+            if (existingKey) {
+                console.log('  * GEMINI_API_KEY is already configured.');
             } else {
-                console.log('  * Skipping API key. Antigravity IDE sessions will use existing authenticated session.');
+                const hasKey = await rl.question('  Configure GEMINI_API_KEY for Antigravity engine? (y/n) [y]: ');
+                if (hasKey.trim().toLowerCase() !== 'n') {
+                    const keyInput = await rl.question('  Enter your GEMINI_API_KEY: ');
+                    const cleanKey = keyInput.trim().replace(/[\r\n]/g, '');
+                    if (cleanKey) {
+                        saveEnvKey('GEMINI_API_KEY', cleanKey);
+                        console.log('  * Saved GEMINI_API_KEY to configuration files (mode 0600)');
+                    }
+                } else {
+                    console.log('  * Skipping API key. Antigravity IDE sessions will authenticate automatically.');
+                }
+            }
+        } else if (resolvedEngine === 'claude') {
+            const existingKey = process.env.ANTHROPIC_API_KEY;
+            if (existingKey) {
+                console.log('  * ANTHROPIC_API_KEY is already configured.');
+            } else {
+                const hasKey = await rl.question('  Configure ANTHROPIC_API_KEY for Claude engine? (y/n) [y]: ');
+                if (hasKey.trim().toLowerCase() !== 'n') {
+                    const keyInput = await rl.question('  Enter your ANTHROPIC_API_KEY: ');
+                    const cleanKey = keyInput.trim().replace(/[\r\n]/g, '');
+                    if (cleanKey) {
+                        saveEnvKey('ANTHROPIC_API_KEY', cleanKey);
+                        console.log('  * Saved ANTHROPIC_API_KEY to configuration files (mode 0600)');
+                    }
+                }
+            }
+        } else if (resolvedEngine === 'codex') {
+            const existingKey = process.env.OPENAI_API_KEY;
+            if (existingKey) {
+                console.log('  * OPENAI_API_KEY is already configured.');
+            } else {
+                const hasKey = await rl.question('  Configure OPENAI_API_KEY for Codex engine? (y/n) [y]: ');
+                if (hasKey.trim().toLowerCase() !== 'n') {
+                    const keyInput = await rl.question('  Enter your OPENAI_API_KEY: ');
+                    const cleanKey = keyInput.trim().replace(/[\r\n]/g, '');
+                    if (cleanKey) {
+                        saveEnvKey('OPENAI_API_KEY', cleanKey);
+                        console.log('  * Saved OPENAI_API_KEY to configuration files (mode 0600)');
+                    }
+                }
             }
         }
 
-        console.log('\n[3] Antigravity Global Plugin Registration:');
+        console.log('\n[4] Antigravity Global Plugin Registration:');
         const linkChoice = await rl.question('  Register CortexOps global plugin for Antigravity sessions? (y/n) [y]: ');
         if (linkChoice.trim().toLowerCase() !== 'n') {
             linkPlugin();
         }
 
-        console.log('\n[4] Second Brain Integration (ThutaCortex):');
+        console.log('\n[5] Second Brain Integration (ThutaCortex):');
         const defaultVault = path.join(os.homedir(), 'Documents', 'ThutaCortex');
         const vaultChoice = await rl.question(`  ThutaCortex vault path [${defaultVault}]: `);
         const resolvedVault = vaultChoice.trim() || defaultVault;
@@ -276,7 +345,7 @@ async function runSetup() {
             console.log('    The framework will operate in local-only mode until the vault is initialized.');
         }
 
-        console.log('\n[5] Python Virtual Environment & Dependencies:');
+        console.log('\n[6] Python Virtual Environment & Dependencies:');
         const venvDir = path.join(ROOT_DIR, '.venv');
         if (fs.existsSync(venvDir)) {
             console.log('  * Virtual environment already exists at .venv/');
@@ -303,7 +372,7 @@ async function runSetup() {
             }
         }
 
-        console.log('\n[6] Subagent Definition Verification:');
+        console.log('\n[7] Subagent Definition Verification:');
         const py = getVenvPython();
         if (py && fs.existsSync(VERIFY_SCRIPT)) {
             spawnSync(py, [VERIFY_SCRIPT], { stdio: 'inherit', env: { ...process.env, PYTHONPATH: ROOT_DIR } });
@@ -311,10 +380,12 @@ async function runSetup() {
 
         console.log('\n' + '='.repeat(70));
         console.log('Setup complete. You can now use:');
-        console.log('  cxops status      Display the operational & token telemetry dashboard');
+        console.log('  cxops status      Display operational & token telemetry dashboard');
         console.log('  cxops watch       Continuously monitor the live dashboard');
         console.log('  cxops verify      Verify all 12 subagent definitions');
-        console.log('  cxops run "<goal>" Dispatch autonomous tasks via Python SDK');
+        console.log('  cxops run "<goal>" Dispatch autonomous tasks (Default: antigravity)');
+        console.log('  cxops run -e claude "<goal>" Dispatch tasks using Claude');
+        console.log('  cxops run -e codex "<goal>"  Dispatch tasks using Codex');
         console.log('='.repeat(70));
     } finally {
         rl.close();
@@ -347,6 +418,44 @@ function runDoctor() {
         console.log(`[PASS] Virtual Environment: Configured at ${venvDir}`);
     } else {
         console.log('[WARN] Virtual Environment: .venv not found. Run "cxops setup" to create.');
+    }
+
+    // Execution engine configuration
+    const activeEngine = (process.env.CORTEXOPS_ENGINE || 'antigravity').toLowerCase();
+    const isDefaultEngine = !process.env.CORTEXOPS_ENGINE || activeEngine === 'antigravity';
+    console.log(`[PASS] Execution Engine: ${activeEngine} ${isDefaultEngine ? '(Default)' : ''}`);
+
+    // Engine-specific authentication diagnostics
+    const geminiKey = process.env.GEMINI_API_KEY;
+    const anthropicKey = process.env.ANTHROPIC_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
+
+    if (activeEngine === 'antigravity') {
+        if (geminiKey) {
+            console.log('[PASS] Antigravity Auth: GEMINI_API_KEY is configured.');
+        } else {
+            console.log('[INFO] Antigravity Auth: GEMINI_API_KEY not in environment. Antigravity IDE sessions will authenticate automatically.');
+        }
+    } else if (activeEngine === 'claude') {
+        if (anthropicKey) {
+            console.log('[PASS] Claude Auth: ANTHROPIC_API_KEY is configured.');
+        } else {
+            console.log('[WARN] Claude Auth: ANTHROPIC_API_KEY not configured. Run "cxops setup" to set.');
+        }
+    } else if (activeEngine === 'codex') {
+        if (openaiKey) {
+            console.log('[PASS] Codex Auth: OPENAI_API_KEY is configured.');
+        } else {
+            console.log('[WARN] Codex Auth: OPENAI_API_KEY not configured. Run "cxops setup" to set.');
+        }
+    }
+
+    const secondaryKeys = [];
+    if (activeEngine !== 'antigravity' && geminiKey) secondaryKeys.push('GEMINI_API_KEY');
+    if (activeEngine !== 'claude' && anthropicKey) secondaryKeys.push('ANTHROPIC_API_KEY');
+    if (activeEngine !== 'codex' && openaiKey) secondaryKeys.push('OPENAI_API_KEY');
+    if (secondaryKeys.length > 0) {
+        console.log(`[PASS] Additional Keys Configured: ${secondaryKeys.join(', ')}`);
     }
 
     // Antigravity global plugin link status
@@ -382,14 +491,6 @@ function runDoctor() {
         console.log(`[INFO] ThutaCortex Second Brain: Not present at ${vaultPath} (Local fallback mode)`);
     }
 
-    // Gemini API key authentication
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (apiKey) {
-        console.log('[PASS] Authentication: GEMINI_API_KEY is configured.');
-    } else {
-        console.log('[INFO] Authentication: GEMINI_API_KEY not in environment. Antigravity IDE sessions will authenticate automatically.');
-    }
-
     // Subagent declarative definitions check
     const pluginAgentsDir = path.join(PLUGIN_SOURCE, 'agents');
     if (fs.existsSync(pluginAgentsDir)) {
@@ -405,10 +506,10 @@ function getPackageVersion() {
         const pkgPath = path.join(ROOT_DIR, 'package.json');
         if (fs.existsSync(pkgPath)) {
             const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
-            return pkg.version || '1.0.3';
+            return pkg.version || '1.0.4';
         }
     } catch (_) {}
-    return '1.0.3';
+    return '1.0.4';
 }
 
 function fetchLatestNpmVersion() {
@@ -447,11 +548,15 @@ async function runVersion(detailed = false) {
         return;
     }
 
+    const activeEngine = (process.env.CORTEXOPS_ENGINE || 'antigravity').toLowerCase();
+    const isDefaultEngine = !process.env.CORTEXOPS_ENGINE || activeEngine === 'antigravity';
+
     console.log('='.repeat(70));
     console.log(`CORTEXOPS FRAMEWORK VERSION: v${currentVer}`);
     console.log('='.repeat(70));
     console.log(`Package Name:    @ctxthuta/cxops`);
     console.log(`Current Version: v${currentVer}`);
+    console.log(`Active Engine:   ${activeEngine} ${isDefaultEngine ? '(Default)' : ''}`);
     console.log(`Node.js Runtime: ${process.version}`);
     console.log(`Platform:        ${process.platform} (${process.arch})`);
 
@@ -483,16 +588,25 @@ Usage:
   cxops [command]
 
 Commands:
-  setup, init         Run interactive cross-platform setup wizard
-  doctor              Run system diagnostics and prerequisite health check
-  status, dashboard   Display operational & token telemetry dashboard
-  watch               Continuously monitor the dashboard (auto-refresh)
-  verify              Verify all 12 declarative subagent definitions
-  run "<prompt>"      Dispatch an autonomous multi-agent task via Python SDK
-  version, -v, --version  Display framework version and check for updates
-  link                Link Antigravity global plugin symlink/junction
-  unlink              Remove Antigravity global plugin symlink/junction
-  help, --help, -h    Display this command reference
+  setup, init               Run interactive cross-platform setup wizard
+  doctor                    Run system diagnostics and prerequisite health check
+  status, dashboard         Display operational & token telemetry dashboard
+  watch                     Continuously monitor the dashboard (auto-refresh)
+  verify                    Verify all 12 declarative subagent definitions
+  run [options] "<prompt>"  Dispatch an autonomous multi-agent task via Python SDK
+  version, -v, --version    Display framework version and check for updates
+  link                      Link Antigravity global plugin symlink/junction
+  unlink                    Remove Antigravity global plugin symlink/junction
+  help, --help, -h          Display this command reference
+
+Run Options:
+  -e, --engine <engine>     Select execution harness: antigravity (default), claude, codex
+  -m, --model <model>       Override model identifier for the selected engine
+
+Supported Engines:
+  antigravity               Google Antigravity SDK with Gemini 3.8 models (Default)
+  claude                    Anthropic Claude models (Claude 3.7 / 3.5 Sonnet)
+  codex                     OpenAI Codex / GPT-4o / o3-mini models
 `);
 }
 
@@ -533,7 +647,8 @@ async function main() {
             break;
         case 'run':
             if (args.length < 2) {
-                console.error('[ERROR] Task prompt required. Usage: cxops run "<prompt>"');
+                console.error('[ERROR] Task prompt required.');
+                console.error('Usage: cxops run [--engine antigravity|claude|codex] "<prompt>"');
                 process.exit(1);
             }
             executePythonScript(MAIN_SCRIPT, args.slice(1));

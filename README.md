@@ -82,15 +82,29 @@ When working inside Google Antigravity (IDE or CLI):
 - Subagents execute directly through Antigravity's authenticated session.
 - Mention individual specialists directly (`@backend_engineer`, `@system_architect`, `@code_reviewer`), or mention `@cxagents` to mobilize the entire relevant team concurrently.
 
-### Mode B: Standalone Python Framework (Terminal / CI / Headless)
+### Mode B: Standalone Multi-Engine Framework (Terminal / CI / Headless)
 When running outside Antigravity as an automated background process:
-- Configure your Gemini API key:
+- Configure your preferred engine (default: `antigravity`):
   ```bash
+  # Antigravity (Google DeepMind SDK, default)
   export GEMINI_API_KEY="your-gemini-api-key"
+
+  # Claude (Anthropic)
+  export ANTHROPIC_API_KEY="your-anthropic-api-key"
+
+  # Codex (OpenAI)
+  export OPENAI_API_KEY="your-openai-api-key"
   ```
-- Run tasks via the Python driver:
+- Run tasks with your preferred execution harness:
   ```bash
-  ./cx run "Research streaming anomaly detection on arXiv, produce an architecture design, and implement an in-memory streaming detector in Python with passing unit tests."
+  # Default Antigravity engine (Gemini 3.8 models)
+  cxops run "Research streaming anomaly detection and implement an in-memory detector with unit tests."
+
+  # Anthropic Claude engine (Claude 3.7 / 3.5 Sonnet)
+  cxops run -e claude "Design high-throughput event sourcing microservice."
+
+  # OpenAI Codex engine (GPT-4o / o3-mini)
+  cxops run -e codex "Generate relational PostgreSQL DDL with composite indexes."
   ```
 
 ---
