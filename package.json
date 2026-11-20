@@ -1,6 +1,6 @@
 {
   "name": "@ctxthuta/cxops",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CortexOps Multi-Agent Framework: Autonomous engineering and research operating system for Google Antigravity and Python SDK.",
   "main": "bin/cxops.js",
   "bin": {
