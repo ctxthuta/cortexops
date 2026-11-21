@@ -1,6 +1,6 @@
 {
   "name": "@ctxthuta/cxops",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "CortexOps Multi-Agent Framework with Superpowers: Autonomous engineering operating system across Google Antigravity, Claude Code, and OpenAI Codex.",
   "main": "bin/cxops.js",
   "bin": {
@@ -8,8 +8,11 @@
     "cortexops": "bin/cxops.js"
   },
   "scripts": {
+    "postinstall": "node ./bin/cxops.js link",
     "setup": "node ./bin/cxops.js setup",
     "init": "node ./bin/cxops.js setup",
+    "link": "node ./bin/cxops.js link",
+    "unlink": "node ./bin/cxops.js unlink",
     "status": "node ./bin/cxops.js status",
     "dashboard": "node ./bin/cxops.js dashboard",
     "watch": "node ./bin/cxops.js watch",

@@ -163,7 +163,13 @@ function linkPlugin() {
             fs.symlinkSync(PLUGIN_SOURCE, target, symlinkType);
             console.log(`[OK] Linked Antigravity plugin: ${PLUGIN_SOURCE} -> ${target}`);
         } catch (err) {
-            console.error(`[ERROR] Failed to link plugin to ${target}: ${err.message}`);
+            console.warn(`[WARN] Symlink/junction failed (${err.message}), falling back to direct copy...`);
+            try {
+                fs.cpSync(PLUGIN_SOURCE, target, { recursive: true });
+                console.log(`[OK] Installed Antigravity plugin (copied): ${PLUGIN_SOURCE} -> ${target}`);
+            } catch (copyErr) {
+                console.error(`[ERROR] Failed to install plugin to ${target}: ${copyErr.message}`);
+            }
         }
     }
 
@@ -180,7 +186,11 @@ function linkPlugin() {
                     const srcAgent = path.join(localAgentsSource, dirent.name);
                     const destAgent = path.join(globalAgentsRoot, dirent.name);
                     removePluginTarget(destAgent);
-                    fs.symlinkSync(srcAgent, destAgent, symlinkType);
+                    try {
+                        fs.symlinkSync(srcAgent, destAgent, symlinkType);
+                    } catch (symErr) {
+                        fs.cpSync(srcAgent, destAgent, { recursive: true });
+                    }
                 }
             }
             console.log(`[OK] Linked global agents for Antigravity UI: ${globalAgentsRoot}`);
