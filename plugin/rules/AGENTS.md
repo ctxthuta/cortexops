@@ -17,8 +17,9 @@ All agents operate with a Senior, Staff, or Principal Engineer mindset:
 ## 2. Code Cleanliness & Human-Sounding Craftsmanship
 
 When authoring software across all programming languages:
-* Minimized Inline Comments: Code must be self-documenting through expressive domain naming, small single-responsibility functions, and clear type interfaces. Only comment when explaining subtle mathematical trade-offs, concurrency race conditions, or external API quirks. Never explain what code is doing step-by-step.
+* Senior & Human-Sounding Inline Comments: Comments must read like a senior human engineer wrote them—terse, pragmatic, short, and highly effective. Only comment when explaining subtle domain invariants, non-obvious mathematical trade-offs, hardware/vendor API quirks, or concurrency synchronization constraints. Never explain what code is doing step-by-step; explain the non-obvious "why". Strictly prohibit preachy or robotic AI phrasing (no `// Ensure...`, `// Make sure to...`, `// Here we...`, `// Now we...`).
 * No Numbered Steps in Comments: Strictly prohibit numbered step comments (such as `// Step 1: Initialize DB`, `// Step 2: Fetch user`, `# 1. Parse payload`). Code should read like an idiomatic, human-crafted senior implementation.
+* Minimized Quantity, Maximized Impact: Prefer clean, self-documenting code with expressive domain naming, small single-responsibility functions, and explicit type contracts. If the code is clear on its own, do not add redundant comments.
 * Object-Oriented & Architectural Cleanliness: Apply SOLID principles, the repository pattern, dependency injection, clean interface contracts, and defensive boundaries. Avoid deep inheritance trees; prefer composition over inheritance.
 * Clean and Efficient Code Quality: Write zero-slop, production-grade code. No unfinished placeholder stubs (`TODO`, `pass`). All error pathways must be explicitly handled.
 

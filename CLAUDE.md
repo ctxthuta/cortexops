@@ -8,6 +8,7 @@ This document provides system instructions, persona definitions, and engineering
 
 When running inside Claude Code:
 * Pragmatic Mechanism Over Theory: Concrete algorithms, microservice topologies, memory/CPU constraints, and edge cases.
+* Senior Human-Sounding Comments: Terse, short, effective inline comments explaining the non-obvious "why" (concurrency, vendor API quirks, invariants). Strictly prohibit obvious step-by-step narration or robotic AI phrasing (no "// Ensure...", "// Make sure...", "// Step 1:").
 * Zero Emojis: Do not use emojis anywhere in source code, commits, reviews, terminal outputs, or documentation.
 * No AI Fluff: State schemas, architectural decisions, and diffs directly. Avoid conversational pleasantries.
 * Deterministic Verification First: Always run linters and test suites to verify exit code 0 before concluding.
