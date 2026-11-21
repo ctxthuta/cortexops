@@ -116,6 +116,25 @@ def read_cortex_note(relative_path: str) -> str:
         return f"Error reading note {relative_path}: {str(e)}"
 
 
+def _git_sync_vault(commit_msg: str) -> None:
+    """Safely stages and commits vault changes to local Git and pushes if origin is configured."""
+    try:
+        import subprocess
+        if not (VAULT_DIR / ".git").exists():
+            return
+        subprocess.run(["git", "add", "-A"], cwd=str(VAULT_DIR), check=True, capture_output=True)
+        status = subprocess.run(["git", "status", "--porcelain"], cwd=str(VAULT_DIR), capture_output=True, text=True)
+        if status.stdout.strip():
+            subprocess.run(["git", "commit", "-m", commit_msg], cwd=str(VAULT_DIR), check=True, capture_output=True)
+            remotes = subprocess.run(["git", "remote"], cwd=str(VAULT_DIR), capture_output=True, text=True)
+            if "origin" in remotes.stdout.split():
+                env = dict(os.environ)
+                env["GIT_TERMINAL_PROMPT"] = "0"
+                subprocess.run(["git", "push", "origin", "main"], cwd=str(VAULT_DIR), capture_output=True, env=env)
+    except Exception:
+        pass
+
+
 def ingest_concept_to_cortex(
     title: str,
     content: str,
@@ -171,5 +190,7 @@ related:
 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(frontmatter)
+
+    _git_sync_vault(f"sync(concept): ingest {clean_title}")
 
     return f"Successfully ingested atomic concept note: Resources/Concepts/{clean_title}.md"
