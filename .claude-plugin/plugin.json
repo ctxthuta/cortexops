@@ -1,0 +1,25 @@
+{
+  "name": "cortexops",
+  "description": "CortexOps Multi-Agent Engineering Framework with Superpowers: 13 Staff/Principal personas, TDD, systematic debugging, planning, and verification workflows.",
+  "version": "1.1.0",
+  "author": {
+    "name": "Thuta Tun",
+    "email": "thutatun533@gmail.com",
+    "url": "https://github.com/ctxthuta"
+  },
+  "homepage": "https://github.com/ctxthuta/cortexops",
+  "repository": "https://github.com/ctxthuta/cortexops",
+  "license": "MIT",
+  "keywords": [
+    "cortexops",
+    "multi-agent",
+    "superpowers",
+    "tdd",
+    "debugging",
+    "al-developer",
+    "system-architect",
+    "collaboration",
+    "best-practices",
+    "workflows"
+  ]
+}

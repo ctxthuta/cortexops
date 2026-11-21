@@ -1,0 +1,20 @@
+{
+  "name": "cortexops-marketplace",
+  "description": "CortexOps Multi-Agent Framework with Superpowers core skills library",
+  "owner": {
+    "name": "Thuta Tun",
+    "email": "thutatun533@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "cortexops",
+      "description": "CortexOps Multi-Agent Engineering Framework with Superpowers: 13 Staff/Principal personas, TDD, systematic debugging, planning, and verification workflows.",
+      "version": "1.1.0",
+      "source": "./",
+      "author": {
+        "name": "Thuta Tun",
+        "email": "thutatun533@gmail.com"
+      }
+    }
+  ]
+}

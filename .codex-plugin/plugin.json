@@ -1,0 +1,50 @@
+{
+  "name": "cortexops",
+  "version": "1.1.0",
+  "description": "CortexOps Multi-Agent Framework with Superpowers: Autonomous engineering and research operating system across 13 Staff/Principal personas with TDD, systematic debugging, and planning workflows.",
+  "author": {
+    "name": "Thuta Tun",
+    "email": "thutatun533@gmail.com",
+    "url": "https://github.com/ctxthuta"
+  },
+  "homepage": "https://github.com/ctxthuta/cortexops",
+  "repository": "https://github.com/ctxthuta/cortexops",
+  "license": "MIT",
+  "keywords": [
+    "cortexops",
+    "multi-agent",
+    "superpowers",
+    "planning",
+    "tdd",
+    "debugging",
+    "code-review",
+    "al-developer",
+    "system-architect",
+    "workflow"
+  ],
+  "skills": "./skills/",
+  "hooks": {},
+  "interface": {
+    "displayName": "CortexOps",
+    "shortDescription": "Autonomous multi-agent engineering framework with Superpowers workflows",
+    "longDescription": "CortexOps orchestrates 13 Staff and Principal engineering specialists (Architecture, UI/UX, Backend, AL Developer, QA, DevOps) alongside Superpowers workflows for brainstorming, implementation planning, TDD, systematic debugging, parallel execution, and code review.",
+    "developerName": "Thuta Tun",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "I've got an idea for something I'd like to build.",
+      "Let's architect and implement a production feature."
+    ],
+    "websiteURL": "https://github.com/ctxthuta/cortexops",
+    "privacyPolicyURL": "https://github.com/ctxthuta/cortexops",
+    "termsOfServiceURL": "https://github.com/ctxthuta/cortexops",
+    "brandColor": "#3B82F6",
+    "composerIcon": "./assets/superpowers-small.svg",
+    "logo": "./assets/app-icon.png",
+    "screenshots": []
+  }
+}

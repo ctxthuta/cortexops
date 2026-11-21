@@ -65,7 +65,22 @@ Claude Code can adopt any of the 13 CortexOps specialist personas on demand. Whe
 
 ---
 
-## 3. Code Cleanliness & Anti-Slop Guidelines
+## 3. Superpowers Operational Workflows
+
+CortexOps bundles the complete Superpowers engineering workflow library in `skills/` (and `plugin/skills/`). Claude Code can invoke or adhere to any of these workflows during execution:
+
+* **TDD (`skills/test-driven-development`):** Red-Green-Refactor cycle. Author failing unit tests first, verify failure, implement minimal solution, verify pass with exit code 0.
+* **Systematic Debugging (`skills/systematic-debugging`):** Hypothesis-driven root-cause isolation before proposing fixes. Zero cargo-cult patching.
+* **Pre-Completion Verification (`skills/verification-before-completion`):** Strictly require deterministic test and compiler evidence before declaring any task complete.
+* **Planning & Execution (`skills/writing-plans`, `skills/executing-plans`):** Structured task decomposition with verification gates between milestones.
+* **Subagent Dispatch (`skills/subagent-driven-development`, `skills/dispatching-parallel-agents`):** Parallel agent execution and isolated subagent delegation.
+* **Code Review Workflow (`skills/requesting-code-review`, `skills/receiving-code-review`):** Standardized handoff to `@code_reviewer` and addressing findings without defensive pushback.
+* **Git Worktrees (`skills/using-git-worktrees`, `skills/finishing-a-development-branch`):** Isolated workspace branching, dirty-check validation, and clean branch merging.
+* **Brainstorming (`skills/brainstorming`):** Exploring architectural trade-offs and user requirements before committing to code.
+
+---
+
+## 4. Code Cleanliness & Anti-Slop Guidelines
 
 * Minimized Inline Comments: Self-documenting code with expressive PascalCase or camelCase naming. Only comment to explain non-obvious mathematical invariants or external API quirks.
 * No Numbered Step Comments: Prohibit comments like `// Step 1: Initialize DB`, `// Step 2: Fetch record`, `# 1. Parse payload`.

@@ -32,6 +32,11 @@ workspaces/
 *.log
 .env
 
+# Archives & Artifacts
+*.tar.gz
+*.tgz
+*.zip
+
 # Node.js
 node_modules/
 package-lock.json
