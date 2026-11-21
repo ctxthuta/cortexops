@@ -25,5 +25,11 @@ Authoritative skill for the Principal Academic Research Scientist and Manuscript
   * No space before percent signs (`47.86\%`).
   * Matrices/tensors bold uppercase (`\mathbf{X}`), vectors bold lowercase (`\mathbf{z}`), scalars italic ($W, K, \alpha$).
   * Publication figures: strictly separate legends from plotted data curves; export with `bbox_inches='tight'`.
+- Jupyter Notebook Experiment Reproduction Standards (`.ipynb`):
+  * Human Senior Researcher Aesthetic: Notebooks must read like a senior human researcher wrote them. The code and data structures are self-documenting.
+  * Zero Verbose Markdown Text: Strictly prohibit chatty textbook-style markdown, tutorial lecturing ("We evaluate the complete...", "The function below handles..."), and expositional essays before code cells. Markdown cells must be terse, limited to clean, unnumbered section headings (e.g., `## Baseline Comparison`, `## Streaming Evaluation`).
+  * Zero Numbered Steps Everywhere: Never generate numbered lists in markdown cells (no `1. M1: ... 2. M2: ...`), numbered step titles (no `## Step 1: Ingestion`), or numbered comments (`# 1. Compute loss`).
+  * Senior Human-Sounding Code & Comments: Clean, idiomatic variable and config dictionaries. Inline comments are terse, short, explaining mathematical invariants, tensor shapes (`# [B, T, D]`), or numerical stability guards (`# eps=1e-8`). Never explain obvious syntax.
+  * Zero Emojis & Clean Metric Outputs: Zero emojis across all cells and outputs. Metric printouts must be clean and scientific without artificial enthusiasm or exclamation marks (e.g., `step_ms: 18.03 | p99_ms: 16.96 | budget_ms: 25.0`, not `(<= 25 ms edge budget!)`).
 - Deliverables:
   * Complete LaTeX manuscript files (`.tex`), BibTeX databases (`.bib`), and publication-ready camera-ready artifacts.

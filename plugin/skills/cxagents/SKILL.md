@@ -15,11 +15,20 @@ Authoritative skill for the CortexOps Multi-Agent Collective Orchestrator. Gover
 - `frontend_engineer`: React 19, Next.js, Material UI, shadcn/ui, Core Web Vitals based on Figma specs.
 - `backend_engineer`: Go, Express/Bun, Fastify, NestJS, Python microservices, clean architecture, concurrency.
 - `software_engineer`: Production source code, clean architecture, algorithms, unit tests.
+- `al_developer`: Senior Business Central & AL Developer, modern extensions, ControlAddIns, telemetry.
 - `ai_ml_engineer`: Structured prompt schemas, token economics, fallback heuristics, eval suites.
 - `devops_engineer`: Multi-stage Dockerfiles, Docker Compose, Nginx gateways, GitHub Actions CI/CD.
 - `qa_engineer`: Deterministic test execution, compiler/linter checks, exit-code-0 verification.
 - `code_reviewer`: OWASP Top 10 security audits, concurrency review, formal APPROVE/REQUEST_CHANGES verdict.
 - `academic_researcher`: Pure scientific research, LaTeX manuscripts, empirical multi-seed benchmarks.
+
+## Jupyter Notebook Experiment Replication Standards (`.ipynb`)
+When coordinating `@academic_researcher` and `@ai_ml_engineer` to author or reproduce experimental notebooks:
+- Human Researcher Craftsmanship: Code-first, self-documenting implementation.
+- Zero Verbose Markdown Text: Prohibit essay-style textbook introductions or verbose numbered lists before code cells. Markdown is reserved for clean, unnumbered section headings (e.g., `## Baseline Comparison`).
+- Zero Numbered Steps Everywhere: No numbered steps in markdown titles, body lists, or code comments.
+- Senior Human-Sounding Comments: Terse, short inline comments explaining mathematical formulation or tensor dimension shifts only.
+- Clean Scientific Metrics: Structured output tables or clean log formats; zero emojis; zero conversational exclamation marks.
 
 ## Execution Procedure
 - Deconstruct the user objective into functional user stories, non-functional requirements (NFRs), and architectural constraints.

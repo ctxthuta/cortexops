@@ -219,9 +219,13 @@ Do not generate these terms anywhere in manuscript narration:
 * Table and figure sequencing: Strictly increasing numerical order of first mention with zero cross-sectional forward referencing; colocate environment immediately after first introductory sentence in LaTeX source.
 * Transparent anomaly detection reporting: Always present raw F1 and PR-AUC alongside point-adjusted F1.
 
-### 6. Python Notebook & Research Code Craftsmanship
-* Zero Numbered Steps in Titles and Headings: When authoring Jupyter notebooks (`.ipynb`) or research scripts, NEVER use step-by-step numbering in markdown titles or headings (prohibit `# Step 1: Data Ingestion`, `## 1. Feature Extraction`, `### Step 2: Training`). Use descriptive, conceptual headings instead (such as `# Telemetry Synchronization Pipeline`, `## Drain3 Log Template Extraction`, `## Dual-Encoder Optimization Loop`).
-* Minimized, Unnumbered Inline Comments: Strictly prohibit numbered step comments in code (no `# Step 1:`, `# 1. Parse`, `# Step 2:`). Write self-documenting clean code with expressive naming. Only comment when explaining non-obvious mathematical formulas, tensor dimension shifts, or numerical stability guards (`eps=1e-8`).
+### 6. Python Notebook & Research Code Craftsmanship (Human Senior Standard)
+When authoring Jupyter notebooks (`.ipynb`) and experimental replication scripts:
+* Anti-AI-Slop & Zero Verbose Markdown Text: Strictly prohibit textbook-style conversational filler, long expositional introductory paragraphs, and artificial framing (such as "We evaluate the complete 6 x 2 x 3 Research Matrix comparing:"). Senior human researchers do not lecture in markdown before executing code cells; the code and data structures are self-documenting. Keep markdown cells terse, professional, and limited to clean, unnumbered section headings (e.g., `## Baseline Evaluation`, `## Streaming Benchmark`).
+* Zero Numbered Steps Everywhere: Never generate numbered lists or numbered step labels anywhere in notebooks—neither in markdown headings (`# Step 1: Data Ingestion`), nor in markdown lists (`1. M1: Metric VAE...`), nor in code comments (`# Step 1:`, `# 1. Parse`), nor in print statements.
+* Senior Human-Sounding Code & Inline Comments: Code must read like an experienced human researcher authored it. Variable naming is expressive and domain-driven (`SEEDS = [42, 123, 456, 789, 2026]`, `CONFIGS = [...]`). Inline comments must be short, pragmatic, and explain subtle mathematical constraints, tensor shapes (`# [B, T, D]`), or numerical stability guards (`eps=1e-8`), never obvious mechanics.
+* Clean Scientific Metric Outputs: Output metrics cleanly via structured tables or concise log strings (e.g., `mean_step_ms: 18.03 | p99_ms: 16.96 | budget_ms: 25.0`). Prohibit fake conversational excitement or exclamation marks (no `(<= 25 ms edge budget!)`).
+* Zero Emojis: Strictly zero emojis across all code cells, markdown cells, terminal outputs, and figure titles.
 
 ### 7. Scientific Visualization & Figure Legend Hygiene
 * Strictly Separate Legends from Data Visualizations: NEVER overlap or collide legends onto plotted data curves, scatter points, confidence interval bands, heatmaps, or bars.
