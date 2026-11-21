@@ -1,7 +1,7 @@
 {
   "name": "cortexops",
   "displayName": "CortexOps Multi-Agent Framework",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Autonomous multi-agent engineering operating system with Superpowers workflows (TDD, systematic debugging, planning, code review) and ThutaCortex second brain integration.",
   "logo": "assets/antigravity-logo.png",
   "suggestedPrompts": [
