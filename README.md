@@ -60,17 +60,59 @@ cortexops/
 
 ---
 
-## 3. Quick Start & Execution Modes
+## 3. Multi-Platform Installation Runbooks
 
-### Universal Cross-Platform 1-Command Setup (via npm)
-```bash
-npx @ctxthuta/cxops setup
+### Windows PowerShell (Recommended Runbooks)
+
+#### Method A: Direct Release Installation via Antigravity CLI
+This is the verified working method to install release archives on Windows:
+```powershell
+$cxopsDir = Join-Path $Env:Temp "cortexops-v1.1.7"
+Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/v1.1.7/cortexops-1.1.7.zip" -OutFile "$cxopsDir.zip"
+Expand-Archive -Path "$cxopsDir.zip" -DestinationPath $cxopsDir -Force
+agy plugin install "$cxopsDir"
+agy plugin list
 ```
-Or install globally:
-```bash
-npm install -g @ctxthuta/cxops
+Then restart VS Code / Antigravity.
+
+#### Method B: Global NPM Package + cxops CLI Link
+```powershell
+npm install -g @ctxthuta/cxops@latest
+cxops link
 cxops doctor
-cxops status
+```
+
+#### Method C: Instant Workspace Initialization (Zero Admin Permissions)
+In any project folder open in VS Code:
+```powershell
+npx @ctxthuta/cxops@latest init
+```
+
+---
+
+### macOS & Linux (Terminal / zsh / bash)
+
+Because macOS and Linux use POSIX filesystem permissions, both methods work seamlessly without UAC or junction restrictions:
+
+#### Method A: Global NPM Package + Symlink
+```bash
+npm install -g @ctxthuta/cxops@latest
+cxops link
+cxops doctor
+```
+
+#### Method B: Native Antigravity Git Install
+```bash
+agy plugin install https://github.com/ctxthuta/cortexops/tree/main/plugin
+agy plugin list
+```
+
+---
+
+### Automated Dual Release Pipeline
+Every release is published simultaneously to both npm and GitHub Releases with binary assets in a single command:
+```bash
+npm run release [patch|minor|major]
 ```
 
 ---

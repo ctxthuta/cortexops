@@ -18,7 +18,8 @@
     "watch": "node ./bin/cxops.js watch",
     "verify": "node ./bin/cxops.js verify",
     "doctor": "node ./bin/cxops.js doctor",
-    "version": "node ./bin/cxops.js version"
+    "version": "node ./bin/cxops.js version",
+    "release": "node ./scripts/release.js"
   },
   "keywords": [
     "cortexops",
