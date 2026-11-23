@@ -127,28 +127,82 @@ function getPluginTargets() {
 }
 
 function removePluginTarget(target) {
-    let stat = null;
+    if (!target) return;
     try {
-        stat = fs.lstatSync(target);
+        const stat = fs.lstatSync(target);
+        if (stat.isSymbolicLink()) {
+            try {
+                fs.unlinkSync(target);
+                return;
+            } catch (_) {
+                try {
+                    fs.rmdirSync(target);
+                    return;
+                } catch (_) {}
+            }
+        }
     } catch (_) {
         return;
     }
 
-    const isWin = process.platform === 'win32';
-    if (stat.isSymbolicLink()) {
-        try {
-            fs.unlinkSync(target);
-        } catch (_) {
-            fs.rmdirSync(target);
-        }
-    } else if (isWin && stat.isDirectory()) {
-        fs.rmdirSync(target);
-    } else {
+    try {
         fs.rmSync(target, { recursive: true, force: true });
+    } catch (err) {
+        try {
+            fs.rmdirSync(target, { recursive: true });
+        } catch (_) {}
     }
 }
 
-function linkPlugin() {
+function linkWorkspace(workspaceDir = process.cwd()) {
+    const resolvedWs = path.resolve(workspaceDir);
+    if (resolvedWs === ROOT_DIR) {
+        return;
+    }
+    const agentsDir = path.join(resolvedWs, '.agents');
+    const pluginsDir = path.join(agentsDir, 'plugins');
+    const targetPlugin = path.join(pluginsDir, 'cortexops');
+
+    if (!fs.existsSync(pluginsDir)) {
+        fs.mkdirSync(pluginsDir, { recursive: true });
+    }
+
+    const isWin = process.platform === 'win32';
+    const symlinkType = isWin ? 'junction' : 'dir';
+    removePluginTarget(targetPlugin);
+
+    try {
+        fs.symlinkSync(PLUGIN_SOURCE, targetPlugin, symlinkType);
+        console.log(`[OK] Linked CortexOps plugin to workspace: ${targetPlugin}`);
+    } catch (_) {
+        fs.cpSync(PLUGIN_SOURCE, targetPlugin, { recursive: true });
+        console.log(`[OK] Installed CortexOps plugin to workspace (copied): ${targetPlugin}`);
+    }
+
+    const wsAgentsDir = path.join(agentsDir, 'agents');
+    const localAgentsSource = path.join(ROOT_DIR, '.agents', 'agents');
+    if (fs.existsSync(localAgentsSource)) {
+        if (!fs.existsSync(wsAgentsDir)) {
+            fs.mkdirSync(wsAgentsDir, { recursive: true });
+        }
+        const agentDirs = fs.readdirSync(localAgentsSource, { withFileTypes: true });
+        for (const dirent of agentDirs) {
+            if (dirent.isDirectory()) {
+                const src = path.join(localAgentsSource, dirent.name);
+                const dest = path.join(wsAgentsDir, dirent.name);
+                removePluginTarget(dest);
+                try {
+                    fs.symlinkSync(src, dest, symlinkType);
+                } catch (_) {
+                    fs.cpSync(src, dest, { recursive: true });
+                }
+            }
+        }
+        console.log(`[OK] Installed workspace subagents for instant @ discovery: ${wsAgentsDir}`);
+    }
+}
+
+function linkPlugin(options = {}) {
     const { root, targets } = getPluginTargets();
     if (!fs.existsSync(root)) {
         fs.mkdirSync(root, { recursive: true });
@@ -191,6 +245,16 @@ function linkPlugin() {
                     } catch (symErr) {
                         fs.cpSync(srcAgent, destAgent, { recursive: true });
                     }
+
+                    // Also stage direct <agent_name>.md alongside for maximum client discovery compatibility
+                    const srcAgentMd = path.join(srcAgent, 'agent.md');
+                    const destAgentMd = path.join(globalAgentsRoot, `${dirent.name}.md`);
+                    if (fs.existsSync(srcAgentMd)) {
+                        try {
+                            removePluginTarget(destAgentMd);
+                            fs.copyFileSync(srcAgentMd, destAgentMd);
+                        } catch (_) {}
+                    }
                 }
             }
             console.log(`[OK] Linked global agents for Antigravity UI: ${globalAgentsRoot}`);
@@ -198,9 +262,13 @@ function linkPlugin() {
             console.error(`[ERROR] Failed to link global agents to ${globalAgentsRoot}: ${err.message}`);
         }
     }
+
+    if (options.workspace || (options.autoWorkspace && process.cwd() !== os.homedir() && fs.existsSync(path.join(process.cwd(), '.git')))) {
+        linkWorkspace(process.cwd());
+    }
 }
 
-function unlinkPlugin() {
+function unlinkPlugin(options = {}) {
     const { targets } = getPluginTargets();
     for (const target of targets) {
         try {
@@ -218,14 +286,20 @@ function unlinkPlugin() {
             const agentDirs = fs.readdirSync(localAgentsSource, { withFileTypes: true });
             for (const dirent of agentDirs) {
                 if (dirent.isDirectory()) {
-                    const destAgent = path.join(globalAgentsRoot, dirent.name);
-                    removePluginTarget(destAgent);
+                    removePluginTarget(path.join(globalAgentsRoot, dirent.name));
+                    removePluginTarget(path.join(globalAgentsRoot, `${dirent.name}.md`));
                 }
             }
             console.log(`[OK] Unlinked global agents: ${globalAgentsRoot}`);
         } catch (err) {
             console.error(`[ERROR] Failed to unlink global agents: ${err.message}`);
         }
+    }
+
+    if (options.workspace) {
+        removePluginTarget(path.join(process.cwd(), '.agents', 'plugins', 'cortexops'));
+        removePluginTarget(path.join(process.cwd(), '.agents', 'agents'));
+        console.log(`[OK] Unlinked workspace customizations: ${path.join(process.cwd(), '.agents')}`);
     }
 }
 
@@ -518,6 +592,21 @@ function runDoctor() {
         console.log(`[PASS] Declarative Subagents: ${count} verified roles discovered.`);
     }
 
+    // Workspace customizations check
+    const wsAgentsDir = path.join(process.cwd(), '.agents');
+    if (fs.existsSync(wsAgentsDir)) {
+        console.log(`[PASS] Workspace Customizations: Active at ${wsAgentsDir}`);
+    } else {
+        console.log(`[INFO] Workspace Customizations: Not installed in CWD. Run "cxops init" in your project folder to install locally.`);
+    }
+
+    if (process.platform === 'win32') {
+        console.log('\n[WINDOWS ACTIVATION NOTICE]');
+        console.log('  If VS Code was running during installation, restart or run:');
+        console.log('  Ctrl+Shift+P -> "Developer: Reload Window"');
+        console.log('  in VS Code so the Antigravity extension re-indexes plugins and agents.');
+    }
+
     console.log('='.repeat(70));
 }
 
@@ -612,14 +701,15 @@ Usage:
   cxops [command]
 
 Commands:
-  setup, init               Run interactive cross-platform setup wizard
+  setup                     Run interactive cross-platform setup wizard
+  init                      Initialize CortexOps in the current workspace (.agents/)
   doctor                    Run system diagnostics and prerequisite health check
   status, dashboard         Display operational & token telemetry dashboard
   watch                     Continuously monitor the dashboard (auto-refresh)
-  verify                    Verify all 12 declarative subagent definitions
+  verify                    Verify all declarative subagent definitions
   version, -v, --version    Display framework version and check for updates
-  link                      Link Antigravity global plugin symlink/junction
-  unlink                    Remove Antigravity global plugin symlink/junction
+  link                      Link Antigravity global plugin and subagents
+  unlink                    Remove Antigravity global plugin and subagents
   help, --help, -h          Display this command reference
 ` + /*
 `  run [options] "<prompt>"  Dispatch an autonomous multi-agent task via Python SDK
@@ -635,18 +725,29 @@ async function main() {
 
     switch (command) {
         case 'setup':
-        case 'init':
             await runSetup();
             break;
+        case 'init': {
+            const isWorkspace = args.includes('--workspace') || args.includes('-w') || args.length === 1;
+            if (isWorkspace) {
+                linkWorkspace(process.cwd());
+            }
+            linkPlugin({ autoWorkspace: false });
+            break;
+        }
         case 'doctor':
             runDoctor();
             break;
-        case 'link':
-            linkPlugin();
+        case 'link': {
+            const hasWorkspace = args.includes('--workspace') || args.includes('-w');
+            linkPlugin({ workspace: hasWorkspace, autoWorkspace: true });
             break;
-        case 'unlink':
-            unlinkPlugin();
+        }
+        case 'unlink': {
+            const hasWorkspace = args.includes('--workspace') || args.includes('-w');
+            unlinkPlugin({ workspace: hasWorkspace });
             break;
+        }
         case 'status':
         case 'dashboard':
             executePythonScript(DASHBOARD_SCRIPT, args.slice(1));

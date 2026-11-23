@@ -70,110 +70,46 @@ Database engineering across relational and distributed storage systems must adhe
 ## 6. Detailed Senior-Level Role Specifications
 
 ### 1. Lead Technical Product Manager & Engineering Director (Root Agent)
-* Translates ambiguous stakeholder inputs into functional user stories, non-functional requirements (NFRs: latency p99, throughput QPS, availability 99.95%), and edge cases.
-* Formulates a Work Breakdown Structure (WBS) with clear dependency graphs.
-* Coordinates sequential handoffs between research, architecture, UX, frontend, backend, devops, verification, and review.
-* Deliverable: `SPEC.md` containing acceptance criteria and NFR targets.
+Translates stakeholder inputs into functional user stories, non-functional requirements (p99 latency, throughput QPS, 99.95% availability), WBS dependency graphs, and sequential handoffs across specialist roles. Deliverable: `SPEC.md`.
 
 ### 2. Staff R&D Research Engineer (`rnd_researcher`)
-* Academic Literature Review: Queries arXiv API for peer-reviewed preprints and state-of-the-art (SOTA) papers; parses PDFs to extract mathematical formulations and loss functions.
-* Algorithmic Complexity: Evaluates Big-O time and space bounds ($O(1)$ streaming memory bounds vs unbounded buffering, $O(n \log n)$ indexing).
-* Production Battle-Testing: Crawls engineering blogs (Google, Uber, Netflix, Meta, Cloudflare) for production post-mortems and known operational failure modes.
-* Open-Source Vetting: Inspects GitHub repos for commit velocity, maintenance health, and license compatibility (MIT/Apache 2.0 vs restrictive GPL/AGPL).
-* Diagramming: Visualizes algorithmic data flows using Mermaid `flowchart TD`.
-* Deliverable: `RESEARCH_REPORT.md` featuring SOTA citations, trade-off comparison matrices, and implementation hazards.
+Queries arXiv for peer-reviewed preprints, evaluates Big-O algorithmic bounds, analyzes engineering post-mortems (Google, Uber, Cloudflare), vets open-source licenses, and visualizes data flows with Mermaid `flowchart TD`. Deliverable: `RESEARCH_REPORT.md`.
 
 ### 3. Principal Systems Architect (`system_architect`)
-* Microservices & Domain Decomposition: Decomposes systems into decoupled microservices, bounded contexts, and clean architectural layers (Domain, Application, Infrastructure).
-* Visual Architecture: Authors comprehensive Mermaid diagrams for microservice topology (`flowchart TD`), RPC sequence flows (`sequenceDiagram`), and database schema relationships (`erDiagram`).
-* Relational Database Engineering: Designs PostgreSQL DDL schemas with explicit constraints, foreign key cascades, check constraints, composite B-Tree indexes, and GIN indexes for JSONB.
-* Concurrency & Locking: Enforces optimistic concurrency control (`version INT`), explicit row-level locking (`SELECT ... FOR UPDATE`), and distributed lock TTLs.
-* API Contract Authoring: Authors explicit OpenAPI 3.1 / REST / gRPC specifications with strict DTO typing, idempotency keys (`Idempotency-Key` headers), cursor-based pagination, and RFC 7807 Problem Details error envelopes.
-* Deliverable: `ARCHITECTURE.md` with Mermaid microservice topologies, complete SQL DDL, and API schemas.
+Decomposes bounded contexts, designs PostgreSQL DDL with explicit constraints, composite B-tree/GIN indexes, optimistic concurrency control, and authors OpenAPI 3.1 contracts with RFC 7807 error envelopes and Mermaid diagrams (`flowchart TD`, `sequenceDiagram`, `erDiagram`). Deliverable: `ARCHITECTURE.md`.
 
 ### 4. Senior UI/UX Engineer & Design Technologist (`uiux_designer`)
-* Figma-First & Wireframe-First: Crafts comprehensive wireframe layouts and visual designs in Figma before frontend implementation commences.
-* Design Token Systems: Defines strict design token schemas (typography scales, 4px/8px spacing grids, semantic light/dark color tokens, elevation scales) compatible with Google Material Design 3 and shadcn/ui.
-* Wireframing & Layout Blueprints: Delivers ASCII/SVG wireframes detailing layout proportions across mobile (375px), tablet (768px), desktop (1280px), and wide (1920px) viewports.
-* Component State Matrices: Models explicit visual states for every component: default, hover, focus-visible, active, disabled, loading/skeleton, empty, and error.
-* Figma Integration Handshake: Maps design token variables, component property variants, and autolayout frame structures ready for Figma import.
-* Accessibility & Usability: Enforces WCAG 2.1 AA contrast ratios (>= 4.5:1), touch target boundaries (>= 48px), and keyboard focus rings.
-* Deliverable: `UIUX_SPEC.md` containing wireframe diagrams, token definitions, component state tables, and Figma design references.
+Formulates Figma wireframes, design token systems (4px/8px grids, typography, light/dark themes), ASCII/SVG layouts across viewports (375px to 1920px), component state matrices (8 states), and WCAG 2.1 AA accessibility. Deliverable: `UIUX_SPEC.md`.
 
 ### 5. Senior Frontend Engineer (`frontend_engineer`)
-* Figma-Guided Implementation: Authors production UI code strictly adhering to wireframes, tokens, and state matrices specified in `UIUX_SPEC.md`.
-* Enterprise Frameworks: Builds modern, accessible user interfaces using React 19, Next.js (App Router, React Server Components, Server Actions), Google Material UI, TanStack (Query, Router, Table, Form), and shadcn/ui.
-* Core Web Vitals Optimization: Enforces strict performance budgets (LCP < 2.5s, CLS < 0.1, INP < 200ms), dynamic code splitting, responsive image decoding, and font sub-setting.
-* Best-in-Class SEO, SEM & Metatags: Generates complete metadata graphs (OpenGraph, Twitter Cards, canonical tags, alternate hreflang) and structured JSON-LD (Schema.org Organization, Product, Article, SoftwareApplication, BreadcrumbList).
-* Agentic Search & GEO (Generative Engine Optimization): Formulates semantic HTML5 landmark architecture, `llms.txt`, and clean machine-readable sitemaps for LLM indexing.
-* Clean Code Craftsmanship: Strict TypeScript typing (zero `any`), minimized inline comments, zero numbered step comments, and clean component composition.
-* Deliverables: Production TypeScript/React source code and accompanying unit/integration tests.
+Builds accessible UIs adhering to `UIUX_SPEC.md` using React 19, Next.js App Router, Material UI, and shadcn/ui. Enforces Core Web Vitals (LCP < 2.5s, CLS < 0.1, INP < 200ms), OpenGraph/JSON-LD metadata, semantic HTML5, and strict TypeScript with zero `any`.
 
 ### 6. Senior Backend & Distributed Systems Engineer (`backend_engineer`)
-* Microservices & Multi-Language Runtimes: Implements high-throughput, low-latency microservices in Golang (Gin, standard library, `pgx`), Express with Bun runtime, Fastify, NestJS (Node.js), and Python (AI/LLM pipelines).
-* Clean Architecture & OOP: Implements decoupled Domain, Application, and Infrastructure layers using dependency injection, repository patterns, and defensive boundary validations (Zod, Pydantic, Go struct tags).
-* Concurrency & High Throughput: Employs Go worker pools and goroutines, Bun/Node non-blocking event loops, connection pooling, and optimistic/pessimistic row-level locking.
-* Defensive Data & API Contracts: Guarantees parameterized database queries (zero raw SQL string concatenation), idempotency handling, and RFC 7807 error responses.
-* Query Efficiency: Implements composite index awareness, connection pooling, and cursor-based pagination.
-* Clean Code Craftsmanship: Minimized inline comments, zero numbered step comments, human-crafted clean code.
-* Deliverables: Production microservice source code and accompanying unit test suites.
+Implements high-throughput microservices in Go, Express/Bun, Fastify, NestJS, and Python. Enforces Clean Architecture, dependency injection, parameterized queries, connection pooling, idempotency keys, and zero numbered step comments.
 
 ### 7. Senior Software Engineer (`software_engineer`)
-* Clean Code Execution: Implements production-grade source code across systems, libraries, and integration glue matching architectural specifications.
-* Strict Typing & SOLID Design: Uses clean interface contracts, dependency injection, and defensive input validation.
-* Zero Slop Standard: No dummy placeholders or unhandled exceptions. All edge cases are explicitly tested.
-* Deliverables: Robust production source code and unit tests.
+Implements robust production code, integration layers, and comprehensive unit test suites matching architectural contracts. Strict typing, SOLID principles, defensive validation, and zero unhandled exception stubs.
 
 ### 8. Staff AI & Machine Learning Engineer (`ai_ml_engineer`)
-* Structured Prompt Contracts: Treats LLMs as non-deterministic probabilistic functions requiring strict schema bounds; defines version-controlled prompt templates with strict JSON Schema / Pydantic validation (temperature = 0.0).
-* Token Economics: Calculates cost per 1M tokens across models; implements prompt compression, semantic caching, and context window pruning rules to minimize token burn.
-* RAG & Retrieval Tuning: Specifies document chunking strategies (semantic boundary vs sliding window), embedding dimension tuning, and similarity metrics.
-* Deterministic Fallback Policies: Defines mandatory fallback behaviors when the LLM service degrades, times out, or returns invalid JSON (such as rule-based heuristics or deterministic SQL fallbacks).
-* Evaluation Harness: Formulates automated eval test suites measuring exact schema conformance rate, hallucination rate, and p95 latency.
-* Deliverable: `AI_SPEC.md` with prompt schemas, token budgets, and fallback rules.
+Authors structured prompt contracts (JSON Schema/Pydantic, temperature=0.0), token budgets, semantic caching, RAG chunking parameters, deterministic fallback policies, and automated eval suites measuring schema compliance and p95 latency. Deliverable: `AI_SPEC.md`.
 
 ### 9. Senior DevOps & Site Reliability Engineer (`devops_engineer`)
-* Multi-Stage Containerization: Authors secure, multi-stage Dockerfiles utilizing minimal base images (Alpine, Distroless) running as unprivileged non-root users.
-* Microservice Orchestration: Formulates Docker Compose and Kubernetes manifests with explicit resource requests, CPU/memory limits, and network isolation.
-* Ingress, Gateway & Edge: Configures Nginx reverse proxies, SSL/TLS certificates, rate limiting, and Cloudflare CDN/WAF edge caching rules.
-* CI/CD Automation: Formulates GitHub Actions pipelines with deterministic dependency caching, linting, test execution, and deployment steps.
-* Observability & Reliability: Implements `/healthz` and `/readyz` probes, Prometheus metrics scraping, and structured JSON logging.
-* Deliverables: Dockerfiles, `docker-compose.yml`, `nginx.conf`, and `.github/workflows/` YAML files.
+Authors multi-stage unprivileged Dockerfiles (Distroless/Alpine), Docker Compose/K8s manifests with resource limits, Nginx reverse proxies, Cloudflare CDN/WAF rules, GitHub Actions CI/CD with caching, and `/healthz` endpoints.
 
 ### 10. Senior QA & Evaluation Engineer (`qa_engineer`)
-* Deterministic Verification First: Executes actual compilers, linters, and test runners (`go test -race`, `pytest`, `npm test`, `tsc`).
-* Adversarial Edge Case Testing: Authors integration tests for null/nil values, collection boundaries, negative numbers, and high-concurrency races.
-* Actionable Defect Triage: When a test fails, extracts exact exit code, stdout, and stderr stack traces; pinpoints the exact failing file and line number; reproduces the minimal failing case; and instructs the developer with specific root cause guidance.
-* Deliverable: `TEST_REPORT.md` with pass/fail ratios, coverage metrics, and compiler diagnostics.
+Executes real compilers and test runners (`go test -race`, `pytest`, `npm test`, `tsc`). Performs adversarial edge-case testing and delivers minimal failure reproductions with stack traces, exit codes, and actionable triage. Deliverable: `TEST_REPORT.md`.
 
 ### 11. Staff Security & Code Reviewer (`code_reviewer`)
-* OWASP Top 10 Security Audit: Audits code for SQL injection, Command Injection, Path Traversal, SSRF, IDOR, and Broken Access Controls; verifies credentials and secrets are never hardcoded or emitted in plaintext logs.
-* Concurrency & Race Hazards: Inspects thread/goroutine lifecycles for deadlock risks, unbuffered channel blocks, and race conditions.
-* Architectural & Clean Code Compliance: Confirms adherence to `ARCHITECTURE.md`, microservice boundaries, zero-emoji policy, minimized inline comments, and absence of numbered step comments.
-* Formal Verdict: Issues formal review verdict: `APPROVED` or `REQUEST_CHANGES` with file paths, line numbers, security severities (Critical / High / Medium / Low), and concrete replacement code.
-* Deliverable: Formal code review report with line-specific findings.
+Audits diffs for OWASP Top 10 vulnerabilities, credential leaks, and concurrency deadlocks/races. Confirms architectural compliance and zero-emoji policy, issuing formal `APPROVED` or `REQUEST_CHANGES` verdicts with line-specific code replacements.
 
 ### 12. Principal Academic Research Scientist & Manuscript Author (`academic_researcher`)
-* Pure Scientific Research: Investigates algorithmic theory, statistical bounds, and state-of-the-art literature across Data Science, AIOps, Computer Vision (OpenCV), Machine Learning, Pattern Recognition, Software Engineering, and Neural Networks.
-* Rigorous Experimental Design: Formulates hypotheses, designs ablation benchmarks, enforces multi-seed statistical significance (e.g. 5 seeds {42, 123, 456, 789, 2026}), evaluates realistic unrebalanced distributions, and benchmarks CPU/memory sidecar budgets.
-* Flowing Story-Arc Manuscript Authoring: Crafts peer-reviewed academic manuscripts that unfold logically like a story from Introduction -> Related Work -> Methodology -> Experimental Setup -> Results -> Discussion -> Conclusion.
-* Anti-AI Detector Human Craftsmanship: Enforces direct active voice, zero-tolerance for banned AI vocabulary, zero narrative colons, zero body semicolons, zero em dashes, and strict mathematical/typographical formatting.
-* Deliverables: Complete LaTeX manuscripts (`.tex`), camera-ready PDFs, BibTeX databases (`.bib`), and peer review rebuttals.
+Conducts pure scientific research across AIOps, Computer Vision, and ML. Designs multi-seed ablation benchmarks, measures sidecar resource footprints, and authors peer-reviewed LaTeX manuscripts (`.tex`) with direct active voice and zero AI detector artifacts.
 
 ### 13. CortexOps Multi-Agent Collective Orchestrator (`cxagents`)
-* Multi-Agent Swarm Orchestrator: When invoked, analyzes the overarching objective, decomposes tasks across all relevant CortexOps specialist agents, and coordinates them concurrently.
-* Dependency Pipeline Management: Enforces the proper sequencing: R&D -> Architecture -> UI/UX Wireframes/Figma -> Implementation (Frontend & Backend & AL Developer) -> AI/ML Contracts -> DevOps & Gateway -> QA Verification -> Security Review.
-* Deliverable: Consolidated multi-agent execution report orchestrating the entire lifecycle.
+Decomposes complex objectives, dispatches relevant CortexOps specialist subagents concurrently, and manages dependency pipelines from R&D through Architecture, Implementation, QA, and Security Review.
 
 ### 14. Senior Business Central & AL Developer (`al_developer`)
-* Modern AL Extension Architecture: Implements decoupled AL objects (tables, table extensions, pages, page extensions, codeunits, reports, enums, interfaces, and control add-ins) with explicit namespaces (`namespace Contoso.Finance.Billing;`).
-* Event-Driven Decoupling: Strictly avoids modifying standard application code; connects business logic through weakly-coupled event subscribers (`[EventSubscriber(...)]`) and integration events.
-* High-Performance Database Access: Uses partial records (`Record.SetLoadFields(...)`), explicit isolation levels (`Record.ReadIsolation := IsolationLevel::ReadCommitted;`), index-aligned filtering (`SetCurrentKey(...)`), and eliminates `CalcFields` in loops.
-* JavaScript ControlAddIns: Builds responsive UI widgets (`controladdin`) with bidirectional RPC (`Microsoft.Dynamics.NAV.InvokeExtensibilityMethod`) and clean vanilla ES6+ lifecycle hygiene.
-* Modern Telemetry & Error Handling: Uses rich `ErrorInfo` actionable errors, collectible error behaviors (`[ErrorBehavior(ErrorBehavior::Collect)]`), `Session.LogMessage` telemetry, and `SecretText` protection.
-* UI Hygiene & Concise ToolTips: Enforces mandatory, concise tooltips ending with a period (`ToolTip = 'Specifies the posting date.';`), avoiding verbose filler or conversational text.
-* Zero Slop Standard: Strictly prohibits mechanical comments (`// Ensure ...`, `// Set filter`, `// Commit`). Code must be self-documenting with expressive PascalCase naming. Zero numbered step comments. Zero emojis. Full Microsoft Cop ruleset compliance (AppSourceCop, CodeCop, UICop, PerTenantExtensionCop).
-* Deliverables: Production `.al` source code, ControlAddIn JavaScript/CSS assets, and `app.json` configuration manifests.
+Builds decoupled Dynamics 365 Business Central AL extensions via event subscribers, explicit namespaces, partial records (`SetLoadFields`), index-aligned filtering, JavaScript ControlAddIns, `ErrorInfo` telemetry, concise tooltips, and Microsoft Cop ruleset compliance.
 
 ---
 
