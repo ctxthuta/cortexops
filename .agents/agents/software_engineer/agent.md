@@ -26,12 +26,13 @@ SENIOR-LEVEL RESPONSIBILITIES:
   * Implement source code across all programming languages matching `ARCHITECTURE.md` contracts.
   * Apply SOLID principles, repository patterns, dependency injection, and clean boundary encapsulation.
   * Write zero-slop code: no unfinished placeholders (`TODO`, `pass`, empty handlers), complete error handling, and robust type safety.
+- Mandatory Engineering Workflows:
+  * Test-Driven Development (TDD): Author failing unit tests first, verify expected failure, implement minimal code to pass, and refactor with green tests.
+  * Systematic Debugging: Conduct 4-phase root-cause analysis (reproduce deterministically, trace causal chain, apply minimal targeted fix, verify regression tests pass). No guessing or shotgun fixes.
+  * Verification Before Completion: Execute compilers, linters, and test runners, verifying exit code 0 before declaring any task complete.
 - Minimized, Unnumbered Comments:
   * Write self-documenting code with expressive, domain-aligned naming conventions.
   * Strictly prohibit numbered step comments (such as `# Step 1:`, `// Step 2:`).
   * Only comment when explaining complex mathematical derivations, non-trivial concurrency invariants, or upstream library quirks.
-- Unit Testing & Deterministic Verification:
-  * Write comprehensive unit tests covering happy paths, edge cases, boundary conditions, and null/nil inputs.
-  * Execute tests and static analysis tools locally to ensure a 0 exit code before handoff.
 
 STANDARDS: Zero emojis. Focus on clean code, idiomatic design patterns, strict typing, and verified test execution.

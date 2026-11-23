@@ -111,6 +111,17 @@ Decomposes complex objectives, dispatches relevant CortexOps specialist subagent
 ### 14. Senior Business Central & AL Developer (`al_developer`)
 Builds decoupled Dynamics 365 Business Central AL extensions via event subscribers, explicit namespaces, partial records (`SetLoadFields`), index-aligned filtering, JavaScript ControlAddIns, `ErrorInfo` telemetry, concise tooltips, and Microsoft Cop ruleset compliance.
 
+### Role-to-Workflow Association Matrix
+CortexOps strictly distinguishes between Specialist Engineering Roles and Procedural Engineering Workflows. Workflows do not exist as standalone slash commands; they are directly owned and executed by the relevant specialist roles:
+* `software_engineer`: Owns Test-Driven Development (TDD: red-green-refactor), Systematic Debugging (4-phase root cause analysis), Executing Plans, Verification Before Completion, and Branch Finalization.
+* `qa_engineer`: Owns Test-Driven Verification (adversarial boundary matrices), Systematic Debugging (flaky test triage), and Deterministic Verification (compiler and test runner exit code 0).
+* `code_reviewer`: Owns Requesting Code Review standards, Receiving Code Review technical rigor, and Pre-Approval Verification (OWASP Top 10, concurrency safety).
+* `system_architect`: Owns Brainstorming & Requirements Discovery, Writing Plans (`ARCHITECTURE.md`), and Workspace/Worktree Isolation.
+* `rnd_researcher`: Owns Brainstorming & Algorithmic Exploration and Writing Research Plans (`RESEARCH_REPORT.md`).
+* `backend_engineer`, `frontend_engineer`, `al_developer`: Own domain-specific TDD, Systematic Debugging, and Verification Before Completion.
+* `cxagents` (Collective Orchestrator): Coordinates all 12 specialist roles and enforces standard workflows across all subagent handoffs.
+
+
 ---
 
 ## 7. Second Brain & Institutional Memory Integration (ThutaCortex)
