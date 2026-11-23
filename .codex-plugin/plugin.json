@@ -1,6 +1,6 @@
 {
   "name": "cortexops",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "CortexOps Multi-Agent Framework with Superpowers: Autonomous engineering and research operating system across 13 Staff/Principal personas with TDD, systematic debugging, and planning workflows.",
   "author": {
     "name": "Thuta Tun",
