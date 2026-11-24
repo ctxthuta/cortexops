@@ -177,6 +177,9 @@ Bare-metal and RTOS firmware in `no_std` Rust and modern C, hardware peripheral 
 ### 36. Principal Systems Integrator & Context Broker (`systems_integrator`)
 Maintains the centralized Invariant Ledger (`INVARIANT_LEDGER.md`), conducts pre/post handoff contract diffing to prevent semantic drift, arbitrates cross-domain trade-offs, and synchronizes live state with ThutaCortex. Deliverable: `INVARIANT_LEDGER.md`.
 
+### 37. Staff Agent Systems Architect & Meta-Agent Engineer (`agent_architect`)
+Designs, scaffolds, and evaluates autonomous multi-agent systems, skill playbooks (`SKILL.md`), persona contracts, custom tools, MCP integrations, and eval suites. Deliverables: `AGENT_SPEC.md`, `EVAL_REPORT.md`.
+
 ### Role-to-Workflow Association Matrix
 Workflows are owned by specialist roles (no standalone slash commands):
 * `software_engineer`: TDD (red-green-refactor), Systematic Debugging, Executing Plans, Verification Before Completion, Branch Finalization.
@@ -185,6 +188,7 @@ Workflows are owned by specialist roles (no standalone slash commands):
 * `system_architect`: Brainstorming & Requirements Discovery, Writing Plans (`ARCHITECTURE.md`), Worktree Isolation.
 * `rnd_researcher`: Algorithmic Exploration, Research Plans (`RESEARCH_REPORT.md`).
 * `systems_integrator`: Invariant Ledger Maintenance, Contract Diffing Across Handoffs, Domain Arbitration, ThutaCortex State Synchronization.
+* `agent_architect`: Multi-Agent System Scaffolding, Skill Playbook Authoring (`SKILL.md`), Tool & MCP Integration, Trajectory Evals.
 * `backend_engineer`, `rust_engineer`, `frontend_engineer`, `al_developer`: Domain TDD, Systematic Debugging, Verification Before Completion.
 * `cxagents`: Coordinates all 25 specialist roles and enforces workflows across handoffs.
 

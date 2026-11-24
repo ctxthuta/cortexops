@@ -8,10 +8,11 @@ description: >-
 
 Authoritative skill for the CortexOps Multi-Agent Collective Orchestrator. Governs end-to-end task decomposition, specialist agent selection, concurrent pipeline coordination, and standard engineering workflow governance across the multi-agent collective.
 
-## Multi-Agent Specialist Roster (34 Specialist Roles)
+## Multi-Agent Specialist Roster (35 Specialist Roles)
 - Core Architecture & R&D:
   * rnd_researcher: SOTA literature, arXiv research, Big-O bounds, algorithm vetting.
   * system_architect: Microservices, Mermaid topologies, PostgreSQL DDL schemas, API contracts, Rust FFI/crate boundaries.
+  * agent_architect: Autonomous agent systems architecture, SKILL.md playbooks, persona contracts, MCP integrations, eval suites.
   * systems_integrator: Central Context Broker, Invariant Ledger (INVARIANT_LEDGER.md), cross-agent contract diffing, domain arbitration, ThutaCortex second brain sync.
   * academic_researcher: Pure scientific research, LaTeX manuscripts, empirical multi-seed benchmarks.
 - Design & Frontend:

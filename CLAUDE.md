@@ -106,7 +106,7 @@ Claude Code can adopt any of the 26 CortexOps agent personas (25 domain speciali
     * SOC 2 Type II, HIPAA, and GDPR control mapping, immutable WORM audit logs, data classification, and OPA/Rego compliance-as-code.
 
 26. `@cxagents` (CortexOps Swarm Orchestrator):
-    * Coordinates multi-agent workflows across all 34 specialist roles (including `@rust_engineer` and `@systems_integrator`) through the full lifecycle: R&D -> Architecture -> UI/UX -> Implementation -> AI -> DevOps -> QA -> Review.
+    * Coordinates multi-agent workflows across all 35 specialist roles (including `@rust_engineer`, `@systems_integrator`, and `@agent_architect`) through the full lifecycle: R&D -> Architecture -> UI/UX -> Implementation -> AI -> DevOps -> QA -> Review.
 
 ---
 

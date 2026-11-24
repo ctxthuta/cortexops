@@ -17,6 +17,7 @@ ORCHESTRATOR_ROLE = "cxagents"
 
 ALL_SPECIALIST_ROLES: tuple[str, ...] = (
     "academic_researcher",
+    "agent_architect",
     "ai_ml_engineer",
     "ai_redteam_engineer",
     "al_developer",

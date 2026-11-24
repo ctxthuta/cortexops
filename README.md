@@ -183,7 +183,7 @@ npm run release [patch|minor|major]
 
 ### Mode A: Native Antigravity Subagents (No External API Key Required)
 When working inside Google Antigravity (IDE or CLI):
-- All 35 agents (34 specialists plus `@cxagents`) are loaded globally via the linked plugin (`~/.gemini/config/plugins/cortexops`) and locally in `.agents/`.
+- All 36 agents (35 specialists plus `@cxagents`) are loaded globally via the linked plugin (`~/.gemini/config/plugins/cortexops`) and locally in `.agents/`.
 - Subagents execute directly through Antigravity's authenticated session.
 - Mention individual specialists directly (`@rust_engineer`, `@backend_engineer`, `@system_architect`, `@code_reviewer`), or mention `@cxagents` to mobilize the entire relevant team concurrently.
 

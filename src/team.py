@@ -4,6 +4,7 @@ from google.antigravity import LocalAgentConfig, types
 from src.agents.personas import (
     rnd_researcher,
     system_architect,
+    agent_architect,
     systems_integrator,
     uiux_designer,
     frontend_engineer,
@@ -104,6 +105,7 @@ def create_cortexops_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
     subagents = [
         rnd_researcher,
         system_architect,
+        agent_architect,
         systems_integrator,
         uiux_designer,
         frontend_engineer,
@@ -149,6 +151,7 @@ def create_cortexops_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
             allowed_subagents=[
                 "rnd_researcher",
                 "system_architect",
+                "agent_architect",
                 "systems_integrator",
                 "uiux_designer",
                 "frontend_engineer",
