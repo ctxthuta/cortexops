@@ -704,7 +704,7 @@ Commands:
   setup                     Run interactive cross-platform setup wizard
   init                      Initialize CortexOps in the current workspace (.agents/)
   doctor                    Run system diagnostics and prerequisite health check
-  monitor, agentmon         Launch Global Agent Monitor terminal view across all platforms
+  monitor                   Launch Global Agent Monitor terminal view across all platforms
   brief                     Print factual executive briefing of active agents and bottlenecks
   sessions                  List active agent conversations across all IDEs and terminals
   sources                   Inspect registered telemetry adapters and connection health

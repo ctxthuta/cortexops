@@ -1,5 +1,5 @@
 /**
- * Global Agent Monitor - Acceptance Test Suite (T01 - T10)
+ * Global Agent Monitor - Acceptance Test Suite (T01 - T11)
  * Validates all functional requirements from FRD Tables 9, 10, and 11.
  */
 
@@ -17,6 +17,7 @@ const { generateBriefing } = require('../../src/monitor/briefing');
 const { validateEvent } = require('../../src/monitor/schema');
 const { scanAllSurfaces } = require('../../src/monitor/adapters/detector');
 const { defaultFrameworkBridge } = require('../../src/monitor/adapters/framework');
+const { TerminalRenderer, ANSI } = require('../../src/monitor/tui/renderer');
 
 function createTempDir(prefix) {
   const dir = path.join(os.tmpdir(), `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2)}`);
@@ -32,7 +33,7 @@ function removeTempDir(dir) {
 
 async function runTestSuite() {
   console.log('='.repeat(70));
-  console.log('GLOBAL AGENT MONITOR ACCEPTANCE TEST SUITE (T01 - T10)');
+  console.log('GLOBAL AGENT MONITOR ACCEPTANCE TEST SUITE (T01 - T11)');
   console.log('='.repeat(70));
 
   let passed = 0;
@@ -580,6 +581,48 @@ async function runTestSuite() {
       await server.stop();
       removeTempDir(tmp);
     }
+  });
+
+  await test('T11 Terminal Contrast & Role Theming: High-Contrast Badges & NoColor Adherence', async () => {
+    const colorRenderer = new TerminalRenderer({ noColor: false });
+    const monoRenderer = new TerminalRenderer({ noColor: true });
+
+    // Verify role-based contrasting colors
+    const reviewerStyled = colorRenderer.formatAgent('code_reviewer', 18);
+    assert.ok(reviewerStyled.includes(ANSI.brightRed), 'code_reviewer must style with brightRed');
+    assert.ok(reviewerStyled.includes(ANSI.bold), 'code_reviewer must style with bold');
+
+    const architectStyled = colorRenderer.formatAgent('system_architect', 18);
+    assert.ok(architectStyled.includes(ANSI.brightCyan), 'system_architect must style with brightCyan');
+
+    const backendStyled = colorRenderer.formatAgent('backend_engineer', 18);
+    assert.ok(backendStyled.includes(ANSI.brightBlue), 'backend_engineer must style with brightBlue');
+
+    const qaStyled = colorRenderer.formatAgent('qa_engineer', 18);
+    assert.ok(qaStyled.includes(ANSI.brightGreen), 'qa_engineer must style with brightGreen');
+
+    // Verify provider badges
+    const agyBadge = colorRenderer.formatProvider('antigravity', 'app', 16);
+    assert.ok(agyBadge.includes(ANSI.brightCyan), 'Antigravity badge must style with brightCyan');
+
+    const cdxBadge = colorRenderer.formatProvider('codex', 'cli', 16);
+    assert.ok(cdxBadge.includes(ANSI.brightGreen), 'Codex badge must style with brightGreen');
+
+    const cldBadge = colorRenderer.formatProvider('claude_code', 'cli', 16);
+    assert.ok(cldBadge.includes(ANSI.brightYellow), 'Claude Code badge must style with brightYellow');
+
+    // Verify deterministic hash fallback for custom agents
+    const customAgent = colorRenderer.formatAgent('custom_domain_bot', 20);
+    assert.ok(customAgent.includes('\x1b['), 'Custom agent must receive deterministic ANSI color');
+
+    // Verify monoRenderer adheres strictly to NO_COLOR (zero ANSI escapes)
+    const monoAgent = monoRenderer.formatAgent('code_reviewer', 18);
+    assert.strictEqual(monoAgent.includes('\x1b'), false, 'Mono renderer must emit zero ANSI escape codes');
+    assert.strictEqual(monoAgent.length, 18, 'Mono agent padding must match exact width');
+
+    const monoBadge = monoRenderer.formatProvider('antigravity', 'app', 16);
+    assert.strictEqual(monoBadge.includes('\x1b'), false, 'Mono provider badge must emit zero ANSI escape codes');
+    assert.strictEqual(monoBadge.length, 16, 'Mono provider padding must match exact width');
   });
 
   console.log('='.repeat(70));

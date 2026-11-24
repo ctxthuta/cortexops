@@ -3,13 +3,13 @@
 /**
  * Global Agent Monitor - Unified CLI & Terminal Control Plane
  * Usage:
- *   agentmon [watch] [--project <name>] [--no-color]
- *   agentmon setup / doctor
- *   agentmon brief [--project <name>]
- *   agentmon sessions [--json]
- *   agentmon sources / history [--purge <project>]
- *   agentmon start / stop / status
- *   agentmon emit '<json>'
+ *   cxops monitor [watch] [--project <name>] [--no-color]
+ *   cxops monitor setup / doctor
+ *   cxops monitor brief [--project <name>]
+ *   cxops monitor sessions [--json]
+ *   cxops monitor sources / history [--purge <project>]
+ *   cxops monitor start / stop / status
+ *   cxops monitor emit '<json>'
  */
 
 'use strict';
@@ -276,7 +276,7 @@ async function main() {
     case 'emit': {
       const rawJson = args[1];
       if (!rawJson) {
-        console.error('Usage: agentmon emit \'<json_payload>\'');
+        console.error('Usage: cxops monitor emit \'<json_payload>\'');
         process.exit(1);
       }
       try {

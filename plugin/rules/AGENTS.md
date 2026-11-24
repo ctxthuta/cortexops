@@ -191,7 +191,7 @@ Workflows are owned by specialist roles (no standalone slash commands):
 * `systems_integrator`: Invariant Ledger Maintenance, Contract Diffing Across Handoffs, Domain Arbitration, ThutaCortex State Synchronization.
 * `agent_architect`: Multi-Agent System Scaffolding, Skill Playbook Authoring (`SKILL.md`), Tool & MCP Integration, Trajectory Evals.
 * `backend_engineer`, `rust_engineer`, `frontend_engineer`, `al_developer`: Domain TDD, Systematic Debugging, Verification Before Completion.
-* `cxagents`: Coordinates all 35 specialist roles and enforces workflows across handoffs.
+* `cxagents`: Coordinates all 25 specialist roles (and all extended roles across the 35 specialist roster) and enforces workflows across handoffs.
 
 ### Explicit Subagent Dispatching Standard (`invoke_subagent`)
 When coordinating specialists under `@cxagents` or executing multi-agent workflows:

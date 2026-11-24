@@ -222,7 +222,7 @@ class TerminalDashboard {
         console.log(out);
       })
       .catch(() => {
-        console.log('Collector is offline. Run "agentmon start" or "agentmon doctor" to inspect.');
+        console.log('Collector is offline. Run "cxops monitor start" or "cxops monitor doctor" to inspect.');
       });
   }
 

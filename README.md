@@ -234,7 +234,7 @@ npm run release [patch|minor|major]
 
 ---
 
-## 4. Global Agent Monitor (`agentmon`)
+## 4. Global Agent Monitor (`cxops monitor`)
 
 The Global Agent Monitor provides a unified, real-time terminal control plane that opens from any directory and monitors active agent tasks across Google Antigravity (App, CLI, VS Code), OpenAI Codex (CLI, VS Code), Anthropic Claude Code (CLI, VS Code), and CortexOps framework actions.
 
@@ -242,27 +242,25 @@ The Global Agent Monitor provides a unified, real-time terminal control plane th
 
 Attach the terminal monitor from any repository or folder:
 ```bash
-agentmon watch
-# or via cxops wrapper:
 cxops monitor
 # filter to a specific project:
-agentmon watch --project InventorySync
+cxops monitor --project InventorySync
 # accessible monochrome display (80x24 standard):
-agentmon watch --no-color --no-motion
+cxops monitor --no-color --no-motion
 ```
 
 ### CLI Command Suite
 
 | Command | Description |
 | :--- | :--- |
-| `agentmon watch [--project <name>]` | Interactive terminal dashboard with live pub/sub updates. |
-| `agentmon brief [--project <name>]` | Executive summary of active work, blocked items, and reported tokens. |
-| `agentmon sessions [--json]` | Machine-readable JSON snapshot or list of active conversations. |
-| `agentmon sources` | Discovered telemetry adapters, event counts, and connection health. |
-| `agentmon doctor` | System health check and installed client capabilities report. |
-| `agentmon setup` | Idempotent environment setup and user hook enrollment. |
-| `agentmon history [--purge <proj>]` | Inspect retained history or permanently purge project records. |
-| `agentmon start / stop / status` | Manage the background single-writer collector daemon. |
+| `cxops monitor [watch] [--project <name>]` | Interactive terminal dashboard with live pub/sub updates. |
+| `cxops monitor brief [--project <name>]` | Executive summary of active work, blocked items, and reported tokens. |
+| `cxops monitor sessions [--json]` | Machine-readable JSON snapshot or list of active conversations. |
+| `cxops monitor sources` | Discovered telemetry adapters, event counts, and connection health. |
+| `cxops monitor doctor` | System health check and installed client capabilities report. |
+| `cxops monitor setup` | Idempotent environment setup and user hook enrollment. |
+| `cxops monitor history [--purge <proj>]` | Inspect retained history or permanently purge project records. |
+| `cxops monitor start / stop / status` | Manage the background single-writer collector daemon. |
 
 ### Terminal Keyboard Shortcuts
 
