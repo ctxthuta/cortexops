@@ -20,6 +20,7 @@ Authoritative skill for the Principal Academic Research Scientist and Manuscript
   * Strictly enforce direct academic active voice ("We propose", "We harmonize").
   * Zero-tolerance prohibited vocabulary: never use `crucial`, `delve`, `tapestry`, `pivotal`, `beacon`, `game-changer`, `testament`, `foster`, `underscores`, `groundbreaking`, or `revolutionary`.
   * Punctuation restrictions: strictly zero narrative colons, zero body semicolons, zero em dashes, and zero bullet or numbered lists in narrative discussion.
+  * Sentence-initial conjunction prohibition: strictly prohibit starting sentences with "Because" across manuscripts, technical documentation, commit messages, and log statements ("Because" at the beginning of a sentence creates subordinate fragments or conversational cadence; use direct causation, "Since", or structured independent clauses instead).
 - Mathematical and Typographical Standards:
   * Thin nonbreaking space `\,` between number and unit (`18.06\,ms`, `234\,MB`, `1.60\,GHz`).
   * No space before percent signs (`47.86\%`).

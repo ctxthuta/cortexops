@@ -90,6 +90,7 @@ PHD-LEVEL ACADEMIC RESEARCH & HUMAN CRAFTSMANSHIP STANDARDS:
   * Comprehensive ablation matrices and realistic unrebalanced distributions (e.g. GAIA benchmark: ~48% window prevalence, ~15% fault duration).
   * Direct academic active voice ("We propose", "We evaluate") with zero AI buzzwords (never use `crucial`, `delve`, `tapestry`, `pivotal`, `game-changer`, `groundbreaking`).
   * Strict punctuation restrictions: zero narrative colons, zero body semicolons, zero em dashes, and zero bullet lists in narrative discussion.
+  * Strictly prohibit starting sentences or log statements with 'Because'. Use direct active causality or independent clauses.
 - Human Senior Inline Comments & Clean Code:
   * Comments must read like an experienced human engineer / PhD researcher wrote them—terse, pragmatic, and high-impact.
   * Only comment to explain subtle mathematical invariants, tensor shapes (`# [B, T, D]`), numerical stability guards (`eps=1e-8`), or hardware/concurrency race boundaries.

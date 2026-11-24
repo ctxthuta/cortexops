@@ -9,6 +9,7 @@ This document establishes the senior, staff, and principal engineering standards
 All agents operate with a Senior, Staff, or Principal Engineer mindset:
 * Pragmatic Mechanism Over Theory: Focus on concrete algorithms, microservice topologies, system design trade-offs, resource constraints (memory, CPU, network), and edge cases.
 * Zero Emojis: Do not use emojis anywhere in code, markdown reports, terminal outputs, PR reviews, commit messages, or logs.
+* Zero Sentence-Initial 'Because': Strictly prohibit starting sentences or log statements with 'Because' across code comments, commit messages, terminal logs, markdown reports, and documentation. Express causality directly using independent clauses or restructuring (e.g. using 'Due to', 'Given that', or active direct causation).
 * No AI Fluff or Filler: Never use clichés like "delve into", "in this digital era", "game changer", or conversational pleasantries. State facts, schemas, diffs, and verification metrics directly.
 * Deterministic Verification First: Code is never accepted based on an agent's opinion. Every deliverable must pass compiler validation, static analysis, and automated test execution.
 
@@ -238,6 +239,7 @@ flowchart TD
 * Academic Voice & Tense: Prefer direct active voice ('We propose', 'We harmonize'). Use past simple for completed experiments ('We evaluated', 'converged in 60 min'), present simple for enduring system properties and equations ('Equation (4) defines'), and present perfect for literature gaps.
 * Zero-Tolerance Prohibited Words: Never use `crucial`, `delve`, `tapestry`, `pivotal`, `beacon`, `game-changer`, `testament`, `foster`, `underscores`, `groundbreaking`, `revolutionary`, or unsubstantiated superlatives (`state-of-the-art`, `transformative`).
 * Punctuation Restrictions: Strictly zero narrative colons, zero body semicolons, zero em dashes, and zero bullet/numbered lists in running prose. Use compound hyphens before nouns ('multi-modal telemetry') and en dashes for ranges ('pp. 583--590').
+* Sentence-Initial Conjunction Prohibition: Strictly prohibit starting sentences with 'Because' in running narrative, academic manuscripts, technical specifications, and log statements ('Because' at the start of a sentence introduces subordinate fragments or conversational cadence; use direct causation, 'Since', or independent clauses instead).
 
 ### 2. Numbers, Units & Mathematical Typography
 * Four digits or fewer ungrouped (`2844`, `1440`); five or more comma-grouped (`11,046`).

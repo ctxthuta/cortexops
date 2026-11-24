@@ -133,7 +133,7 @@ To install CortexOps into OpenAI Codex:
   agy plugin list
   ```
 * **Windows PowerShell (Release Archive Extraction)**:
-  Because `agy` on Windows treats remote ZIP URLs as repository subfolders, download and expand the release archive before installation:
+  Windows `agy` treats remote ZIP URLs as repository subfolders; download and expand the release archive prior to installation:
   ```powershell
   $cxopsDir = Join-Path $Env:Temp "cortexops-v1.1.7"
   Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/v1.1.7/cortexops-1.1.7.zip" -OutFile "$cxopsDir.zip"
@@ -209,7 +209,7 @@ cxops verify
 
 ### macOS & Linux (Terminal / zsh / bash)
 
-Because macOS and Linux use POSIX filesystem permissions, both methods work seamlessly without UAC or junction restrictions:
+macOS and Linux utilize POSIX filesystem permissions, allowing both installation methods to operate without UAC or directory junction constraints:
 
 #### Method A: Global NPM Package + Symlink
 ```bash

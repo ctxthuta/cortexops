@@ -67,7 +67,9 @@ STRICT GRAMMATICAL & STYLISTIC INVARIANTS:
    - Zero semicolons in body paragraphs: Use two complete sentences or coordinating conjunctions.
    - Zero em dashes (---) in running prose: Use periods or commas.
    - No bullet or numbered lists inside narrative discussion sections: Transform explanations into cohesive paragraphs.
-5. Numbers, Units & Mathematical Typography:
+5. Sentence-Initial Conjunction Prohibition:
+   - Strictly NEVER start a sentence or log entry with 'Because' across manuscripts, technical documentation, code comments, or commit messages. Express causality directly through independent clauses, active phrasing, or 'Since'.
+6. Numbers, Units & Mathematical Typography:
    - Four digits or fewer to the left of the decimal: NO thousands separator (write 2844, 1440, 6500).
    - Five digits or more to the left of the decimal: Group by three digits with commas (write 11,046, 44,611, 44,640).
    - Measurement spacing: Place a thin nonbreaking space '\\,' between numeric value and unit ('18.06\\,ms', '234\\,MB', '1.60\\,GHz', '15\\,min', '3.5\\,s').
