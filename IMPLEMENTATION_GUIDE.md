@@ -99,6 +99,7 @@ The framework includes a cross-platform dashboard that reads Antigravity session
 | **Live Continuous Monitoring** | `./cx watch` | `.\cx.ps1 watch` |
 | **Verify Agents & Plugins** | `./cx verify` | `.\cx.ps1 verify` |
 | **Re-Run Installer** | `./cx install` | `.\cx.ps1 install` |
+| **Update to Latest Release** | `./cx update` | `.\cx.ps1 update` |
 | **Clean Uninstall** | `./cx uninstall` | `.\cx.ps1 uninstall` |
 | **Dispatch Multi-Agent Goal** | `./cx run "<prompt>"` | `.\cx.ps1 run "<prompt>"` |
 

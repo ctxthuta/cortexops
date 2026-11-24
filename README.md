@@ -11,19 +11,32 @@ Integrated with the [ThutaCortex](file:///home/lenovo/Documents/ThutaCortex) sec
 ```text
 [Lead Technical Product Manager & Engineering Director] (Root Agent)
   │
-  ├── [@cxagents]                             ── Multi-agent collective swarm orchestrator
-  ├── [Principal Academic Researcher]         ── Literature synthesis, experiment design, story-arc manuscripts
-  ├── [Staff R&D Research Engineer]           ── Academic search (arXiv), PDF analysis, web blogs
-  ├── [Principal Systems Architect]           ── Microservices, DDD, PostgreSQL DDL, API contracts
-  ├── [Senior UI/UX Engineer & Technologist]  ── Wireframes, design tokens, Figma maps, WCAG AA
-  ├── [Senior Frontend Engineer]              ── Next.js, Material UI, TanStack, shadcn, SEO/GEO
-  ├── [Senior Backend Engineer]               ── Go Gin, Bun Express, Fastify, NestJS, Python AI
-  ├── [Staff AI / ML Engineer]                ── Prompt schemas, RAG parameters, eval test suites
-  ├── [Senior DevOps & SRE]                   ── Multi-stage Docker, Compose, Nginx, CI/CD, probes
-  ├── [Senior QA & Evaluation Engineer]       ── Compilers, linters, exit-code-0 test runners
-  ├── [Senior Software Engineer]              ── Production implementation, integration layers, clean code
-  ├── [Senior Business Central & AL Developer]── Modern AL, event subscribers, ControlAddIns, telemetry
-  └── [Staff Security & Code Reviewer]        ── OWASP Top 10, concurrency hazards, clean code
+  ├── [Collective Swarm Orchestrator (@cxagents)]                      ── Multi-agent collective swarm orchestrator (25 specialists)
+  ├── [Principal Academic Researcher (@academic_researcher)]           ── Literature synthesis, experiment design, story-arc manuscripts
+  ├── [Staff R&D Research Engineer (@rnd_researcher)]                  ── Academic search (arXiv), PDF analysis, web blogs
+  ├── [Principal Systems Architect (@system_architect)]                ── Microservices, DDD, PostgreSQL DDL, Rust crate/FFI ABI contracts
+  ├── [Senior UI/UX Engineer & Technologist (@uiux_designer)]          ── Wireframes, design tokens, Figma maps, WCAG AA
+  ├── [Senior Frontend Engineer (@frontend_engineer)]                  ── Next.js, Material UI, TanStack, shadcn, SEO/GEO
+  ├── [Senior Mobile Application Engineer (@mobile_engineer)]          ── Flutter & Dart, offline-first sync (Drift/Isar), platform channels
+  ├── [Senior Backend Engineer (@backend_engineer)]                    ── Go Gin, Rust (Tokio/Axum/Tower/sqlx), Bun Express, Fastify, NestJS, Python
+  ├── [Staff Rust Systems & Backend Engineer (@rust_engineer)]         ── Memory-safe Rust, Tokio/Axum, sqlx, C FFI, Aya/libbpf-rs
+  ├── [Senior Software Engineer (@software_engineer)]                  ── Production implementation, Rust ownership/borrowing, integration, clean code
+  ├── [Senior Business Central & AL Developer (@al_developer)]         ── Modern AL, event subscribers, ControlAddIns, telemetry
+  ├── [Staff AI / ML Engineer (@ai_ml_engineer)]                       ── Prompt schemas, RAG parameters, eval test suites
+  ├── [Staff MLOps & Inference Engineer (@mlops_engineer)]             ── vLLM, TensorRT-LLM, Triton, AWQ/FP8 quantization, KV-cache
+  ├── [Staff AI Red Team & Safety Engineer (@ai_redteam_engineer)]     ── Prompt injection, tool hijacking fuzzing, multi-turn jailbreaks
+  ├── [Staff Synthetic Data & Sim Engineer (@synthetic_data_engineer)] ── Telemetry simulation, fault cascades, differential privacy
+  ├── [Staff Data Platform Engineer (@data_engineer)]                  ── Kafka, Flink, Spark 3.5.0, Rust Arrow/DataFusion/Polars, Iceberg, dbt
+  ├── [Principal Database Administrator (@database_engineer)]          ── EXPLAIN ANALYZE BUFFERS, zero-downtime DDL, PgBouncer, TimescaleDB
+  ├── [Senior DevOps & SRE (@devops_engineer)]                         ── Multi-stage Docker, Compose, Nginx, CI/CD, probes
+  ├── [Principal Platform Engineer (@platform_engineer)]               ── Internal Developer Platforms, OpenTofu/Terraform, ArgoCD, Istio
+  ├── [Staff Cloud FinOps Engineer (@finops_engineer)]                 ── Cloud unit economics, K8s workload rightsizing, spot fallback
+  ├── [Staff Systems & eBPF Kernel Engineer (@ebpf_engineer)]          ── CO-RE C (libbpf) & Rust (Aya, libbpf-rs, bpf-linker), XDP/TC, lock tracing
+  ├── [Staff Performance & Reliability Eng (@perf_engineer)]           ── k6/Locust, Rust Criterion (cargo bench), cargo-flamegraph, OpenTelemetry
+  ├── [Staff Application Security Engineer (@appsec_engineer)]         ── STRIDE/DREAD, OAuth 2.1, KMS, cargo audit/cargo deny, unsafe/FFI gating
+  ├── [Staff Compliance & Governance Eng (@compliance_engineer)]       ── SOC 2, HIPAA, GDPR, WORM audit logs, OPA/Rego compliance-as-code
+  ├── [Senior QA & Evaluation Engineer (@qa_engineer)]                 ── Compilers, linters (cargo clippy/test, go test -race, pytest), exit-code-0
+  └── [Staff Security & Code Reviewer (@code_reviewer)]                ── OWASP Top 10, Rust unsafe // SAFETY: & FFI audits, concurrency, clean code
 ```
 
 ---
@@ -37,12 +50,13 @@ cortexops/
 ├── plugin/                    # Antigravity global plugin package
 │   ├── plugin.json            # Plugin manifest
 │   ├── agents/                # Standalone subagent definitions (.md with YAML frontmatter)
+│   ├── skills/                # Operational playbooks (SKILL.md) for all specialist roles
 │   └── rules/AGENTS.md        # Global engineering guidelines & manuscript authoring rules
 ├── src/                       # Standalone Python framework
 │   ├── dashboard.py           # Cross-platform live status & token telemetry dashboard
 │   ├── main.py                # CLI runner and interactive driver
 │   ├── team.py                # LocalAgentConfig assembler & orchestration policies
-│   ├── agents/personas.py     # SubagentConfig definitions for all 12 specialized roles
+│   ├── agents/personas.py     # SubagentConfig definitions for all specialist roles and cxagents orchestrator
 │   └── tools/                 # Custom tool definitions (arXiv, web, cortex, code, runner)
 ├── package.json               # npm package manifest (@ctxthuta/cxops)
 ├── cx                         # Linux / macOS CLI executable wrapper script
@@ -90,6 +104,54 @@ npx @ctxthuta/cxops@latest init
 
 ---
 
+### Updating CortexOps on Windows (Upgrade Runbook)
+
+When a new version of CortexOps is published, choose one of these verified update methods in Windows PowerShell:
+
+#### Method 1: Global NPM Update (Recommended, 1-Liner)
+If installed via npm, update globally and refresh the junction link:
+```powershell
+npm install -g @ctxthuta/cxops@latest
+cxops link
+cxops doctor
+```
+Then restart Google Antigravity / VS Code. The global link immediately points to the latest release assets.
+
+#### Method 2: Direct Release Archive Update via Antigravity CLI
+If updating using the GitHub release ZIP archive without npm:
+```powershell
+# 1. Fetch and expand the latest release archive
+$tag = (Invoke-RestMethod -Uri "https://api.github.com/repos/ctxthuta/cortexops/releases/latest").tag_name
+$version = $tag.TrimStart("v")
+$cxopsDir = Join-Path $Env:Temp "cortexops-$tag"
+Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/$tag/cortexops-$version.zip" -OutFile "$cxopsDir.zip"
+Expand-Archive -Path "$cxopsDir.zip" -DestinationPath $cxopsDir -Force
+
+# 2. Re-install into Antigravity
+agy plugin install "$cxopsDir"
+agy plugin list
+```
+Then fully restart Google Antigravity / VS Code.
+
+#### Method 3: Automated 1-Click Update CLI
+If you have the `cxops` or `cx.ps1` CLI on your path:
+```powershell
+cxops update
+# or in local repository:
+.\cx.ps1 update
+```
+
+#### Method 4: Local Git Repository Pull (For Developer Workspaces)
+If you cloned the repository locally:
+```powershell
+cd path\to\cortexops
+git pull origin main
+.\install.ps1
+cxops verify
+```
+
+---
+
 ### macOS & Linux (Terminal / zsh / bash)
 
 Because macOS and Linux use POSIX filesystem permissions, both methods work seamlessly without UAC or junction restrictions:
@@ -121,9 +183,13 @@ npm run release [patch|minor|major]
 
 ### Mode A: Native Antigravity Subagents (No External API Key Required)
 When working inside Google Antigravity (IDE or CLI):
-- All 12 agents are loaded globally via the linked plugin (`~/.gemini/config/plugins/cortexops`) and locally in `.agents/`.
+- All 35 agents (34 specialists plus `@cxagents`) are loaded globally via the linked plugin (`~/.gemini/config/plugins/cortexops`) and locally in `.agents/`.
 - Subagents execute directly through Antigravity's authenticated session.
-- Mention individual specialists directly (`@backend_engineer`, `@system_architect`, `@code_reviewer`), or mention `@cxagents` to mobilize the entire relevant team concurrently.
+- Mention individual specialists directly (`@rust_engineer`, `@backend_engineer`, `@system_architect`, `@code_reviewer`), or mention `@cxagents` to mobilize the entire relevant team concurrently.
+
+```text
+@rust_engineer Build a Tokio + Axum + Tower microservice with parameterized sqlx persistence, C FFI bindings, and Aya/libbpf-rs telemetry verified with cargo clippy -- -D warnings, cargo test, cargo audit, and cargo deny check.
+```
 
 <!--
 ### Mode B: Standalone Multi-Engine Framework (Terminal / CI / Headless)
@@ -151,7 +217,7 @@ When running outside Antigravity as an automated background process:
 
 ---
 
-## 4. Cross-Laptop Setup & GitHub Synchronization
+## 5. Cross-Laptop Setup & GitHub Synchronization
 
 To replicate CortexOps on any workstation:
 
@@ -182,7 +248,7 @@ The installer automatically bootstraps the virtual environment, installs depende
 
 ---
 
-## 5. CLI Command Reference
+## 6. CLI Command Reference
 
 Execute commands via `./cx [command]` (Linux/macOS) or `.\cx.ps1 [command]` (Windows):
 
@@ -193,7 +259,7 @@ Execute commands via `./cx [command]` (Linux/macOS) or `.\cx.ps1 [command]` (Win
 # Continuously monitor session telemetry (auto-refresh)
 ./cx watch
 
-# Verify all 11 declarative subagents and plugin junction
+# Verify all 26 declarative subagents and plugin link
 ./cx verify
 
 # Re-run installation and link global plugin

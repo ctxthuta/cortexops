@@ -19,6 +19,8 @@
     "verify": "node ./bin/cxops.js verify",
     "doctor": "node ./bin/cxops.js doctor",
     "version": "node ./bin/cxops.js version",
+    "update": "node ./bin/cxops.js update",
+    "upgrade": "node ./bin/cxops.js update",
     "release": "node ./scripts/release.js"
   },
   "keywords": [
@@ -37,7 +39,13 @@
     "aiops",
     "orchestrator",
     "autonomous-agents",
-    "gemini"
+    "gemini",
+    "rust",
+    "rust-engineer",
+    "tokio",
+    "axum",
+    "ebpf",
+    "systems-programming"
   ],
   "author": "Thuta Tun <thutatun533@gmail.com> (https://github.com/ctxthuta)",
   "license": "MIT",

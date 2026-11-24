@@ -471,7 +471,7 @@ async function runSetup() {
         console.log('  - Type @<agent> or @cxagents in Antigravity chat');
         console.log('  - cxops status      Display operational & token telemetry dashboard');
         console.log('  - cxops watch       Continuously monitor the live dashboard');
-        console.log('  - cxops verify      Verify all 12 subagent definitions');
+        console.log('  - cxops verify      Verify all registered specialist subagent definitions');
         console.log('  - cxops doctor      Run diagnostic health check');
         /*
         // Standalone task runner commands (temporarily inactive)
@@ -710,6 +710,7 @@ Commands:
   version, -v, --version    Display framework version and check for updates
   link                      Link Antigravity global plugin and subagents
   unlink                    Remove Antigravity global plugin and subagents
+  update, upgrade           Update @ctxthuta/cxops to the latest release and refresh links
   help, --help, -h          Display this command reference
 ` + /*
 `  run [options] "<prompt>"  Dispatch an autonomous multi-agent task via Python SDK
@@ -765,6 +766,21 @@ async function main() {
             const isDetailed = command === 'version' || args.includes('--check') || args.includes('-c');
             await runVersion(isDetailed);
             break;
+        case 'update':
+        case 'upgrade': {
+            console.log('[*] Updating @ctxthuta/cxops to latest version via npm...');
+            const npmCmd = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+            const res = spawnSync(npmCmd, ['install', '-g', '@ctxthuta/cxops@latest'], { stdio: 'inherit' });
+            if (res.status === 0) {
+                console.log('[OK] Successfully updated @ctxthuta/cxops.');
+                linkPlugin({ autoWorkspace: true });
+                runDoctor();
+            } else {
+                console.error('[ERROR] Failed to update package via npm.');
+                process.exit(1);
+            }
+            break;
+        }
         /*
         case 'run':
             if (args.length < 2) {

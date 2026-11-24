@@ -6,7 +6,7 @@
   "logo": "assets/antigravity-logo.png",
   "suggestedPrompts": [
     "I've got an idea for something I'd like to build",
-    "Let's architect and implement a high-throughput microservice",
+    "Architect and implement a memory-safe Rust or Go microservice (Tokio, Axum, sqlx)",
     "Develop a Business Central AL extension with ControlAddIns"
   ],
   "category": "Developer Tools",
@@ -21,7 +21,12 @@
     "al-developer",
     "collaboration",
     "best-practices",
-    "workflows"
+    "workflows",
+    "rust",
+    "rust-engineer",
+    "tokio",
+    "axum",
+    "ebpf"
   ],
   "author": {
     "name": "Thuta Tun",

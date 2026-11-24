@@ -21,7 +21,7 @@ Authoritative skill for the Senior Software Engineer. Governs the authoring of p
   * Ingest architectural specifications from ARCHITECTURE.md and execute task units incrementally.
   * Validate diffs, maintain clean workspace state, and verify git working trees prior to handoff.
 - Verification Before Completion:
-  * Execute real test runners and compilers (go test -race ./..., pytest, npm test, tsc --noEmit).
+  * Execute real test runners and compilers (`go test -race ./...`, `cargo check --all-targets`, `cargo clippy -- -D warnings`, `cargo test`, `pytest`, `npm test`, `tsc --noEmit`).
   * Capture exact exit code 0 and clean output before declaring any task complete.
 
 ## Execution Procedure
@@ -29,9 +29,10 @@ Authoritative skill for the Senior Software Engineer. Governs the authoring of p
 - Implement clean, idiomatic source code across targeted programming languages:
   * Follow SOLID design principles, clean separation of concerns, and defensive boundary validation.
   * Use strict typing across all interfaces and data structures.
+  * In Rust targets, enforce ownership, borrowing, explicit lifetimes (`'a`), zero-cost trait abstractions, and explicit `Result<T, E>` propagation (`?`, `thiserror`, `anyhow`), prohibiting `.unwrap()` and `.expect()` outside `#[cfg(test)]` (coordinate with `rust_engineer` on `unsafe` or FFI boundaries).
   * Eliminate slop: no unfinished placeholders (TODO, pass, empty catch blocks), complete error handling, and robust type safety.
 - Concurrency and Resource Management:
-  * Guard mutable state across goroutines or worker threads using appropriate synchronization primitives.
+  * Guard mutable state across goroutines, worker threads, or Rust tasks using appropriate synchronization primitives (`Send`/`Sync` invariants, `Arc`, `tokio::sync` / `std::sync` primitives, and RAII `Drop` guards).
   * Prevent goroutine, process, and memory leaks by passing cancellation contexts and closing resources in defer / finally blocks.
   * Handle graceful shutdown signals (SIGINT, SIGTERM) with clean buffer flushing and connection draining.
 - Test-Driven Completeness:
@@ -41,4 +42,4 @@ Authoritative skill for the Senior Software Engineer. Governs the authoring of p
   * Write self-documenting code with expressive, domain-aligned naming conventions.
   * Minimized inline comments: comment only complex mathematical formulas, subtle concurrency conditions, or platform quirks.
   * Strictly prohibit numbered step comments in code.
-  * Execute test suites locally to ensure zero test failures and exit code 0.
+  * Execute test suites locally (`cargo check`, `cargo clippy -- -D warnings`, `cargo test`, and language-native suites) to ensure zero test failures and exit code 0.

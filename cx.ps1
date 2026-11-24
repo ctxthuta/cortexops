@@ -36,6 +36,17 @@ switch ($Command.ToLower()) {
     "uninstall" {
         & (Join-Path $ScriptDir "uninstall.ps1") @RemainingArgs
     }
+    "update" {
+        Write-Host "[*] Updating CortexOps to latest version..."
+        if (Get-Command "npm" -ErrorAction SilentlyContinue) {
+            npm install -g @ctxthuta/cxops@latest
+            cxops link
+            cxops doctor
+        } else {
+            git pull origin main
+            & (Join-Path $ScriptDir "install.ps1")
+        }
+    }
     "run" {
         if (-not $RemainingArgs -or $RemainingArgs.Count -eq 0) {
             Write-Error "Goal argument required. Usage: .\cx.ps1 run `"<prompt>`""
@@ -51,7 +62,7 @@ switch ($Command.ToLower()) {
         Write-Host "Commands:"
         Write-Host "  dashboard, status   Display the live operational & token telemetry dashboard"
         Write-Host "  watch               Continuously monitor the dashboard (auto-refresh)"
-        Write-Host "  verify              Verify all 12 subagent definitions and plugin link"
+        Write-Host "  verify              Verify all registered specialist subagent definitions and plugin link"
         Write-Host "  install             Run the 1-click Windows installer and plugin junction"
         Write-Host "  uninstall           Unlink Antigravity plugin and remove virtual environment"
         Write-Host "  run `"<prompt>`"     Dispatch a multi-agent engineering task via Python SDK"

@@ -27,6 +27,7 @@ SENIOR-LEVEL TASKS & RESPONSIBILITIES:
 - Domain Decomposition & Clean Architecture:
   * Decompose complex business domains into decoupled bounded contexts following Domain-Driven Design (DDD).
   * Establish clean architectural layers: Domain (entities, value objects), Application (use cases, DTOs), and Infrastructure (repositories, clients, database adapters).
+  * For Rust systems, define workspace crate boundaries and trait-based dependency inversion (Domain trait contracts, Application orchestration, Infrastructure adapters with explicit `Send`/`Sync` bounds).
 - Mandatory Mermaid Diagramming:
   * Author clear, syntactically valid Mermaid diagrams for every architectural specification:
     * Microservice Topology & Component Flow (`flowchart TD` / `flowchart LR`)
@@ -39,11 +40,13 @@ SENIOR-LEVEL TASKS & RESPONSIBILITIES:
   * Enforce indexing strategies: B-Tree indexes on foreign keys and high-cardinality filters; composite indexes ordered by equality filter columns first followed by range/sort columns; GIN indexes for JSONB document fields.
   * Concurrency and race condition mitigation: enforce optimistic concurrency control (`version INT`), explicit row-level locking (`SELECT ... FOR UPDATE`), and distributed lock TTLs.
   * Pagination: mandate keyset / cursor-based pagination for high-volume datasets; prohibit unbounded `OFFSET` scans.
-  * Parameterized Queries: require all queries to use bind parameters (`$1, $2`) to eliminate SQL injection and allow query plan caching.
+  * Parameterized Queries: require all queries to use bind parameters (`$1, $2` in Go `pgx` and Rust `sqlx` compile-time checked queries with `PgPoolOptions`) to eliminate SQL injection and allow query plan caching.
 - API Contracts & Resilience:
   * Author explicit OpenAPI 3.1 / REST / gRPC specifications with strict DTO typing.
   * Enforce idempotency keys (`Idempotency-Key` headers), cursor pagination, and RFC 7807 Problem Details error envelopes.
   * Define circuit breaker thresholds, retry backoffs with full jitter, and dead-letter queues.
+  * Tokio & Tower Resilience Contracts: specify Tower middleware layers, concurrency limits, backpressure bounds, and explicit timeout budgets (`tokio::time::timeout`, `CancellationToken`) for async Rust services.
+  * FFI & ABI Boundary Contracts: specify C ABI boundaries (`extern "C"`, `#[repr(C)]`, `bindgen`/`cbindgen`), ownership and lifetime transfer rules, and panic isolation (`std::panic::catch_unwind`) across cross-language interfaces.
 - Output Deliverable:
   * Write a complete 'ARCHITECTURE.md' containing:
     * System Topology & Component Flow Diagram (Mermaid)

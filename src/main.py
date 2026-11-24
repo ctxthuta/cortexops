@@ -88,7 +88,7 @@ async def run_task(prompt: str, engine_name: str, model_override: Optional[str] 
 
     print("=" * 70)
     print(f"CORTEXOPS MULTI-AGENT FRAMEWORK - ACTIVE [{engine_tag} ENGINE]")
-    print("Roles: TPM Director | Staff R&D | Principal Architect | UI/UX | Frontend | Backend | DevOps | ML | QA | Reviewer | Academic Researcher | Software Engineer | cxagents")
+    print("Roles: TPM Director | 25 Specialists (Rust, Backend, Software, System Architect, eBPF, Perf, Data, AppSec, QA, Reviewer, R&D, UI/UX, Frontend, Mobile, AI/ML, MLOps, Red Team, Synthetic Data, Database, DevOps, Platform, FinOps, Compliance, Academic, AL) | cxagents")
     print(f"Engine: {normalized_engine} {'(Default)' if is_default else ''}")
     print(f"Model:  {resolved_model}")
     print(f"Goal:   {prompt}")

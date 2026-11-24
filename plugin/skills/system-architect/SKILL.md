@@ -29,6 +29,7 @@ All architectural deliverables must include clear, valid Mermaid diagrams repres
   * Domain Layer: Pure business entities, value objects, and domain events.
   * Application Layer: Command/query use cases, DTOs, and transaction orchestrators.
   * Infrastructure Layer: Database repositories, message brokers, and third-party gateways.
+  * Rust Workspace & Trait Boundaries: Separate multi-crate Rust workspaces into Domain traits, Application use cases, and Infrastructure adapters enforcing explicit `Send`/`Sync` boundary contracts.
 - Construct the system topology diagram in Mermaid:
   * Define microservice nodes, API gateways, cache clusters (Redis/Valkey), message brokers (Kafka/RabbitMQ), and database shards.
   * Quote node labels containing parentheses or special characters.
@@ -41,11 +42,13 @@ All architectural deliverables must include clear, valid Mermaid diagrams repres
   * B-Tree indexes: Mandatory on all foreign key columns and equality search filters.
   * Composite indexes: Column ordering must place equality filter columns first, followed by range filters, followed by sort columns (CREATE INDEX idx_orders_user_created ON orders (user_id, status, created_at DESC)).
   * GIN indexes: Mandatory for JSONB attributes queried via containment (@>) or key existence (?).
-  * Pagination: Enforce keyset or cursor-based pagination using WHERE (id, created_at) < (, ) ORDER BY created_at DESC, id DESC LIMIT .
-  * Parameterization: Mandate parameterized bindings (, ) for all queries to prevent SQL injection and enable query plan caching.
+  * Pagination: Enforce keyset or cursor-based pagination using `WHERE (created_at, id) < ($1, $2) ORDER BY created_at DESC, id DESC LIMIT $3`.
+  * Parameterization: Mandate parameterized bindings (`$1, $2` in Go `pgx` and Rust `sqlx` compile-time checked queries with `PgPoolOptions`) for all queries to prevent SQL injection and enable query plan caching.
 - Formulate resilient API contracts:
   * Specify OpenAPI 3.1 endpoints with strict request/response DTO schemas.
   * Mandate Idempotency-Key headers on mutating requests (POST, PUT, DELETE).
   * Define RFC 7807 Problem Details error envelopes for consistent client error handling.
   * Specify circuit breaker limits, timeout budgets, and exponential backoff with full jitter.
+  * Tokio & Tower Resilience: Define Tower service layers, concurrency limits, backpressure bounds, and explicit timeout budgets (`tokio::time::timeout`, `CancellationToken`) for async Rust services.
+  * FFI & ABI Boundary Contracts: Define C ABI interfaces (`extern "C"`, `#[repr(C)]`, `bindgen`/`cbindgen`), ownership/lifetime transfer rules, and panic isolation (`std::panic::catch_unwind`).
 - Compile and publish ARCHITECTURE.md containing all diagrams, SQL DDL, indexing tables, and API contracts.

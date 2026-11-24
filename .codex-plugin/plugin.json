@@ -1,7 +1,7 @@
 {
   "name": "cortexops",
   "version": "1.1.7",
-  "description": "CortexOps Multi-Agent Framework with Superpowers: Autonomous engineering and research operating system across 13 Staff/Principal personas with TDD, systematic debugging, and planning workflows.",
+  "description": "CortexOps Multi-Agent Framework with Superpowers: Autonomous engineering and research operating system across 26 agent personas (25 Staff/Principal/Senior specialists including Rust systems engineering plus cxagents) with TDD, systematic debugging, and planning workflows.",
   "author": {
     "name": "Thuta Tun",
     "email": "thutatun533@gmail.com",
@@ -20,14 +20,19 @@
     "code-review",
     "al-developer",
     "system-architect",
-    "workflow"
+    "workflow",
+    "rust",
+    "rust-engineer",
+    "tokio",
+    "axum",
+    "ebpf"
   ],
   "skills": "./skills/",
   "hooks": {},
   "interface": {
     "displayName": "CortexOps",
     "shortDescription": "Autonomous multi-agent engineering framework with Superpowers workflows",
-    "longDescription": "CortexOps orchestrates 13 Staff and Principal engineering specialists (Architecture, UI/UX, Backend, AL Developer, QA, DevOps) alongside Superpowers workflows for brainstorming, implementation planning, TDD, systematic debugging, parallel execution, and code review.",
+    "longDescription": "CortexOps orchestrates 25 Staff, Principal, and Senior engineering specialists plus the cxagents orchestrator (Architecture, Rust Systems, UI/UX, Backend, AL Developer, eBPF, Performance, Data, AppSec, QA, DevOps, and more) alongside Superpowers workflows for brainstorming, implementation planning, TDD, systematic debugging, parallel execution, and code review.",
     "developerName": "Thuta Tun",
     "category": "Developer Tools",
     "capabilities": [
@@ -37,7 +42,8 @@
     ],
     "defaultPrompt": [
       "I've got an idea for something I'd like to build.",
-      "Let's architect and implement a production feature."
+      "Let's architect and implement a production feature.",
+      "Architect and implement a memory-safe Rust microservice with Tokio, Axum, and sqlx."
     ],
     "websiteURL": "https://github.com/ctxthuta/cortexops",
     "privacyPolicyURL": "https://github.com/ctxthuta/cortexops",
