@@ -1,6 +1,6 @@
 {
   "name": "@ctxthuta/cxops",
-  "version": "1.1.7",
+  "version": "1.2.0",
   "description": "CortexOps Multi-Agent Framework with Superpowers: Autonomous engineering operating system across Google Antigravity, Claude Code, and OpenAI Codex.",
   "main": "bin/cxops.js",
   "bin": {

@@ -14,6 +14,7 @@ const PKG_PATH = path.join(ROOT_DIR, 'package.json');
 const PLUGIN_PATH = path.join(ROOT_DIR, 'plugin', 'plugin.json');
 const AGY_PATH = path.join(ROOT_DIR, '.antigravity-plugin', 'plugin.json');
 const CLAUDE_PATH = path.join(ROOT_DIR, '.claude-plugin', 'plugin.json');
+const MARKETPLACE_PATH = path.join(ROOT_DIR, '.claude-plugin', 'marketplace.json');
 const CODEX_PATH = path.join(ROOT_DIR, '.codex-plugin', 'plugin.json');
 const DIST_DIR = path.join(ROOT_DIR, 'dist');
 
@@ -44,11 +45,14 @@ async function main() {
     console.log('='.repeat(70));
 
     // 1. Update version across all manifest files
-    const manifests = [PKG_PATH, PLUGIN_PATH, AGY_PATH, CLAUDE_PATH, CODEX_PATH];
+    const manifests = [PKG_PATH, PLUGIN_PATH, AGY_PATH, CLAUDE_PATH, CODEX_PATH, MARKETPLACE_PATH];
     for (const m of manifests) {
         if (fs.existsSync(m)) {
             const data = JSON.parse(fs.readFileSync(m, 'utf-8'));
-            data.version = newVer;
+            if (data.version) data.version = newVer;
+            if (Array.isArray(data.plugins)) {
+                data.plugins.forEach(p => { p.version = newVer; });
+            }
             fs.writeFileSync(m, JSON.stringify(data, null, 2) + '\n');
             console.log(`[UPDATED] ${path.relative(ROOT_DIR, m)} -> ${newVer}`);
         }
@@ -77,7 +81,7 @@ async function main() {
     // 3. Local strict validation using agy CLI
     try {
         const agyBin = isWin ? 'agy' : (fs.existsSync('/home/lenovo/.gemini/bin/agy') ? '/home/lenovo/.gemini/bin/agy' : 'agy');
-        run(`"${agyBin}" plugin validate "${zipNoV}" --strict`);
+        run(`"${agyBin}" plugin validate "${path.join(ROOT_DIR, 'plugin')}" --strict`);
         console.log('[VALIDATION] Strict plugin verification passed with 0 errors and 0 warnings.');
     } catch (err) {
         console.warn(`[WARN] Local agy validation skipped or warning: ${err.message}`);
