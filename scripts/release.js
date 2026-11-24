@@ -65,16 +65,19 @@ async function main() {
 
     const zipNoV = path.join(DIST_DIR, `cortexops-${newVer}.zip`);
     const zipWithV = path.join(DIST_DIR, `cortexops-v${newVer}.zip`);
+    const zipLatest = path.join(DIST_DIR, 'cortexops.zip');
     const checksumFile = path.join(DIST_DIR, 'checksums.txt');
 
     const isWin = process.platform === 'win32';
     if (isWin) {
         run(`powershell -Command "Compress-Archive -Path '${path.join(ROOT_DIR, 'plugin')}\\*' -DestinationPath '${zipNoV}' -Force"`);
         fs.copyFileSync(zipNoV, zipWithV);
+        fs.copyFileSync(zipNoV, zipLatest);
         run(`powershell -Command "(Get-FileHash -Algorithm SHA256 '${zipNoV}').Hash.ToLower() + '  ' + [System.IO.Path]::GetFileName('${zipNoV}') | Out-File -Encoding utf8 '${checksumFile}'"`);
     } else {
         run(`cd "${path.join(ROOT_DIR, 'plugin')}" && zip -r "${zipNoV}" .`);
         fs.copyFileSync(zipNoV, zipWithV);
+        fs.copyFileSync(zipNoV, zipLatest);
         run(`sha256sum "${zipNoV}" > "${checksumFile}"`);
     }
 
@@ -103,15 +106,15 @@ async function main() {
     const ghBin = isWin ? 'gh' : (fs.existsSync(path.join(process.env.HOME, '.local', 'bin', 'gh')) ? path.join(process.env.HOME, '.local', 'bin', 'gh') : 'gh');
     try {
         const title = `CortexOps v${newVer}`;
-        const notes = `## CortexOps Multi-Agent Framework v${newVer}\n\nAutomated dual release published to npm and GitHub.\n\n### Assets\n- \`cortexops-${newVer}.zip\`\n- \`cortexops-v${newVer}.zip\`\n- \`checksums.txt\``;
+        const notes = `## CortexOps Multi-Agent Framework v${newVer}\n\nAutomated dual release published to npm and GitHub.\n\n### Assets\n- \`cortexops.zip\` (Universal Latest)\n- \`cortexops-${newVer}.zip\`\n- \`cortexops-v${newVer}.zip\`\n- \`checksums.txt\``;
         
         try {
             run(`"${ghBin}" release view v${newVer}`);
-            run(`"${ghBin}" release upload v${newVer} "${zipNoV}" "${zipWithV}" "${checksumFile}" --clobber`);
+            run(`"${ghBin}" release upload v${newVer} "${zipNoV}" "${zipWithV}" "${zipLatest}" "${checksumFile}" --clobber`);
             run(`"${ghBin}" release edit v${newVer} --title "${title}" --notes "${notes}"`);
             console.log(`[GITHUB RELEASE] Updated existing release v${newVer}`);
         } catch (_) {
-            run(`"${ghBin}" release create v${newVer} "${zipNoV}" "${zipWithV}" "${checksumFile}" --title "${title}" --notes "${notes}"`);
+            run(`"${ghBin}" release create v${newVer} "${zipNoV}" "${zipWithV}" "${zipLatest}" "${checksumFile}" --title "${title}" --notes "${notes}"`);
             console.log(`[GITHUB RELEASE] Created new release v${newVer}`);
         }
     } catch (ghErr) {

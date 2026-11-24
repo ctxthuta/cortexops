@@ -135,8 +135,8 @@ To install CortexOps into OpenAI Codex:
 * **Windows PowerShell (Release Archive Extraction)**:
   Windows `agy` treats remote ZIP URLs as repository subfolders; download and expand the release archive prior to installation:
   ```powershell
-  $cxopsDir = Join-Path $Env:Temp "cortexops-v1.1.7"
-  Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/v1.1.7/cortexops-1.1.7.zip" -OutFile "$cxopsDir.zip"
+  $cxopsDir = Join-Path $Env:Temp "cortexops"
+  Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/latest/download/cortexops.zip" -OutFile "$cxopsDir.zip"
   Expand-Archive -Path "$cxopsDir.zip" -DestinationPath $cxopsDir -Force
   agy plugin install "$cxopsDir"
   agy plugin list
