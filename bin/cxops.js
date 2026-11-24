@@ -704,6 +704,7 @@ Commands:
   setup                     Run interactive cross-platform setup wizard
   init                      Initialize CortexOps in the current workspace (.agents/)
   doctor                    Run system diagnostics and prerequisite health check
+  monitor, agentmon         Launch Global Agent Monitor terminal view across all platforms
   status, dashboard         Display operational & token telemetry dashboard
   watch                     Continuously monitor the dashboard (auto-refresh)
   verify                    Verify all declarative subagent definitions
@@ -739,6 +740,15 @@ async function main() {
         case 'doctor':
             runDoctor();
             break;
+        case 'monitor':
+        case 'agentmon': {
+            const agentmonBin = path.join(__dirname, 'agentmon.js');
+            const subArgs = args.slice(1);
+            const { spawnSync } = require('child_process');
+            const res = spawnSync(process.execPath, [agentmonBin, ...subArgs], { stdio: 'inherit' });
+            process.exit(res.status || 0);
+            break;
+        }
         case 'link': {
             const hasWorkspace = args.includes('--workspace') || args.includes('-w');
             linkPlugin({ workspace: hasWorkspace, autoWorkspace: true });

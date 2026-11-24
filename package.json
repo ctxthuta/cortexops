@@ -5,7 +5,8 @@
   "main": "bin/cxops.js",
   "bin": {
     "cxops": "bin/cxops.js",
-    "cortexops": "bin/cxops.js"
+    "cortexops": "bin/cxops.js",
+    "agentmon": "bin/agentmon.js"
   },
   "scripts": {
     "postinstall": "node ./bin/cxops.js link",
@@ -18,6 +19,8 @@
     "watch": "node ./bin/cxops.js watch",
     "verify": "node ./bin/cxops.js verify",
     "doctor": "node ./bin/cxops.js doctor",
+    "monitor": "node ./bin/agentmon.js",
+    "test": "node tests/monitor/test_agentmon.js",
     "version": "node ./bin/cxops.js version",
     "update": "node ./bin/cxops.js update",
     "upgrade": "node ./bin/cxops.js update",

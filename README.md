@@ -234,7 +234,50 @@ npm run release [patch|minor|major]
 
 ---
 
-## 4. Two Modes of Execution
+## 4. Global Agent Monitor (`agentmon`)
+
+The Global Agent Monitor provides a unified, real-time terminal control plane that opens from any directory and monitors active agent tasks across Google Antigravity (App, CLI, VS Code), OpenAI Codex (CLI, VS Code), Anthropic Claude Code (CLI, VS Code), and CortexOps framework actions.
+
+### Launching the Dashboard
+
+Attach the terminal monitor from any repository or folder:
+```bash
+agentmon watch
+# or via cxops wrapper:
+cxops monitor
+# filter to a specific project:
+agentmon watch --project InventorySync
+# accessible monochrome display (80x24 standard):
+agentmon watch --no-color --no-motion
+```
+
+### CLI Command Suite
+
+| Command | Description |
+| :--- | :--- |
+| `agentmon watch [--project <name>]` | Interactive terminal dashboard with live pub/sub updates. |
+| `agentmon brief [--project <name>]` | Executive summary of active work, blocked items, and reported tokens. |
+| `agentmon sessions [--json]` | Machine-readable JSON snapshot or list of active conversations. |
+| `agentmon sources` | Discovered telemetry adapters, event counts, and connection health. |
+| `agentmon doctor` | System health check and installed client capabilities report. |
+| `agentmon setup` | Idempotent environment setup and user hook enrollment. |
+| `agentmon history [--purge <proj>]` | Inspect retained history or permanently purge project records. |
+| `agentmon start / stop / status` | Manage the background single-writer collector daemon. |
+
+### Terminal Keyboard Shortcuts
+
+- `1` - `5`: Switch views (Overview, Attention, Conversations, Usage, Sources).
+- `A`: Jump directly to the Attention list (waiting for approval or failed items).
+- `Enter`: Inspect selected row and view conversation detail.
+- `Esc`: Return to Overview and clear active filters.
+- `Space`: Pause/resume real-time scrolling without dropping events.
+- `B`: Display factual executive briefing popup.
+- `?`: Open keyboard command palette.
+- `Q` / `Ctrl+C`: Exit terminal viewer (collector daemon remains running in background).
+
+---
+
+## 5. Two Modes of Execution
 
 ### Mode A: Native Antigravity Subagents (No External API Key Required)
 When working inside Google Antigravity (IDE or CLI):
