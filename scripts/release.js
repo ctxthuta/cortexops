@@ -81,7 +81,8 @@ async function main() {
         run(`sha256sum "${zipNoV}" > "${checksumFile}"`);
     }
 
-    // 3. Local strict validation using agy CLI
+    // 3. Local strict validation using agy CLI and test execution
+    run('npm test');
     try {
         const agyBin = isWin ? 'agy' : (fs.existsSync('/home/lenovo/.gemini/bin/agy') ? '/home/lenovo/.gemini/bin/agy' : 'agy');
         run(`"${agyBin}" plugin validate "${path.join(ROOT_DIR, 'plugin')}" --strict`);

@@ -6,6 +6,11 @@
 
 'use strict';
 
+let PKG_VERSION = '1.2.2';
+try {
+  PKG_VERSION = require('../../../package.json').version;
+} catch (_) {}
+
 const ANSI = {
   reset: '\x1b[0m',
   bold: '\x1b[1m',
@@ -235,7 +240,7 @@ class TerminalRenderer {
 
     lines.push(this.style(bar, 'dim'));
     lines.push(
-      `${this.style('GLOBAL AGENT MONITOR', 'bold')} ${this.style('v1.2.1', 'brightMagenta')} | ` +
+      `${this.style('GLOBAL AGENT MONITOR', 'bold')} ${this.style(`v${PKG_VERSION}`, 'brightMagenta')} | ` +
       `${this.style(filterLabel, 'brightCyan')} | Collector: ${healthBadge}`
     );
     lines.push(
