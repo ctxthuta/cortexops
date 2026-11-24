@@ -1,6 +1,6 @@
 {
   "name": "cortexops",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "CortexOps Multi-Agent Framework with Superpowers: Autonomous engineering and research operating system across 36 agent personas (35 Staff/Principal/Senior specialists including Rust systems engineering and agent architecture plus cxagents) with TDD, systematic debugging, and planning workflows.",
   "author": {
     "name": "Thuta Tun",
