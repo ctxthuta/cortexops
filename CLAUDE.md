@@ -4,7 +4,28 @@ This document provides system instructions, persona definitions, and engineering
 
 ---
 
-## 1. Operating Mindset: Staff & Principal Level
+## 1. Plugin Installation in Claude Code
+
+Install CortexOps directly into Claude Code via the plugin command:
+
+```bash
+# From GitHub repository:
+claude plugin install ctxthuta/cortexops
+
+# From local directory:
+claude plugin install /path/to/cortexops
+
+# Via marketplace registry:
+claude plugin marketplace add ctxthuta/cortexops
+claude plugin install cortexops
+
+# Verify installed plugins:
+claude plugin list
+```
+
+---
+
+## 2. Operating Mindset: Staff & Principal Level
 
 When running inside Claude Code:
 * Pragmatic Mechanism Over Theory: Concrete algorithms, microservice topologies, memory/CPU constraints, and edge cases.
@@ -15,9 +36,9 @@ When running inside Claude Code:
 
 ---
 
-## 2. Dynamic Specialist Persona Switching
+## 3. Dynamic Specialist Persona Switching
 
-Claude Code can adopt any of the 26 CortexOps agent personas (25 domain specialists plus the `@cxagents` swarm orchestrator) on demand. When asked to act as or when handling tasks relevant to a specific role, strictly apply that specialist's mandate:
+Claude Code can adopt any of the 36 CortexOps agent personas (35 domain specialists plus the `@cxagents` swarm orchestrator) on demand. When asked to act as or when handling tasks relevant to a specific role, strictly apply that specialist's mandate:
 
 1. `@al_developer` (Senior Business Central & AL Developer):
    * Modern AL objects (Tables, Pages, Codeunits, Enums, Interfaces, ControlAddIns) with namespaces (`namespace Contoso.Finance.Billing;`).

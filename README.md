@@ -76,29 +76,84 @@ cortexops/
 
 ## 3. Multi-Platform Installation Runbooks
 
-### Windows PowerShell (Recommended Runbooks)
+### Option 1: Native Plugin Installation Across AI Engines
 
-#### Method A: Direct Release Installation via Antigravity CLI
-This is the verified working method to install release archives on Windows:
-```powershell
-$cxopsDir = Join-Path $Env:Temp "cortexops-v1.1.7"
-Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/v1.1.7/cortexops-1.1.7.zip" -OutFile "$cxopsDir.zip"
-Expand-Archive -Path "$cxopsDir.zip" -DestinationPath $cxopsDir -Force
-agy plugin install "$cxopsDir"
-agy plugin list
-```
-Then restart VS Code / Antigravity.
+CortexOps provides declarative plugin manifests for Anthropic Claude Code, OpenAI Codex, and Google Antigravity.
 
-#### Method B: Global NPM Package + cxops CLI Link
-```powershell
+#### A. Anthropic Claude Code (`claude plugin install`)
+To install CortexOps into Claude Code:
+* **From GitHub (Recommended)**:
+  ```bash
+  claude plugin install ctxthuta/cortexops
+  # or using the repository URL:
+  claude plugin install https://github.com/ctxthuta/cortexops
+  ```
+* **From Local Directory / Workspace**:
+  ```bash
+  claude plugin install /path/to/cortexops
+  # or inside the repository root:
+  claude plugin install .
+  ```
+* **Via Marketplace Registry**:
+  ```bash
+  claude plugin marketplace add ctxthuta/cortexops
+  claude plugin install cortexops
+  ```
+* **Verify & Update**:
+  ```bash
+  claude plugin list
+  claude plugin update cortexops
+  ```
+
+#### B. OpenAI Codex (`codex plugin install`)
+To install CortexOps into OpenAI Codex:
+* **From GitHub (Recommended)**:
+  ```bash
+  codex plugin install ctxthuta/cortexops
+  # or using the repository URL:
+  codex plugin install https://github.com/ctxthuta/cortexops
+  ```
+* **From Local Directory / Workspace**:
+  ```bash
+  codex plugin install /path/to/cortexops
+  # or inside the repository root:
+  codex plugin install .
+  ```
+* **Verify Installation**:
+  ```bash
+  codex plugin list
+  ```
+
+#### C. Google Antigravity (`agy plugin install`)
+* **macOS & Linux (Git URL or Local Folder)**:
+  ```bash
+  agy plugin install https://github.com/ctxthuta/cortexops/tree/main/plugin
+  # or from local folder:
+  agy plugin install ./plugin
+  agy plugin list
+  ```
+* **Windows PowerShell (Release Archive Extraction)**:
+  Because `agy` on Windows treats remote ZIP URLs as repository subfolders, download and expand the release archive before installation:
+  ```powershell
+  $cxopsDir = Join-Path $Env:Temp "cortexops-v1.1.7"
+  Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/v1.1.7/cortexops-1.1.7.zip" -OutFile "$cxopsDir.zip"
+  Expand-Archive -Path "$cxopsDir.zip" -DestinationPath $cxopsDir -Force
+  agy plugin install "$cxopsDir"
+  agy plugin list
+  ```
+  Then restart VS Code / Antigravity.
+
+---
+
+### Option 2: Universal Node.js / NPM Package (`@ctxthuta/cxops`)
+Works identically on Windows PowerShell, macOS, and Linux:
+```bash
 npm install -g @ctxthuta/cxops@latest
 cxops link
 cxops doctor
 ```
-
-#### Method C: Instant Workspace Initialization (Zero Admin Permissions)
-In any project folder open in VS Code:
-```powershell
+In any project folder open in your editor:
+```bash
 npx @ctxthuta/cxops@latest init
 ```
 
@@ -120,14 +175,14 @@ Then restart Google Antigravity / VS Code. The global link immediately points to
 #### Method 2: Direct Release Archive Update via Antigravity CLI
 If updating using the GitHub release ZIP archive without npm:
 ```powershell
-# 1. Fetch and expand the latest release archive
+# Fetch and expand the latest release archive
 $tag = (Invoke-RestMethod -Uri "https://api.github.com/repos/ctxthuta/cortexops/releases/latest").tag_name
 $version = $tag.TrimStart("v")
 $cxopsDir = Join-Path $Env:Temp "cortexops-$tag"
 Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/$tag/cortexops-$version.zip" -OutFile "$cxopsDir.zip"
 Expand-Archive -Path "$cxopsDir.zip" -DestinationPath $cxopsDir -Force
 
-# 2. Re-install into Antigravity
+# Re-install into Antigravity
 agy plugin install "$cxopsDir"
 agy plugin list
 ```

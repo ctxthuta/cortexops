@@ -18,18 +18,18 @@ The framework operates across three tightly integrated layers:
                  ▼                                               ▼
 +---------------------------------+             +----------------------------------+
 |    AUTONOMOUS SUBAGENT TEAM     |             |     THUTACORTEX SECOND BRAIN     |
-|   11 Senior/Staff Subagents     |<----------->|    (/Documents/ThutaCortex)      |
+|   35 Senior/Staff Specialists   |<----------->|    (/Documents/ThutaCortex)      |
 |  - academic_researcher          | search_     |  - Projects/ (System Schemas)    |
-|  - rnd_researcher               | cortex      |  - Resources/Concepts/ (Zettels) |
-|  - system_architect             | read_note   |  - Areas/Thea-Solutions/ (MOCs)  |
-|  - uiux_designer                | ingest_     |  - Invariant: Zero Emojis        |
-|  - frontend_engineer            | concept     |  - Linter: lint_vault.py         |
-|  - backend_engineer             |             +----------------------------------+
-|  - devops_engineer              |                              │
-|  - ai_ml_engineer               |                     CouchDB Sync (VPS)
+|  - agent_architect              | cortex      |  - Resources/Concepts/ (Zettels) |
+|  - rnd_researcher               | read_note   |  - Areas/Thea-Solutions/ (MOCs)  |
+|  - system_architect             | ingest_     |  - Invariant: Zero Emojis        |
+|  - systems_integrator           | concept     |  - Linter: lint_vault.py         |
+|  - rust_engineer                |             +----------------------------------+
+|  - backend_engineer             |                              │
+|  - appsec_engineer              |                     CouchDB Sync (VPS)
 |  - qa_engineer                  |                              │
 |  - code_reviewer                |                              ▼
-|  - software_engineer            |             +----------------------------------+
+|  - and 25+ more specialists     |             +----------------------------------+
 +---------------------------------+             | https://thutacortex.theasolutions|
                  ▲                              +----------------------------------+
                  │
@@ -60,7 +60,7 @@ git clone https://github.com/ctxthuta/cortexops.git && cd cortexops && ./install
    ```bash
    ln -sfn "$PWD/plugin" "$HOME/.gemini/config/plugins/cortexops"
    ```
-4. Verifies all 11 subagents and tests connectivity to ThutaCortex at `~/Documents/ThutaCortex`.
+4. Verifies all registered specialist subagents and tests connectivity to ThutaCortex at `~/Documents/ThutaCortex`.
 
 ---
 
@@ -83,7 +83,7 @@ git clone https://github.com/ctxthuta/cortexops.git; cd cortexops; .\install.ps1
    cmd /c "mklink /J `"$env:USERPROFILE\.gemini\config\plugins\cortexops`" `"$PWD\plugin`""
    ```
 4. Detects ThutaCortex at `$env:USERPROFILE\Documents\ThutaCortex`.
-5. Executes `verify_agents.py` to confirm all 11 subagents are live.
+5. Executes `verify_agents.py` to confirm all registered specialist subagents are live.
 
 ---
 
@@ -222,7 +222,7 @@ If you ever wish to unregister the subagents and remove installed artifacts, the
 ```
 
 ### What Uninstallation Cleans Up:
-1. **Unlinks Antigravity Plugin:** Deletes the global symlink or NTFS directory junction (`~/.gemini/config/plugins/cortexops`), immediately unregistering all 11 subagents.
+1. **Unlinks Antigravity Plugin:** Deletes the global symlink or NTFS directory junction (`~/.gemini/config/plugins/cortexops`), immediately unregistering the plugin and all specialist subagents.
 2. **Removes Python Virtual Environment:** Purges `.venv/` to reclaim storage.
 3. **Deletes Caches and Artifacts:** Cleans up `__pycache__/`, `*.pyc`, and scratch workspace files.
 4. **Preserves Second Brain Notes:** Notes in `~/Documents/ThutaCortex` remain untouched and safe.
@@ -240,3 +240,56 @@ If you ever wish to unregister the subagents and remove installed artifacts, the
    The dashboard automatically parses the most recent transcript in `~/.gemini/antigravity-cli/brain/`. If running on a new machine with no conversations yet, it displays 0 turns until the first turn occurs.
 3. **Strict Zero-Emoji Rule:**  
    Enforced across all repository files, commits, and Obsidian notes. If `lint_vault.py` reports any emoji, replace it with ASCII text (`->`, `*`, `[x]`).
+
+---
+
+## 9. Plugin Installation Across AI Engines (Antigravity, Claude Code, Codex)
+
+CortexOps supports native plugin installation commands across all major agent environments:
+
+### Anthropic Claude Code
+```bash
+# Install directly from GitHub
+claude plugin install ctxthuta/cortexops
+
+# Or install from local path
+claude plugin install /path/to/cortexops
+
+# Or via marketplace
+claude plugin marketplace add ctxthuta/cortexops
+claude plugin install cortexops
+
+# Verify installed plugins
+claude plugin list
+```
+
+### OpenAI Codex
+```bash
+# Install directly from GitHub
+codex plugin install ctxthuta/cortexops
+
+# Or install from local directory
+codex plugin install /path/to/cortexops
+
+# Verify installed plugins
+codex plugin list
+```
+
+### Google Antigravity
+```bash
+# Linux & macOS (Git repository or local folder)
+agy plugin install https://github.com/ctxthuta/cortexops/tree/main/plugin
+# or
+agy plugin install ./plugin
+
+# Windows PowerShell (Download & Expand ZIP Archive)
+$cxopsDir = Join-Path $Env:Temp "cortexops-v1.1.7"
+Invoke-WebRequest -Uri "https://github.com/ctxthuta/cortexops/releases/download/v1.1.7/cortexops-1.1.7.zip" -OutFile "$cxopsDir.zip"
+Expand-Archive -Path "$cxopsDir.zip" -DestinationPath $cxopsDir -Force
+agy plugin install "$cxopsDir"
+
+# Universal NPM route (all platforms)
+npm install -g @ctxthuta/cxops@latest
+cxops link
+cxops doctor
+```
