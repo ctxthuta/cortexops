@@ -9,7 +9,7 @@
     {
       "name": "cortexops",
       "description": "CortexOps Multi-Agent Engineering Framework with Superpowers: 36 agent personas (35 Staff/Principal/Senior specialists including Rust systems engineering and agent architecture plus cxagents), TDD, systematic debugging, planning, and verification workflows.",
-      "version": "1.2.2",
+      "version": "1.2.3",
       "source": "./",
       "author": {
         "name": "Thuta Tun",
