@@ -71,6 +71,35 @@ async function main() {
     return;
   }
 
+  if (args.includes('--help') || args.includes('-h') || cmd === 'help') {
+    console.log(`Global Agent Monitor - Real-Time Multi-Surface Control Plane
+
+Usage:
+  cxops monitor [command] [options]
+
+Commands:
+  watch (default)           Interactive full-screen TUI with live pub/sub updates
+  brief                     Print factual executive briefing of active runs and bottlenecks
+  sessions                  List active agent conversations across all IDEs and terminals
+  sources                   Inspect registered telemetry adapters and connection health
+  doctor                    Run system diagnostics and prerequisite health check
+  setup                     Install telemetry hooks into client configuration files
+  history                   Inspect retained event history (--purge <project> to delete)
+  start                     Start the background single-writer collector daemon
+  stop                      Stop the running background collector daemon
+  status                    Check status of the collector daemon and socket
+  emit '<json>'             Emit an event directly to the monitor (for testing/scripts)
+
+Options:
+  --project <name>          Filter events and views to a specific project
+  --no-color                Disable ANSI color escapes (monochrome mode)
+  --no-motion               Disable dynamic frame animations
+  --json                    Output machine-readable JSON (sessions, brief, history)
+  --help, -h                Display this command reference
+`);
+    return;
+  }
+
   // Parse options
   const isNoColor = args.includes('--no-color');
   const isNoMotion = args.includes('--no-motion');

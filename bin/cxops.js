@@ -698,13 +698,13 @@ function printHelp() {
     console.log(`CortexOps Multi-Agent Framework CLI
 
 Usage:
-  cxops [command]
+  cxops [command] [options]
 
 Commands:
   setup                     Run interactive cross-platform setup wizard
   init                      Initialize CortexOps in the current workspace (.agents/)
   doctor                    Run system diagnostics and prerequisite health check
-  monitor                   Launch Global Agent Monitor terminal view across all platforms
+  monitor [subcommand]      Launch Global Agent Monitor across all platforms
   brief                     Print factual executive briefing of active agents and bottlenecks
   sessions                  List active agent conversations across all IDEs and terminals
   sources                   Inspect registered telemetry adapters and connection health
@@ -716,12 +716,23 @@ Commands:
   unlink                    Remove Antigravity global plugin and subagents
   update, upgrade           Update @ctxthuta/cxops to the latest release and refresh links
   help, --help, -h          Display this command reference
-` + /*
-`  run [options] "<prompt>"  Dispatch an autonomous multi-agent task via Python SDK
-    Options:
-      -e, --engine <engine> Select execution harness: antigravity (default), claude, codex
-      -m, --model <model>   Override model identifier for the selected engine
-` + */ '');
+
+Monitor Subcommands (cxops monitor <subcommand>):
+  watch (default)           Interactive terminal dashboard with live pub/sub updates
+  brief                     Factual executive briefing of active tasks and bottlenecks
+  sessions                  List active conversations across Antigravity, Codex, and Claude
+  sources                   Discovered launch surfaces and telemetry connection health
+  doctor                    Environment diagnostics and client capability checks
+  setup                     Enroll user hooks and install client telemetry bridges
+  history                   Inspect retained event history (--purge <project> to delete)
+  start / stop / status     Manage background single-writer collector daemon
+
+Monitor Options:
+  --project <name>          Filter monitor views to a specific project
+  --no-color                Disable ANSI color escapes (monochrome mode)
+  --no-motion               Disable dynamic frame animations
+  --json                    Output machine-readable JSON (sessions, brief, history)
+`);
 }
 
 async function main() {
@@ -830,9 +841,17 @@ async function main() {
         */
         case 'help':
         case '--help':
-        case '-h':
+        case '-h': {
+            const topic = (args[1] || '').toLowerCase();
+            if (topic === 'monitor' || topic === 'agentmon') {
+                const agentmonBin = path.join(__dirname, 'agentmon.js');
+                const { spawnSync } = require('child_process');
+                const res = spawnSync(process.execPath, [agentmonBin, '--help'], { stdio: 'inherit' });
+                process.exit(res.status || 0);
+            }
             printHelp();
             break;
+        }
         default:
             console.error(`[ERROR] Unknown command: ${command}`);
             printHelp();
