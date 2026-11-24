@@ -107,14 +107,16 @@ async function main() {
     try {
         const title = `CortexOps v${newVer}`;
         const notes = `## CortexOps Multi-Agent Framework v${newVer}\n\nAutomated dual release published to npm and GitHub.\n\n### Assets\n- \`cortexops.zip\` (Universal Latest)\n- \`cortexops-${newVer}.zip\`\n- \`cortexops-v${newVer}.zip\`\n- \`checksums.txt\``;
+        const notesFile = path.join(DIST_DIR, 'release-notes.md');
+        fs.writeFileSync(notesFile, notes, 'utf-8');
         
         try {
             run(`"${ghBin}" release view v${newVer}`);
             run(`"${ghBin}" release upload v${newVer} "${zipNoV}" "${zipWithV}" "${zipLatest}" "${checksumFile}" --clobber`);
-            run(`"${ghBin}" release edit v${newVer} --title "${title}" --notes "${notes}"`);
+            run(`"${ghBin}" release edit v${newVer} --title "${title}" --notes-file "${notesFile}"`);
             console.log(`[GITHUB RELEASE] Updated existing release v${newVer}`);
         } catch (_) {
-            run(`"${ghBin}" release create v${newVer} "${zipNoV}" "${zipWithV}" "${zipLatest}" "${checksumFile}" --title "${title}" --notes "${notes}"`);
+            run(`"${ghBin}" release create v${newVer} "${zipNoV}" "${zipWithV}" "${zipLatest}" "${checksumFile}" --title "${title}" --notes-file "${notesFile}"`);
             console.log(`[GITHUB RELEASE] Created new release v${newVer}`);
         }
     } catch (ghErr) {
