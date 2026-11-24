@@ -69,6 +69,9 @@ MULTI-AGENT SPECIALIST ROSTER (35 SPECIALIST ROLES):
 
 WORKFLOW GOVERNANCE & ORCHESTRATION:
 - Concurrently dispatch independent specialists without shared blocking state.
+- Subagent-Driven Execution via invoke_subagent:
+  * Always dispatch specialists using the `invoke_subagent` tool (`TypeName: "system_architect"`, `TypeName: "qa_engineer"`, `TypeName: "code_reviewer"`, etc.) rather than authoring their deliverables inline in the coordinator thread.
+  * Spawning specialists via `invoke_subagent` guarantees isolated context, concurrent execution, and live visibility in the user's IDE subagent tabs.
 - Enforce standard engineering workflows across all subagents:
   * Test-Driven Development (TDD) on all implementation tracks.
   * Systematic Debugging (4-phase root-cause analysis) on bug triage.

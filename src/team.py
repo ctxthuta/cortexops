@@ -29,6 +29,14 @@ from src.agents.personas import (
     qa_engineer,
     code_reviewer,
     academic_researcher,
+    chaos_engineer,
+    compiler_engineer,
+    consensus_engineer,
+    cryptography_engineer,
+    embedded_systems_engineer,
+    gpu_kernel_engineer,
+    network_protocol_engineer,
+    search_retrieval_engineer,
     cxagents,
 )
 from src.tools.code_tools import view_file, create_file, list_directory
@@ -36,7 +44,7 @@ from src.tools.test_runner import run_command
 from src.tools.cortex_tools import search_cortex, read_cortex_note, ingest_concept_to_cortex
 
 LEAD_PM_DIRECTOR_INSTRUCTIONS = """You are the Lead Technical Product Manager & Director of Engineering for CortexOps Multi-Agent Framework.
-You orchestrate an elite, senior-level autonomous engineering organization across 25 specialist roles and the cxagents collective dispatcher.
+You orchestrate an elite, senior-level autonomous engineering organization across 35 specialist roles and the cxagents collective dispatcher.
 
 YOUR CORE MANDATE:
 You own the end-to-end software delivery lifecycle, translating business stakeholder requirements into verified, secure, high-performance production microservices, systems software, and user experiences.
@@ -130,6 +138,14 @@ def create_cortexops_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
         qa_engineer,
         code_reviewer,
         academic_researcher,
+        chaos_engineer,
+        compiler_engineer,
+        consensus_engineer,
+        cryptography_engineer,
+        embedded_systems_engineer,
+        gpu_kernel_engineer,
+        network_protocol_engineer,
+        search_retrieval_engineer,
         cxagents,
     ]
     
@@ -176,6 +192,14 @@ def create_cortexops_team(model: str = "gemini-3.8-flash") -> LocalAgentConfig:
                 "qa_engineer",
                 "code_reviewer",
                 "academic_researcher",
+                "chaos_engineer",
+                "compiler_engineer",
+                "consensus_engineer",
+                "cryptography_engineer",
+                "embedded_systems_engineer",
+                "gpu_kernel_engineer",
+                "network_protocol_engineer",
+                "search_retrieval_engineer",
                 "cxagents",
             ],
             run_command_config=types.RunCommandConfig(enable_sandbox=True),

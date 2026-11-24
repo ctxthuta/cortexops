@@ -705,6 +705,9 @@ Commands:
   init                      Initialize CortexOps in the current workspace (.agents/)
   doctor                    Run system diagnostics and prerequisite health check
   monitor, agentmon         Launch Global Agent Monitor terminal view across all platforms
+  brief                     Print factual executive briefing of active agents and bottlenecks
+  sessions                  List active agent conversations across all IDEs and terminals
+  sources                   Inspect registered telemetry adapters and connection health
   status, dashboard         Display operational & token telemetry dashboard
   watch                     Continuously monitor the dashboard (auto-refresh)
   verify                    Verify all declarative subagent definitions
@@ -744,6 +747,30 @@ async function main() {
         case 'agentmon': {
             const agentmonBin = path.join(__dirname, 'agentmon.js');
             const subArgs = args.slice(1);
+            const { spawnSync } = require('child_process');
+            const res = spawnSync(process.execPath, [agentmonBin, ...subArgs], { stdio: 'inherit' });
+            process.exit(res.status || 0);
+            break;
+        }
+        case 'brief': {
+            const agentmonBin = path.join(__dirname, 'agentmon.js');
+            const subArgs = ['brief', ...args.slice(1)];
+            const { spawnSync } = require('child_process');
+            const res = spawnSync(process.execPath, [agentmonBin, ...subArgs], { stdio: 'inherit' });
+            process.exit(res.status || 0);
+            break;
+        }
+        case 'sessions': {
+            const agentmonBin = path.join(__dirname, 'agentmon.js');
+            const subArgs = ['sessions', ...args.slice(1)];
+            const { spawnSync } = require('child_process');
+            const res = spawnSync(process.execPath, [agentmonBin, ...subArgs], { stdio: 'inherit' });
+            process.exit(res.status || 0);
+            break;
+        }
+        case 'sources': {
+            const agentmonBin = path.join(__dirname, 'agentmon.js');
+            const subArgs = ['sources', ...args.slice(1)];
             const { spawnSync } = require('child_process');
             const res = spawnSync(process.execPath, [agentmonBin, ...subArgs], { stdio: 'inherit' });
             process.exit(res.status || 0);

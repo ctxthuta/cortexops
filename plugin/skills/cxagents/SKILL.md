@@ -57,7 +57,9 @@ Authoritative skill for the CortexOps Multi-Agent Collective Orchestrator. Gover
 ## Associated Mandatory Workflows & Orchestration
 - Collective Orchestration & Dispatching:
   * Concurrently dispatches independent specialists (rnd_researcher, system_architect, uiux_designer, frontend_engineer, backend_engineer, rust_engineer, ebpf_engineer, perf_engineer, data_engineer, appsec_engineer, qa_engineer, code_reviewer) without shared blocking state.
-- Subagent-Driven Execution:
+- Subagent-Driven Execution via invoke_subagent:
+  * When executing multi-agent pipelines, the coordinator MUST explicitly spawn specialist agents using the `invoke_subagent` tool with the matching `TypeName` (`rnd_researcher`, `system_architect`, `qa_engineer`, `code_reviewer`, etc.) rather than collapsing the work into the root agent session.
+  * Explicit `invoke_subagent` calls ensure each specialist runs in an isolated context window, executes concurrently, and surfaces live in the user's IDE subagent tab bar.
   * Deconstructs complex objectives into modular work packages with explicit input/output contracts and handoffs.
 - Universal Workflow Governance:
   * Enforces Test-Driven Development (TDD) across all implementing roles (software_engineer, backend_engineer, rust_engineer, frontend_engineer, al_developer).
